@@ -13,29 +13,27 @@ All derivative values must be within 0.05 of 0
 
 const trainingRate float64 = 0.2
 
-var costNode, weightLayer, weightNode int = 0, 0, 0
+var endTraining bool = false
+var weightLayer, weightNode int = 0, 0
 var cycleCount int = 1
 var layerDif int = 0
-var midNodes []int = make([]int,0)
+var midNodes []int = make([]int, 0)
+var divisor := 1.0
 
 func backPropPointSelect() {
 
-  for i := 0; i < composition[len(composition) - 1]; i++ {
-    for j := 0; j < len(composition) - 1; i++ {
-      for k := 0; k < composition[j]; k++ {
+  for j := 0; j < len(composition) - 1; i++ {
+    for k := 0; k < composition[j]; k++ {
 
-        costNode = i
-        weightLayer = j
-        weightNode = k
-        layerDif = len(composition) - (weightLayer + 2)
-        midNodes = make([]int, layerDif)
+      weightLayer = j
+      weightNode = k
+      layerDif = len(composition) - (weightLayer + 1)
+      midNodes = make([]int, layerDif)
 
-        backPropagation()
-      }
+      backPropagation()
+
     }
   }
-
-  divisor := 1.0
 
   for i := 0; i < len(composition) - 1; i++ {
 
@@ -47,6 +45,13 @@ func backPropPointSelect() {
       for k := 0; k < composition[i + 1]; k++ {
         nodeGraph[i][j].weightsChange[k] = nodeGraph[i][j].weightsChange[k]/divisor
         nodeGraph[i][j].weights[k] -= trainingRate * nodeGraph[i][j].weightsChange[k]
+
+        endTraining = true
+        if ((-nodeGraph[i][j].weightsChange[k] > 0.01) || (-nodeGraph[i][j].weightsChange[k] < -0.01)) && (!endTraining) {
+          endTraining = false
+          //if all of the weights become finely tuned enough that the changes required are within +-0.01 of 0 (even less than that, actually), the program stops training
+          //can still plateau, is still an issue that needs to be resolved https://www.desmos.com/calculator/0hhji76otn
+        }
       }
     }
   }
@@ -67,24 +72,21 @@ func backPropagation() {
     weightChange := nodeRefInputSum(weightLayer, weightNode) * sigmoidDerivative(nodeInputSum((weightLayer + 1), midNodes[0]))
 
     for i := 0; i < layerDif; i++ {
-      if i != layerDif - 1 {
-        weightChange = weightChange * nodeWeight((weightLayer + i + 1), midNodes[i], midNodes[i + 1]) * sigmoidDerivative(nodeInputSum((weightLayer + i + 2), midNodes[i + 1]))
-      } else {
-        weightChange = weightChange * nodeWeight((weightLayer + i + 1), midNodes[i], costNode) * sigmoidDerivative(nodeInputSum((weightLayer + i + 2), costNode))
-      }
+      weightChange = weightChange * nodeWeight((weightLayer + i + 1), midNodes[i], midNodes[i + 1]) * sigmoidDerivative(nodeInputSum((weightLayer + i + 2), midNodes[i + 1]))
     }
 
-    weightChange = weightChange * 2 * (nodeRefInputSum((len(composition) - 1), costNode) - expected[costNode])
+    weightChange = weightChange * 2 * (nodeRefInputSum((len(composition) - 1), midNodes[layerDif - 1]) - expected[midNodes[layerDif - 1]])
 
     nodeGraph[weightLayer][weightNode].weightsChange[midNodes[0]] = nodeGraph[weightLayer][weightNode].weightsChange[midNodes[0]] + weightChange
   }
 }
 
 func resetBackPropagation() {
-  costNode, weightLayer, weightNode = 0, 0, 0
+  weightLayer, weightNode = 0, 0
   cycleCount = 1
   layerDif = 0
   midNodes = make([]int,0)
+  divisor = 1.0
 }
 
 func nodeInputSum(layer int, node int) float64{

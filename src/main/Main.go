@@ -8,6 +8,7 @@ import (
 var composition[5]int=[...]int{1200, 600, 300, 100, 25}
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
 
+var train bool
 var maxAmplitude []float64 //assuming 0 amplitude and the max overall amplitude corres to 0 and 1, adjust the values to be between 0 and 1 proportionally
 var minAmplitude []float64
 var standardDeviationAmplitude []float64 //see above
@@ -42,6 +43,7 @@ func initi() {
 func execNetwork() {
 
   calcInputNeuron()//prepare peripherals
+
   //TEST CODE:
   for i:=1;i<len(composition)-1;i++{
     for j:=0;j<composition[i];j++{
@@ -49,17 +51,21 @@ func execNetwork() {
     }
   }
   //END
-  for i := 1; i < len(composition)-1; i++ {//previously started with i at 0
+  for i := 1; i < len(composition); i++ {
     for j := 0; j < composition[i]; j++ {
       nodeGraph[i][j].calcInputSum()
     }
   }
 
+  for train = true; train; train = !endTraining {
+      backPropPointSelect()
+  }
+
   for i := 0; i < composition[compLastRow]; i++ {
-      fmt.Println("Cost Node", (i + 1), "Expected:", expected[i], "Actual:", nodeGraph[compLastRow][i].refInputSum)
-      if nodeGraph[compLastRow][i].refInputSum > output {
-        output = nodeGraph[compLastRow][i].refInputSum
-      }
+    fmt.Println("Cost Node", (i + 1), "Expected:", expected[i], "Actual:", nodeGraph[compLastRow][i].refInputSum)
+    if nodeGraph[compLastRow][i].refInputSum > output {
+      output = nodeGraph[compLastRow][i].refInputSum
+    }
   }
 
   fmt.Print("Number of syllables: ")
