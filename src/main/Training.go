@@ -2,6 +2,7 @@ package main
 
 import (
   "math"
+  "fmt"
 )
 //nodeGraph: A 2 dimensional array comprised of neurons, presumably the first [] means layer and the second [] is node
 //composition: A 1 dimensional array where [] is layer and the values are the number of nodes in [] layer
@@ -21,7 +22,6 @@ var midNodes []int = make([]int, 0)
 var divisor = 1.0
 
 func backPropPointSelect() {
-
   for j := 0; j < len(composition) - 1; j++ {
     for k := 0; k < composition[j]; k++ {
 
@@ -29,7 +29,7 @@ func backPropPointSelect() {
       weightNode = k
       layerDif = len(composition) - (weightLayer + 1)
       midNodes = make([]int, layerDif)
-
+      fmt.Println("SOME COOL STUFF",weightLayer,weightNode,"\n",composition[4],"OR NOT")
       backPropagation()
 
     }
@@ -61,17 +61,23 @@ func backPropPointSelect() {
 }
 
 func backPropagation() {
-
+  fmt.Println("Evaluating backPropagation")
   if cycleCount <= layerDif {
+    fmt.Println("Evaluating if")
+    fmt.Println("layerDif", layerDif, "cycleCount", cycleCount)
     for i := 0; i < composition[weightLayer + cycleCount]; i++ {
       midNodes[cycleCount - 1] = i
       cycleCount++
+      fmt.Println("cycles",cycleCount)
       backPropagation()
     }
   } else {
+
+    fmt.Println("Evaluating else")
+
     weightChange := nodeRefInputSum(weightLayer, weightNode) * sigmoidDerivative(nodeInputSum((weightLayer + 1), midNodes[0]))
 
-    for i := 0; i < layerDif; i++ {
+    for i := 0; i < layerDif -1; i++ {
       weightChange = weightChange * nodeWeight((weightLayer + i + 1), midNodes[i], midNodes[i + 1]) * sigmoidDerivative(nodeInputSum((weightLayer + i + 2), midNodes[i + 1]))
     }
 
