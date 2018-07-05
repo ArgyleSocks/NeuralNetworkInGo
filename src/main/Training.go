@@ -18,11 +18,11 @@ var weightLayer, weightNode int = 0, 0
 var cycleCount int = 1
 var layerDif int = 0
 var midNodes []int = make([]int, 0)
-var divisor := 1.0
+var divisor = 1.0
 
 func backPropPointSelect() {
 
-  for j := 0; j < len(composition) - 1; i++ {
+  for j := 0; j < len(composition) - 1; j++ {
     for k := 0; k < composition[j]; k++ {
 
       weightLayer = j

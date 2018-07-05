@@ -33,7 +33,7 @@ func initi() {
     nodeGraph[i] = make([]neuron, composition[i])
   }
 
-  for i := 0; i < len(nodeGraph)-1; i++ {
+  for i := 0; i < len(nodeGraph); i++ {
     for j := 0; j < composition[i]; j++ {
       nodeGraph[i][j].initNeuron(i,j)
     }

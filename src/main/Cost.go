@@ -3,7 +3,7 @@ package main
 import (
   "fmt"
   "math"
-  "dict"
+  // "dict"
 )
 
 var compLastRow int = len(composition) - 1
@@ -12,14 +12,15 @@ var cost float64
 var costDeriv float64
 
 func initExpected() {
-	index:=dict.MapGet(string(word))
-	for i:=0;i<len(expected);i++{
-		if i==index{
-			expected[i]=1
-		} else {
-			expected[i]=0
-		}
-	}
+	// index:=dict.MapGet(string(word))
+	// for i:=0;i<len(expected);i++{
+	// 	if i==index{
+	// 		expected[i]=1
+	// 	} else {
+	// 		expected[i]=0
+	// 	}
+	// }
+	expected[7]=1
 }
 
 func calcCost() {
