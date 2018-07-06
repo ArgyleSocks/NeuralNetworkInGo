@@ -2,7 +2,7 @@ package main
 
 import
 (
-  "fmt"
+  //"fmt"
   "math"
   "math/rand"
 )
@@ -33,7 +33,7 @@ func (neur *neuron) initNeuron(layer,node int) {
 }
 
 func (neur *neuron) calcInputSum() {
-  fmt.Println("calcInputSum",neur.layer-1)
+  //fmt.Println("calcInputSum",neur.layer-1)
   for i := 0; i < composition[neur.layer-1]; i++ {
     neur.inputSum += nodeGraph[neur.layer-1][i].calcOutputSum(neur.node)
   }

@@ -2,7 +2,7 @@ package main
 
 import (
   "math"
-  "fmt"
+  //"fmt"
 )
 //nodeGraph: A 2 dimensional array comprised of neurons, presumably the first [] means layer and the second [] is node
 //composition: A 1 dimensional array where [] is layer and the values are the number of nodes in [] layer
@@ -16,7 +16,6 @@ const trainingRate float64 = 0.2
 
 var endTraining bool = false
 var weightLayer, weightNode int = 0, 0
-var cycleCount int = 1
 var layerDif int = 0
 var midNodes []int = make([]int, 0)
 var divisor = 1.0
@@ -29,8 +28,8 @@ func backPropPointSelect() {
       weightNode = k
       layerDif = len(composition) - (weightLayer + 1)
       midNodes = make([]int, layerDif)
-      fmt.Println("SOME COOL STUFF",weightLayer,weightNode,"\n",composition[4],"OR NOT")
-      backPropagation()
+      //fmt.Println("SOME COOL STUFF",weightLayer,weightNode,"\n",composition[4],"OR NOT")
+      backPropagation(1)
 
     }
   }
@@ -60,36 +59,40 @@ func backPropPointSelect() {
 
 }
 
-func backPropagation() {
-  fmt.Println("Evaluating backPropagation")
+func backPropagation(cycleCount int) {
+  //fmt.Println("Evaluating backPropagation")
   if cycleCount <= layerDif {
-    fmt.Println("Evaluating if")
-    fmt.Println("layerDif", layerDif, "cycleCount", cycleCount)
+    //fmt.Println("Evaluating if")
+    //fmt.Println("layerDif", layerDif, "cycleCount", cycleCount)
     for i := 0; i < composition[weightLayer + cycleCount]; i++ {
       midNodes[cycleCount - 1] = i
-      cycleCount++
-      fmt.Println("cycles",cycleCount)
-      backPropagation()
+      //fmt.Println("cycles",cycleCount)
+      backPropagation(cycleCount + 1)
     }
   } else {
 
-    fmt.Println("Evaluating else")
+    //fmt.Println("Evaluating else")
 
     weightChange := nodeRefInputSum(weightLayer, weightNode) * sigmoidDerivative(nodeInputSum((weightLayer + 1), midNodes[0]))
 
+    //fmt.Println("Argyle")
+
     for i := 0; i < layerDif -1; i++ {
+      //fmt.Println("Sock", i)
       weightChange = weightChange * nodeWeight((weightLayer + i + 1), midNodes[i], midNodes[i + 1]) * sigmoidDerivative(nodeInputSum((weightLayer + i + 2), midNodes[i + 1]))
     }
+
+    //fmt.Println("X gon give it to ya")
 
     weightChange = weightChange * 2 * (nodeRefInputSum((len(composition) - 1), midNodes[layerDif - 1]) - expected[midNodes[layerDif - 1]])
 
     nodeGraph[weightLayer][weightNode].weightsChange[midNodes[0]] = nodeGraph[weightLayer][weightNode].weightsChange[midNodes[0]] + weightChange
+
   }
 }
 
 func resetBackPropagation() {
   weightLayer, weightNode = 0, 0
-  cycleCount = 1
   layerDif = 0
   midNodes = make([]int,0)
   divisor = 1.0

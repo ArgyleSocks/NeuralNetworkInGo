@@ -1,11 +1,11 @@
 package main
 
 import (
-  "fmt"
+  //"fmt"
   "dict"
 )
 
-var composition[5]int=[...]int{1200, 600, 300, 100, 25}
+var composition[5]int=[...]int{5, 5, 5, 5, 5}
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
 
 var train bool
@@ -47,7 +47,7 @@ func execNetwork() {
   //TEST CODE:
   for i:=1;i<len(composition)-1;i++{
     for j:=0;j<composition[i];j++{
-      fmt.Println(nodeGraph[i][j].layer,nodeGraph[i][j].node)
+      //fmt.Println(nodeGraph[i][j].layer,nodeGraph[i][j].node)
     }
   }
   //END
@@ -62,17 +62,17 @@ func execNetwork() {
   }
 
   for i := 0; i < composition[compLastRow]; i++ {
-    fmt.Println("Cost Node", (i + 1), "Expected:", expected[i], "Actual:", nodeGraph[compLastRow][i].refInputSum)
+    //fmt.Println("Cost Node", (i + 1), "Expected:", expected[i], "Actual:", nodeGraph[compLastRow][i].refInputSum)
     if nodeGraph[compLastRow][i].refInputSum > output {
       output = nodeGraph[compLastRow][i].refInputSum
     }
   }
 
-  fmt.Print("Number of syllables: ")
+  //fmt.Print("Number of syllables: ")
 
   for i := 0; i < composition[compLastRow]; i++ {
     if nodeGraph[compLastRow][i].refInputSum == output {
-      fmt.Println(i + 1)
+      //fmt.Println(i + 1)
     }
   }
 
