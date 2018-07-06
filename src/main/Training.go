@@ -2,7 +2,7 @@ package main
 
 import (
   "math"
-  //"fmt"
+  "fmt"
 )
 //nodeGraph: A 2 dimensional array comprised of neurons, presumably the first [] means layer and the second [] is node
 //composition: A 1 dimensional array where [] is layer and the values are the number of nodes in [] layer
@@ -35,12 +35,12 @@ func backPropPointSelect() {
   }
 
   for i := 0; i < len(composition) - 1; i++ {
-
+    fmt.Println("I:",i,composition[i])
     for j := i + 1; j < len(composition); j++ {
       divisor = divisor * float64(composition[i])
     }
 
-    for j := 0; j < composition[i]; i++ {
+    for j := 0; j < composition[i]; j++ {
       for k := 0; k < composition[i + 1]; k++ {
         nodeGraph[i][j].weightsChange[k] = nodeGraph[i][j].weightsChange[k]/divisor
         nodeGraph[i][j].weights[k] -= trainingRate * nodeGraph[i][j].weightsChange[k]
