@@ -44,20 +44,17 @@ func execNetwork() {
 
   calcInputNeuron()//prepare peripherals
 
-  //TEST CODE:
+  /*TEST CODE:
   for i:=1;i<len(composition)-1;i++{
     for j:=0;j<composition[i];j++{
       //fmt.Println(nodeGraph[i][j].layer,nodeGraph[i][j].node)
     }
   }
-  //END
-  for i := 1; i < len(composition); i++ {
-    for j := 0; j < composition[i]; j++ {
-      nodeGraph[i][j].calcInputSum()
-    }
-  }
+  END*/
+
 
   for train = true; train; train = !endTraining {
+      evaluateNetwork()
       backPropPointSelect()
   }
 
@@ -78,4 +75,12 @@ func execNetwork() {
 
   calcCost()
 
+}
+
+func evaluateNetwork() {
+  for i := 1; i < len(composition); i++ {
+    for j := 0; j < composition[i]; j++ {
+      nodeGraph[i][j].calcInputSum()
+    }
+  }
 }
