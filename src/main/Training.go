@@ -12,7 +12,7 @@ import (
 All derivative values must be within 0.05 of 0
 */
 
-const trainingRate float64 = -0.02
+const trainingRate float64 = 0.02
 
 var endTraining bool = false
 var weightLayer, weightNode int = 0, 0
@@ -81,7 +81,7 @@ func backPropagation(cycleCount int) {
 
     //fmt.Println("Argyle")
 
-    for i := 0; i < layerDif -1; i++ {
+    for i := 0; i < layerDif - 1; i++ {
       //fmt.Println("Sock", i)
       weightChange = weightChange * nodeWeight((weightLayer + i + 1), midNodes[i], midNodes[i + 1]) * sigmoidDerivative(nodeInputSum((weightLayer + i + 2), midNodes[i + 1]))
     }
