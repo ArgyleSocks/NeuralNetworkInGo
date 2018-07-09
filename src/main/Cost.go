@@ -24,9 +24,9 @@ func initExpected() {
 }
 
 func calcCost() {
-
+  cost = 0
   for i := 0; i < len(expected); i++ {
-    cost += math.Pow((nodeGraph[compLastRow][i].inputSum - expected[i]), 2)
+    cost += math.Pow((nodeGraph[compLastRow][i].refInputSum - expected[i]), 2)
   }
 
   fmt.Println("Cost is ", cost)

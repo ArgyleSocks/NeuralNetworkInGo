@@ -12,13 +12,14 @@ import (
 All derivative values must be within 0.05 of 0
 */
 
-const trainingRate float64 = 0.2
+const trainingRate float64 = -0.02
 
 var endTraining bool = false
 var weightLayer, weightNode int = 0, 0
 var layerDif int = 0
 var midNodes []int = make([]int, 0)
 var divisor = 1.0
+var threshold float64 = math.Pow(10, -15)
 
 func backPropPointSelect() {
   for j := 0; j < len(composition) - 1; j++ {
@@ -28,11 +29,12 @@ func backPropPointSelect() {
       weightNode = k
       layerDif = len(composition) - (weightLayer + 1)
       midNodes = make([]int, layerDif)
-      //fmt.Println("SOME COOL STUFF",weightLayer,weightNode,"\n",composition[4],"OR NOT")
       backPropagation(1)
 
     }
   }
+
+  endTraining = true
 
   for i := 0; i < len(composition) - 1; i++ {
     fmt.Println("I:",i,composition[i])
@@ -45,12 +47,14 @@ func backPropPointSelect() {
         nodeGraph[i][j].weightsChange[k] = nodeGraph[i][j].weightsChange[k]/divisor
         nodeGraph[i][j].weights[k] -= trainingRate * nodeGraph[i][j].weightsChange[k]
 
-        endTraining = true
-        if ((-nodeGraph[i][j].weightsChange[k] > 0.01) || (-nodeGraph[i][j].weightsChange[k] < -0.01)) && (!endTraining) {
+        //fmt.Println("Layer:", i, "Layer nodes:", j, "Layer nodes ahead:", k, "weight change:", -nodeGraph[i][j].weightsChange[k], "current weight:", nodeGraph[i][j].weights[k])
+
+        if ((math.Abs(nodeGraph[i][j].weightsChange[k]) > threshold) && endTraining) {
+          fmt.Println("training failed")
           endTraining = false
           //if all of the weights become finely tuned enough that the changes required are within +-0.01 of 0 (even less than that, actually), the program stops training
           //can still plateau, is still an issue that needs to be resolved https://www.desmos.com/calculator/0hhji76otn
-        }
+        } 
       }
     }
   }
@@ -72,8 +76,8 @@ func backPropagation(cycleCount int) {
   } else {
 
     //fmt.Println("Evaluating else")
-
-    weightChange := nodeRefInputSum(weightLayer, weightNode) * sigmoidDerivative(nodeInputSum((weightLayer + 1), midNodes[0]))
+    weightChange := 0.0
+    weightChange = nodeRefInputSum(weightLayer, weightNode) * sigmoidDerivative(nodeInputSum((weightLayer + 1), midNodes[0])) //pondering...
 
     //fmt.Println("Argyle")
 

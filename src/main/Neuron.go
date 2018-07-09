@@ -4,6 +4,7 @@ import
 (
   //"fmt"
   "math"
+  "time"
   "math/rand"
 )
 
@@ -27,7 +28,9 @@ func (neur *neuron) initNeuron(layer,node int) {
     neur.weightsChange = make([]float64, composition[layer+1])
 
     for i := 0; i < len(neur.weights); i++ {
-      neur.weights[i] = rand.Float64()
+      s1 := rand.NewSource(int64(time.Now().Nanosecond()))
+      random := rand.New(s1)
+      neur.weights[i] = random.Float64()
     }
   }
 }
@@ -47,7 +50,7 @@ func (neur *neuron) calcOutputSum(node int) float64{
 
 func calcInputNeuron() {//commented out because: A: dict first, B: the sound stuff isn't initialized and I needed to test.
   for i := 0; i<composition[0]; i++ {
-    nodeGraph[0][i].refInputSum=1
+    nodeGraph[0][i].refInputSum = 0.5
   }
 }
 
