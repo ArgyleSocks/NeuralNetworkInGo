@@ -19,11 +19,11 @@ type neuron struct {
 }
 
 func (neur *neuron) initNeuron(layer,node int) {
-  neur.layer=layer
-  neur.node=node
+  neur.layer = layer
+  neur.node = node
   // node:=neur.node
 
-  if(layer != compLastRow) { 
+  if(layer != compLastRow) {
     neur.weights = make([]float64, composition[layer+1])
     neur.weightsChange = make([]float64, composition[layer+1])
 
