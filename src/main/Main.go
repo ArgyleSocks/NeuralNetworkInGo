@@ -2,18 +2,11 @@ package main
 
 import (
   "fmt"
-  //"dict"
+  "dict"
+  "runtime"
 )
 
-var composition[5]int=[...]int{2, 2, 2, 2, 4}
-/*
-Cost for 1 node is undetermined
-Cost for 2 nodes is 1
-Cost for 3 nodes is 1.9999999999919371
-Cost for 4 nodes is 3
-Cost for 5 nodes is 4
-This pattern stays consistent for the last layer of nodes only, changes made to every other layer of nodes do not modify this pattern
-*/
+var composition[5]int=[...]int{1, 1, 1, 1, 1}
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
 
 var maxAmplitude []float64 //assuming 0 amplitude and the max overall amplitude corres to 0 and 1, adjust the values to be between 0 and 1 proportionally
@@ -26,11 +19,13 @@ var generations int = 0
 var output float64 = 0
 
 func main() {
-  /*dict.Initi("/home/wurst/go/src/dict/syllables")
+  runtime.GOMAXPROCS(64)
+  dict.Initi("/home/wurst/go/src/dict/syllables")
   dict.ToMap()
-  word=[]byte(dict.SetOfKeys()[0])*/
+  word=[]byte(dict.SetOfKeys()[0])
   initExpected()
   initi()
+  go drawGraphLoop(&nodeGraph)
   execNetwork()
 
 }
@@ -67,20 +62,21 @@ func execNetwork() {
       backPropPointSelect()
       calcCost()
       generations++
-      fmt.Println("gen", generations)
   }
+  
+  fmt.Println("gen", generations)
 
   for i := 0; i < composition[compLastRow]; i++ {
     //fmt.Println("Cost Node", (i + 1), "Expected:", expected[i], "Actual:", nodeGraph[compLastRow][i].refInputSum)
-    if nodeGraph[compLastRow][i].refInputSum > output {
-      output = nodeGraph[compLastRow][i].refInputSum
+    if nodeGraph[compLastRow][i].RefInputSum > output {
+      output = nodeGraph[compLastRow][i].RefInputSum
     }
   }
 
   //fmt.Print("Number of syllables: ")
 
   for i := 0; i < composition[compLastRow]; i++ {
-    if nodeGraph[compLastRow][i].refInputSum == output {
+    if nodeGraph[compLastRow][i].RefInputSum == output {
       //fmt.Println(i + 1)
     }
   }

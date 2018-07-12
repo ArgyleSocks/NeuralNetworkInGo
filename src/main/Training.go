@@ -44,12 +44,12 @@ func backPropPointSelect() {
 
     for j := 0; j < composition[i]; j++ {
       for k := 0; k < composition[i + 1]; k++ {
-        nodeGraph[i][j].weightsChange[k] = nodeGraph[i][j].weightsChange[k]/divisor
-        nodeGraph[i][j].weights[k] -= trainingRate * nodeGraph[i][j].weightsChange[k]
+        nodeGraph[i][j].WeightsChange[k] = nodeGraph[i][j].WeightsChange[k]/divisor
+        nodeGraph[i][j].Weights[k] -= trainingRate * nodeGraph[i][j].WeightsChange[k]
 
         //fmt.Println("Layer:", i, "Layer nodes:", j, "Layer nodes ahead:", k, "weight change:", -nodeGraph[i][j].weightsChange[k], "current weight:", nodeGraph[i][j].weights[k])
 
-        if ((math.Abs(nodeGraph[i][j].weightsChange[k]) > threshold) && endTraining) {
+        if ((math.Abs(nodeGraph[i][j].WeightsChange[k]) > threshold) && endTraining) {
           fmt.Println("training failed")
           endTraining = false
           //if all of the weights become finely tuned enough that the changes required are within +-0.01 of 0 (even less than that, actually), the program stops training
@@ -90,7 +90,7 @@ func backPropagation(cycleCount int) {
 
     weightChange = weightChange * 2 * (nodeRefInputSum((len(composition) - 1), midNodes[layerDif - 1]) - expected[midNodes[layerDif - 1]])
 
-    nodeGraph[weightLayer][weightNode].weightsChange[midNodes[0]] = nodeGraph[weightLayer][weightNode].weightsChange[midNodes[0]] + weightChange
+    nodeGraph[weightLayer][weightNode].WeightsChange[midNodes[0]] = nodeGraph[weightLayer][weightNode].WeightsChange[midNodes[0]] + weightChange
 
   }
 }
@@ -103,15 +103,15 @@ func resetBackPropagation() {
 }
 
 func nodeInputSum(layer int, node int) float64{
-  return nodeGraph[layer][node].inputSum
+  return nodeGraph[layer][node].InputSum
 }
 
 func nodeRefInputSum(layer int, node int) float64{
-  return nodeGraph[layer][node].refInputSum
+  return nodeGraph[layer][node].RefInputSum
 }
 
 func nodeWeight(layer int, node int, corresNode int) float64{
-  return nodeGraph[layer][node].weights[corresNode]
+  return nodeGraph[layer][node].Weights[corresNode]
 }
 
 func sigmoidDerivative(input float64) float64{

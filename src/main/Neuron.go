@@ -9,48 +9,48 @@ import
 )
 
 type neuron struct {
-  layer int
-  node int
-  inputSum float64
-  refInputSum float64
-  outputSum float64
-  weights []float64
-  weightsChange []float64
+  Layer int
+  Node int
+  InputSum float64
+  RefInputSum float64
+  OutputSum float64
+  Weights []float64
+  WeightsChange []float64
 }
 
 func (neur *neuron) initNeuron(layer,node int) {
-  neur.layer = layer
-  neur.node = node
+  neur.Layer=layer
+  neur.Node=node
   // node:=neur.node
 
-  if(layer != compLastRow) {
-    neur.weights = make([]float64, composition[layer+1])
-    neur.weightsChange = make([]float64, composition[layer+1])
+  if(layer != compLastRow) { 
+    neur.Weights = make([]float64, composition[layer+1])
+    neur.WeightsChange = make([]float64, composition[layer+1])
 
-    for i := 0; i < len(neur.weights); i++ {
+    for i := 0; i < len(neur.Weights); i++ {
       s1 := rand.NewSource(int64(time.Now().Nanosecond()))
       random := rand.New(s1)
-      neur.weights[i] = random.Float64()
+      neur.Weights[i] = random.Float64()
     }
   }
 }
 
 func (neur *neuron) calcInputSum() {
   //fmt.Println("calcInputSum",neur.layer-1)
-  for i := 0; i < composition[neur.layer-1]; i++ {
-    neur.inputSum += nodeGraph[neur.layer-1][i].calcOutputSum(neur.node)
+  for i := 0; i < composition[neur.Layer-1]; i++ {
+    neur.InputSum += nodeGraph[neur.Layer-1][i].calcOutputSum(neur.Node)
   }
-  neur.refInputSum = sigmoid(neur.inputSum)
+  neur.RefInputSum = sigmoid(neur.InputSum)
 }
 
 func (neur *neuron) calcOutputSum(node int) float64{
-  neur.outputSum=neur.refInputSum*neur.weights[node]
-  return neur.outputSum
+  neur.OutputSum=neur.RefInputSum*neur.Weights[node]
+  return neur.OutputSum
 }
 
 func calcInputNeuron() {//commented out because: A: dict first, B: the sound stuff isn't initialized and I needed to test.
   for i := 0; i<composition[0]; i++ {
-    nodeGraph[0][i].refInputSum = 0.5
+    nodeGraph[0][i].RefInputSum = 0.5
   }
 }
 
