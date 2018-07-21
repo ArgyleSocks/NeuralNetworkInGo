@@ -19,6 +19,7 @@ type neuron struct {
 }
 
 func (neur *neuron) initNeuron(layer,node int) {
+  
   neur.Layer=layer
   neur.Node=node
   // node:=neur.node
@@ -30,7 +31,9 @@ func (neur *neuron) initNeuron(layer,node int) {
     for i := 0; i < len(neur.Weights); i++ {
       s1 := rand.NewSource(int64(time.Now().Nanosecond()))
       random := rand.New(s1)
-      neur.Weights[i] = random.Float64()
+      s2 := rand.NewSource(int64(time.Now().Nanosecond()))
+      random2 := rand.New(s2)
+      neur.Weights[i] = random.Float64() - random2.Float64()
     }
   }
 }

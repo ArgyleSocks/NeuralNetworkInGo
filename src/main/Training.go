@@ -1,8 +1,10 @@
 package main
 
 import (
+  "bufio"
   "math"
   "fmt"
+  "os"
 )
 //nodeGraph: A 2 dimensional array comprised of neurons, presumably the first [] means layer and the second [] is node
 //composition: A 1 dimensional array where [] is layer and the values are the number of nodes in [] layer
@@ -12,7 +14,7 @@ import (
 All derivative values must be within 0.05 of 0
 */
 
-const trainingRate float64 = 0.02
+const trainingRate float64 = 2
 
 var endTraining bool = false
 var weightLayer, weightNode int = 0, 0
@@ -22,6 +24,9 @@ var divisor = 1.0
 var threshold float64 = math.Pow(10, -15)
 
 func backPropPointSelect() {
+  buf := bufio.NewReader(os.Stdin)
+  fmt.Println("\n\nbackprop tick> \n")
+  buf.ReadBytes('\n')
   for j := 0; j < len(composition) - 1; j++ {
     for k := 0; k < composition[j]; k++ {
 
@@ -44,7 +49,9 @@ func backPropPointSelect() {
 
     for j := 0; j < composition[i]; j++ {
       for k := 0; k < composition[i + 1]; k++ {
+        fmt.Println("HUZZAH!!!!!")
         nodeGraph[i][j].WeightsChange[k] = nodeGraph[i][j].WeightsChange[k]/divisor
+        fmt.Println("subtracting WeightsChange at",i,j,k,"by",nodeGraph[i][j].WeightsChange[k])
         nodeGraph[i][j].Weights[k] -= trainingRate * nodeGraph[i][j].WeightsChange[k]
 
         //fmt.Println("Layer:", i, "Layer nodes:", j, "Layer nodes ahead:", k, "weight change:", -nodeGraph[i][j].weightsChange[k], "current weight:", nodeGraph[i][j].weights[k])
@@ -54,7 +61,7 @@ func backPropPointSelect() {
           endTraining = false
           //if all of the weights become finely tuned enough that the changes required are within +-0.01 of 0 (even less than that, actually), the program stops training
           //can still plateau, is still an issue that needs to be resolved https://www.desmos.com/calculator/0hhji76otn
-        } 
+        }
       }
     }
   }
@@ -90,7 +97,7 @@ func backPropagation(cycleCount int) {
 
     weightChange = weightChange * 2 * (nodeRefInputSum((len(composition) - 1), midNodes[layerDif - 1]) - expected[midNodes[layerDif - 1]])
 
-    nodeGraph[weightLayer][weightNode].WeightsChange[midNodes[0]] = nodeGraph[weightLayer][weightNode].WeightsChange[midNodes[0]] + weightChange
+    nodeGraph[weightLayer][weightNode].WeightsChange[midNodes[0]] = /*nodeGraph[weightLayer][weightNode].WeightsChange[midNodes[0]] + */weightChange
 
   }
 }

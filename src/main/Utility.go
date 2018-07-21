@@ -16,12 +16,13 @@ func drawGraphLoop(graph *[][]neuron){
 }
 func drawGraph(graph [][]neuron) {//draw nodeGraph
 	if first{
-		fmt.Println("make sure you start parser.py if you want graphics (nuklear is awful)")
+		fmt.Println("make sure you start render.py if you want graphics (nuklear is awful)")
 		first=false
 	}
 	j,err:=json.Marshal(graph)
 	checkError(err)
-	fmt.Println(graph)
+	j=[]byte(string(j)+"end")
+	// fmt.Println(graph)
 	err=drawFile.Truncate(0)
 	checkError(err)
 	_,err=drawFile.WriteAt([]byte(j),0)
