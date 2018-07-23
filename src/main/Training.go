@@ -1,4 +1,4 @@
-package main
+/*package main
 
 import (
   "bufio"
@@ -14,6 +14,7 @@ import (
 All derivative values must be within 0.05 of 0
 */
 
+/*
 const trainingRate float64 = 2
 
 var endTraining bool = false
@@ -97,9 +98,9 @@ func backPropagation(cycleCount int) {
 
     weightChange = weightChange * 2 * (nodeRefInputSum((len(composition) - 1), midNodes[layerDif - 1]) - expected[midNodes[layerDif - 1]])
 
-    nodeGraph[weightLayer][weightNode].WeightsChange[midNodes[0]] = /*nodeGraph[weightLayer][weightNode].WeightsChange[midNodes[0]] + */weightChange
+    nodeGraph[weightLayer][weightNode].WeightsChange[midNodes[0]] = /*nodeGraph[weightLayer][weightNode].WeightsChange[midNodes[0]] + weightChange
 
-  }
+
 }
 
 func resetBackPropagation() {
@@ -108,19 +109,4 @@ func resetBackPropagation() {
   midNodes = make([]int,0)
   divisor = 1.0
 }
-
-func nodeInputSum(layer int, node int) float64{
-  return nodeGraph[layer][node].InputSum
-}
-
-func nodeRefInputSum(layer int, node int) float64{
-  return nodeGraph[layer][node].RefInputSum
-}
-
-func nodeWeight(layer int, node int, corresNode int) float64{
-  return nodeGraph[layer][node].Weights[corresNode]
-}
-
-func sigmoidDerivative(input float64) float64{
-  return 1/(math.Pow((1 + math.Pow(math.E, -input)), 2) * math.Pow(math.E, input))
-}
+*/

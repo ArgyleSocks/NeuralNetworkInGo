@@ -64,7 +64,7 @@ func execNetwork() {
   calcCost()
   for train := true; train; train = !(endTraining && (generations > 100)) {
       evaluateNetwork()
-      backPropPointSelect()
+      backPropagation()
       calcCost()
       generations++
   }

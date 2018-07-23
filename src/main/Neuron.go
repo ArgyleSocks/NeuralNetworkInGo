@@ -15,18 +15,19 @@ type neuron struct {
   RefInputSum float64
   OutputSum float64
   Weights []float64
-  WeightsChange []float64
+  TrainRel bool
+  LocalDeriv float64
 }
 
 func (neur *neuron) initNeuron(layer,node int) {
-  
-  neur.Layer=layer
-  neur.Node=node
-  // node:=neur.node
 
-  if(layer != compLastRow) { 
+  neur.Layer = layer
+  neur.Node = node
+  neur.TrainRel = false
+  neur.LocalDeriv = 0.0
+
+  if(layer != compLastRow) {
     neur.Weights = make([]float64, composition[layer+1])
-    neur.WeightsChange = make([]float64, composition[layer+1])
 
     for i := 0; i < len(neur.Weights); i++ {
       s1 := rand.NewSource(int64(time.Now().Nanosecond()))
@@ -40,6 +41,8 @@ func (neur *neuron) initNeuron(layer,node int) {
 
 func (neur *neuron) calcInputSum() {
   //fmt.Println("calcInputSum",neur.layer-1)
+  neur.InputSum = 0
+
   for i := 0; i < composition[neur.Layer-1]; i++ {
     neur.InputSum += nodeGraph[neur.Layer-1][i].calcOutputSum(neur.Node)
   }
