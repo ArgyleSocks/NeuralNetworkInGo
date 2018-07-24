@@ -13,11 +13,11 @@ All derivative values must be within 0.05 of 0
 */
 
 const trainingRate float64 = 0.02
+const threshold float64 = math.Pow(10, -15)
 
 var endTraining bool = false
 var weightLayer, weightNode, weightSelect int = 0, 0, 0
 var layerDif int = 0
-var threshold float64 = math.Pow(10, -15)
 
 func backPropagation() {
 
@@ -35,12 +35,10 @@ func backPropagation() {
 
         nodeGraph[j][k].TrainRel = true
         calcDerivative(1)
+        resetBackPropagation()
       }
     }
   }
-
-  resetBackPropagation()
-
 }
 
 
@@ -53,6 +51,7 @@ func calcDerivative(cycleCount int) {
       for j := 0; j < composition[len(composition - cycleCount - 1)]; j++ {
         if nodeGraph[len(composition) - cycleCount - 1][j].trainRel {
           nodeGraph[len(composition) - cycleCount][i].LocalDeriv += nodeGraph[len(composition) - cycleCount - 1][j].weights[i] * nodeGraph[len(composition) - cycleCount - 1][j].LocalDeriv * sigmoidDerivative(nodeGraph[len(composition) - cycleCount][i].inputSum)
+          nodeGraph[len(composition) - cycleCount][i].TrainRel = true
         }
       }
     }
@@ -78,6 +77,13 @@ func calcDerivative(cycleCount int) {
 func resetBackPropagation() {
   weightLayer, weightNode, weightSelect = 0, 0, 0
   layerDif = 0
+
+  for i := 0; i < len(composition); i++ {
+    for j := 0; j < composition[i]; j++ {
+      nodeGraph[i][j].TrainRel = false
+      nodeGraph[i][j].LocalDeriv = 0
+    }
+  }
 }
 
 func nodeInputSum(layer int, node int) float64{
