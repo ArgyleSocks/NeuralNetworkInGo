@@ -79,9 +79,19 @@ func resetBackPropagation() {
   layerDif = 0
 
   for i := 0; i < len(composition); i++ {
+    fmt.Println()
     for j := 0; j < composition[i]; j++ {
+      if nodeGraph[i][j].TrainRel {
+        fmt.Print(strconv.Itoa(i + 1) + "," + strconv.Itoa(j + 1))
+      } else {
+        fmt.Print("   ")
+      }
       nodeGraph[i][j].TrainRel = false
       nodeGraph[i][j].LocalDeriv = 0
+
+      if !((i + 1) == composition[j]) {
+        fmt.Print(" ")
+      }
     }
   }
 }
