@@ -13,7 +13,7 @@ All derivative values must be within 0.05 of 0
 */
 
 const trainingRate float64 = 0.02
-const threshold float64 = math.Pow(10, -15)
+var threshold float64 = math.Pow(10, -15)
 
 var endTraining bool = false
 var weightLayer, weightNode, weightSelect int = 0, 0, 0
@@ -48,23 +48,23 @@ func calcDerivative(cycleCount int) {
     //fmt.Println("Evaluating if")
     //fmt.Println("layerDif", layerDif, "cycleCount", cycleCount)
     for i := 0; i < composition[len(composition) - cycleCount]; i++ {
-      for j := 0; j < composition[len(composition - cycleCount - 1)]; j++ {
-        if nodeGraph[len(composition) - cycleCount - 1][j].trainRel {
-          nodeGraph[len(composition) - cycleCount][i].LocalDeriv += nodeGraph[len(composition) - cycleCount - 1][j].weights[i] * nodeGraph[len(composition) - cycleCount - 1][j].LocalDeriv * sigmoidDerivative(nodeGraph[len(composition) - cycleCount][i].inputSum)
+      for j := 0; j < composition[len(composition) - cycleCount - 1]; j++ {
+        if nodeGraph[len(composition) - cycleCount - 1][j].TrainRel {
+          nodeGraph[len(composition) - cycleCount][i].LocalDeriv += nodeGraph[len(composition) - cycleCount - 1][j].Weights[i] * nodeGraph[len(composition) - cycleCount - 1][j].LocalDeriv * sigmoidDerivative(nodeGraph[len(composition) - cycleCount][i].InputSum)
           nodeGraph[len(composition) - cycleCount][i].TrainRel = true
         }
       }
     }
 
-    backPropagation(cycleCount + 1)
+    calcDerivative(cycleCount + 1)
 
   } else {
 
     for i := 0; i < compLastRow; i++ {
-      costDeriv += 2 * (nodeGraph[compLastRow][i].refInputSum - expected[i]) * nodeGraph[compLastRow][i].LocalDeriv
+      costDeriv += 2 * (nodeGraph[compLastRow][i].RefInputSum - expected[i]) * nodeGraph[compLastRow][i].LocalDeriv
     }
 
-    nodeGraph[weightLayer - 1][weightSelect].weights[weightNode] -= trainingRate * costDeriv
+    nodeGraph[weightLayer - 1][weightSelect].Weights[weightNode] -= trainingRate * costDeriv
 
     if (math.Abs(costDeriv) > threshold) && (!endTraining) {
       endTraining = false
