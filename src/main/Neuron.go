@@ -2,7 +2,7 @@ package main
 
 import
 (
-  //"fmt"
+  "fmt"
   "math"
   "time"
   "math/rand"
@@ -34,6 +34,7 @@ func (neur *neuron) initNeuron(layer,node int) {
       random := rand.New(s1)
       s2 := rand.NewSource(int64(time.Now().Nanosecond()))
       random2 := rand.New(s2)
+      fmt.Println(random.Float64(), random2.Float64())
       neur.Weights[i] = random.Float64() - random2.Float64()
     }
   }

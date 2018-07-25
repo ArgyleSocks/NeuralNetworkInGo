@@ -3,6 +3,7 @@ package main
 import (
   "math"
   "fmt"
+  "strconv"
 )
 //nodeGraph: A 2 dimensional array comprised of neurons, presumably the first [] means layer and the second [] is node
 //composition: A 1 dimensional array where [] is layer and the values are the number of nodes in [] layer
@@ -21,6 +22,7 @@ var layerDif int = 0
 
 func backPropagation() {
 
+  fmt.Println("Swurlk")
   endTraining = true
 
   for j := len(composition) - 1; j >= 1; j-- {
@@ -32,9 +34,10 @@ func backPropagation() {
         layerDif = len(composition) - (weightLayer + 1)
 
         nodeGraph[j][k].LocalDeriv = sigmoidDerivative(nodeGraph[j][k].InputSum) * nodeGraph[j-1][i].RefInputSum
-
+        fmt.Println("I break mirrors with my face")
         nodeGraph[j][k].TrainRel = true
         calcDerivative(1)
+        fmt.Println("Doink Grips")
         resetBackPropagation()
       }
     }
@@ -43,15 +46,12 @@ func backPropagation() {
 
 
 func calcDerivative(cycleCount int) {
-  //fmt.Println("Evaluating backPropagation")
   if cycleCount <= layerDif {
-    //fmt.Println("Evaluating if")
-    //fmt.Println("layerDif", layerDif, "cycleCount", cycleCount)
-    for i := 0; i < composition[len(composition) - cycleCount]; i++ {
-      for j := 0; j < composition[len(composition) - cycleCount - 1]; j++ {
-        if nodeGraph[len(composition) - cycleCount - 1][j].TrainRel {
-          nodeGraph[len(composition) - cycleCount][i].LocalDeriv += nodeGraph[len(composition) - cycleCount - 1][j].Weights[i] * nodeGraph[len(composition) - cycleCount - 1][j].LocalDeriv * sigmoidDerivative(nodeGraph[len(composition) - cycleCount][i].InputSum)
-          nodeGraph[len(composition) - cycleCount][i].TrainRel = true
+    for i := 0; i < composition[weightLayer + cycleCount]; i++ {
+      for j := 0; j < composition[weightLayer - cycleCount - 1]; j++ {
+        if nodeGraph[weightLayer - cycleCount - 1][j].TrainRel {
+          nodeGraph[weightLayer - cycleCount][i].LocalDeriv += nodeGraph[weightLayer - cycleCount - 1][j].Weights[i] * nodeGraph[weightLayer - cycleCount - 1][j].LocalDeriv * sigmoidDerivative(nodeGraph[weightLayer - cycleCount][i].InputSum)
+          nodeGraph[weightLayer - cycleCount][i].TrainRel = true
         }
       }
     }
@@ -77,6 +77,9 @@ func calcDerivative(cycleCount int) {
 func resetBackPropagation() {
   weightLayer, weightNode, weightSelect = 0, 0, 0
   layerDif = 0
+  costDeriv = 0.0
+
+  fmt.Println("Yeah baybeeeeeeeeeeeeeeeeeee")
 
   for i := 0; i < len(composition); i++ {
     fmt.Println()

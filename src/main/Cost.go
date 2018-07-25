@@ -20,11 +20,7 @@ func initExpected() {
 	// 		expected[i]=0
 	// 	}
 	// }
-	expected[0]=1
-	expected[1]=1
-	expected[2]=1
-	expected[3]=1
-	expected[4]=1
+	expected[0]=0.5
 }
 
 func calcCost() {
