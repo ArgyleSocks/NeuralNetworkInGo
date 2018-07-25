@@ -36,7 +36,7 @@ func backPropagation() {
         nodeGraph[j][k].LocalDeriv = sigmoidDerivative(nodeGraph[j][k].InputSum) * nodeGraph[j-1][i].RefInputSum
         fmt.Println("I break mirrors with my face")
         nodeGraph[j][k].TrainRel = true
-        calcDerivative(1)
+        calcDerivative(0)
         fmt.Println("Doink Grips")
         resetBackPropagation()
       }
@@ -48,10 +48,10 @@ func backPropagation() {
 func calcDerivative(cycleCount int) {
   if cycleCount <= layerDif {
     for i := 0; i < composition[weightLayer + cycleCount]; i++ {
-      for j := 0; j < composition[weightLayer - cycleCount - 1]; j++ {
-        if nodeGraph[weightLayer - cycleCount - 1][j].TrainRel {
-          nodeGraph[weightLayer - cycleCount][i].LocalDeriv += nodeGraph[weightLayer - cycleCount - 1][j].Weights[i] * nodeGraph[weightLayer - cycleCount - 1][j].LocalDeriv * sigmoidDerivative(nodeGraph[weightLayer - cycleCount][i].InputSum)
-          nodeGraph[weightLayer - cycleCount][i].TrainRel = true
+      for j := 0; j < composition[weightLayer + cycleCount + 1]; j++ {
+        if nodeGraph[weightLayer + cycleCount][j].TrainRel {
+          nodeGraph[weightLayer + cycleCount + 1][i].LocalDeriv += nodeGraph[weightLayer + cycleCount][j].Weights[i] * nodeGraph[weightLayer + cycleCount][j].LocalDeriv * sigmoidDerivative(nodeGraph[weightLayer + cycleCount + 1][i].InputSum)
+          nodeGraph[weightLayer + cycleCount + 1][i].TrainRel = true
         }
       }
     }
@@ -60,7 +60,7 @@ func calcDerivative(cycleCount int) {
 
   } else {
 
-    for i := 0; i < compLastRow; i++ {
+    for i := 0; i < composition[compLastRow]; i++ {
       costDeriv += 2 * (nodeGraph[compLastRow][i].RefInputSum - expected[i]) * nodeGraph[compLastRow][i].LocalDeriv
     }
 
