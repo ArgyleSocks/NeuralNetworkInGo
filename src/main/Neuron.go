@@ -34,7 +34,7 @@ func (neur *neuron) initNeuron(layer,node int) {
       random := rand.New(s1)
       s2 := rand.NewSource(int64(time.Now().Nanosecond()))
       random2 := rand.New(s2)
-      fmt.Println(random.Float64(), random2.Float64())
+      //fmt.Println(random.Float64(), random2.Float64())
       neur.Weights[i] = random.Float64() - random2.Float64()
     }
   }
@@ -46,12 +46,16 @@ func (neur *neuron) calcInputSum() {
 
   for i := 0; i < composition[neur.Layer-1]; i++ {
     neur.InputSum += nodeGraph[neur.Layer-1][i].calcOutputSum(neur.Node)
+    fmt.Println("checking nodeGraph[", neur.Layer, "][", neur.Node, "].InputSum" )
+    checkNaN(neur.InputSum)
   }
   neur.RefInputSum = sigmoid(neur.InputSum)
 }
 
 func (neur *neuron) calcOutputSum(node int) float64{
   neur.OutputSum=neur.RefInputSum*neur.Weights[node]
+  fmt.Println("checking nodeGraph[", neur.Layer, "][", neur.Node, "].OutputSum")
+  checkNaN(neur.OutputSum)
   return neur.OutputSum
 }
 

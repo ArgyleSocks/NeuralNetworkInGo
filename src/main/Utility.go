@@ -3,6 +3,7 @@ package main
 import (
 	// "io/ioutil"
 	"encoding/json"
+	"math"
 	"fmt"
 	"os"
 )
@@ -10,6 +11,14 @@ import (
 var first bool=true
 var drawFile,_=os.OpenFile("drawBuffer.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC,0644)
 var costFile,_=os.OpenFile("costBuffer.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC,0644)
+
+func checkNaN(val float64) {
+	if math.IsNaN(val) {
+		fmt.Fprintf(os.Stderr, "An NaN: %s\n", val)
+        os.Exit(1)
+	}
+}
+
 func drawGraphLoop(graph *[][]neuron){
 	for {
 		drawGraph(*graph)
@@ -26,7 +35,8 @@ func drawCostLoop(){
 			}
 		}
 		j,err:=json.Marshal(arr)
-		checkError(err)
+		// fmt.Println("Little tim needs his revolver", arr)
+		// checkError(err)
 		j=[]byte(string(j)+"end")
 		err=costFile.Truncate(0)
 		checkError(err)
@@ -40,7 +50,8 @@ func drawGraph(graph [][]neuron) {//draw nodeGraph
 		first=false
 	}
 	j,err:=json.Marshal(graph)
-	checkError(err)
+	// fmt.Println("Little tim needs his linux handbook")
+	// checkError(err)
 	j=[]byte(string(j)+"end")
 	// fmt.Println(graph)
 	err=drawFile.Truncate(0)

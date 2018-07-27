@@ -27,6 +27,7 @@ func calcCost() {
   cost = 0
   for i := 0; i < len(expected); i++ {
     cost += math.Pow((nodeGraph[compLastRow][i].RefInputSum - expected[i]), 2)
+    checkNaN(cost)
   }
 
   fmt.Println("Cost is ", cost)

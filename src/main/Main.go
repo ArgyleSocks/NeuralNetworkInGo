@@ -6,7 +6,7 @@ import (
   "runtime"
 )
 
-var composition[3]int=[...]int{1,1,1}
+var composition[6]int=[...]int{6, 6, 6, 6, 6, 6}
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
 
 var maxAmplitude []float64 //assuming 0 amplitude and the max overall amplitude corres to 0 and 1, adjust the values to be between 0 and 1 proportionally
@@ -19,7 +19,6 @@ var generations int = 0
 var output float64 = 0
 
 func main() {
-  fmt.Println(";(")
   runtime.GOMAXPROCS(1024)
   dict.Initi("/home/wurst/go/src/dict/syllables")
   dict.ToMap()
@@ -66,18 +65,20 @@ func execNetwork() {
   evaluateNetwork()
   calcCost()
   for train := true; train; train = !(endTraining && (generations > 100)) {
-      evaluateNetwork()
-      backPropagation()
-      calcCost()
-      generations++
+    evaluateNetwork()
+    backPropagation()
+    calcCost()
+    generations++
   }
 
   fmt.Println("gen", generations)
 
-  for i := 0; i < composition[compLastRow]; i++ {
+  /*for i := 0; i < composition[compLastRow]; i++ {
     //fmt.Println("Cost Node", (i + 1), "Expected:", expected[i], "Actual:", nodeGraph[compLastRow][i].refInputSum)
     if nodeGraph[compLastRow][i].RefInputSum > output {
       output = nodeGraph[compLastRow][i].RefInputSum
+      fmt.Println("checking output")
+      checkNaN(output)
     }
   }
 
@@ -87,7 +88,7 @@ func execNetwork() {
     if nodeGraph[compLastRow][i].RefInputSum == output {
       //fmt.Println(i + 1)
     }
-  }
+  }*/
 
   calcCost()
 
