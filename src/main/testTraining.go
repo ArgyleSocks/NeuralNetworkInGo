@@ -3,7 +3,7 @@ package main
 import (
   "math"
   "fmt"
-  //"strconv"
+  "strconv"
 )
 //nodeGraph: A 2 dimensional array comprised of neurons, presumably the first [] means layer and the second [] is node
 //composition: A 1 dimensional array where [] is layer and the values are the number of nodes in [] layer
@@ -28,13 +28,14 @@ func backPropagation() {
   for j := len(composition) - 1; j >= 1; j-- {
     for k := 0; k < composition[j]; k++ {
       for i := 0; i < composition[j - 1]; i++ {
+
         weightLayer = j
         weightNode = k
         weightSelect = i
         layerDif = len(composition) - (weightLayer + 1)
 
         nodeGraph[j][k].LocalDeriv = sigmoidDerivative(nodeGraph[j][k].InputSum) * nodeGraph[j-1][i].RefInputSum
-        fmt.Println("checking nodeGraph[", j, "][", k, "].LocalDeriv (nodeGraph[j][k].LocalDeriv)")
+        //fmt.Println("checking nodeGraph[j=", j, "][k=", k, "].LocalDeriv (nodeGraph[j][k].LocalDeriv)")
         checkNaN(nodeGraph[j][k].LocalDeriv)
         nodeGraph[j][k].TrainRel = true
         calcDerivative(0)
@@ -51,10 +52,11 @@ func calcDerivative(cycleCount int) {
     for i := 0; i < composition[weightLayer + cycleCount - 1]; i++ {
       for j := 0; j < composition[weightLayer + cycleCount]; j++ {
         if nodeGraph[weightLayer + cycleCount - 1][j].TrainRel {
+          //fmt.Println("with weight:",nodeGraph[weightLayer + cycleCount - 1][j].Weights[i])
           nodeGraph[weightLayer + cycleCount][i].LocalDeriv += nodeGraph[weightLayer + cycleCount - 1][j].Weights[i] * nodeGraph[weightLayer + cycleCount - 1][j].LocalDeriv * sigmoidDerivative(nodeGraph[weightLayer + cycleCount][i].InputSum)
-          fmt.Println("Checking LocalDeriv at nodeGraph[", (weightLayer + cycleCount), "][", i, "].LocalDeriv (nodeGraph[weightLayer + cycleCount][i].LocalDeriv)")
+          //fmt.Println("Checking LocalDeriv at nodeGraph[", (weightLayer + cycleCount), "][", i, "].LocalDeriv (nodeGraph[weightLayer + cycleCount][i].LocalDeriv), input sum =",nodeGraph[weightLayer+cycleCount][i].InputSum, "LocalDeriv =",nodeGraph[weightLayer+cycleCount-1][j].LocalDeriv)
           checkNaN(nodeGraph[weightLayer+cycleCount][i].LocalDeriv)
-          fmt.Println("Checking LocalDeriv at nodeGraph[", (weightLayer + cycleCount - 1), "][", i, "].LocalDeriv (nodeGraph[weightLayer + cycleCount - 1][i].LocalDeriv)")
+          //fmt.Println("Checking LocalDeriv at nodeGraph[", (weightLayer + cycleCount - 1), "][", i, "].LocalDeriv (nodeGraph[weightLayer + cycleCount - 1][i].LocalDeriv)")
           checkNaN(nodeGraph[weightLayer+cycleCount-1][i].LocalDeriv)
           nodeGraph[weightLayer + cycleCount][i].TrainRel = true
         }
@@ -66,7 +68,12 @@ func calcDerivative(cycleCount int) {
   } else {
 
     for i := 0; i < composition[compLastRow]; i++ {
-      costDeriv += 2 * (nodeGraph[compLastRow][i].RefInputSum - expected[i]) * nodeGraph[compLastRow][i].LocalDeriv
+      //PROBLEM
+      fmt.Println("RefInputSum at [", i, "][", compLastRow, "]:", nodeGraph[compLastRow][i].RefInputSum)
+      fmt.Println("LocalDeriv at [", i, "][", compLastRow, "]:", nodeGraph[compLastRow][i].LocalDeriv)
+      costDeriv += 2 * (nodeGraph[compLastRow][i].RefInputSum - expected[i]) * nodeGraph[compLastRow][i].LocalDeriv//SOMEHOW SPIRALING OUT OF CONTROL, LOOK HERE!
+      fmt.Println("costDeriv:",costDeriv)
+      //PROBLEM
     }
 
     nodeGraph[weightLayer - 1][weightSelect].Weights[weightNode] -= trainingRate * costDeriv
@@ -80,11 +87,12 @@ func calcDerivative(cycleCount int) {
 }
 
 func resetBackPropagation() {
+  fmt.Println("Resetting Backpropagation")
   weightLayer, weightNode, weightSelect = 0, 0, 0
   layerDif = 0
   costDeriv = 0.0
 
-  /*for i := 0; i < len(composition); i++ {
+  for i := 0; i < len(composition); i++ {
     fmt.Println()
     for j := 0; j < composition[i]; j++ {
       if nodeGraph[i][j].TrainRel {
@@ -96,13 +104,12 @@ func resetBackPropagation() {
       nodeGraph[i][j].TrainRel = false
       nodeGraph[i][j].LocalDeriv = 0
 
-      fmt.Println("I at line 95:", i, "J at line 95:", j)
 
       if !((composition[i] - 1) == j) {
         fmt.Print(" ")
       }
     }
-  }*/
+  }
 }
 
 func nodeInputSum(layer int, node int) float64{

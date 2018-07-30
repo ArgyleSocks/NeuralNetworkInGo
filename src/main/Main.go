@@ -18,6 +18,9 @@ var word []byte
 var generations int = 0
 var output float64 = 0
 
+var firstCost float64
+var lastCost float64
+
 func main() {
   runtime.GOMAXPROCS(1024)
   dict.Initi("/home/wurst/go/src/dict/syllables")
@@ -64,6 +67,8 @@ func execNetwork() {
 
   evaluateNetwork()
   calcCost()
+  firstCost = cost
+
   for train := true; train; train = !(endTraining && (generations > 100)) {
     evaluateNetwork()
     backPropagation()
@@ -91,6 +96,10 @@ func execNetwork() {
   }*/
 
   calcCost()
+  lastCost = cost
+
+  fmt.Println("First cost:", firstCost, "\b, Last cost:", lastCost)
+  fmt.Println("Change in cost:", (lastCost - firstCost) )
 
 }
 
