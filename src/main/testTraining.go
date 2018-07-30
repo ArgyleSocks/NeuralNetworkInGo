@@ -14,16 +14,15 @@ All derivative values must be within 0.05 of 0
 */
 
 const trainingRate float64 = 0.02
-var threshold float64 = math.Pow(10, -15)
 
-var endTraining bool = false
 var weightLayer, weightNode, weightSelect int = 0, 0, 0
+var changeThreshold float64 = math.Pow(10, -3)
 var layerDif int = 0
+var stableWeight bool = false
 
 func backPropagation() {
 
-  //fmt.Println("Swurlk")
-  endTraining = true
+  stableWeight = true
 
   for j := len(composition) - 1; j >= 1; j-- {
     for k := 0; k < composition[j]; k++ {
@@ -78,10 +77,9 @@ func calcDerivative(cycleCount int) {
 
     nodeGraph[weightLayer - 1][weightSelect].Weights[weightNode] -= trainingRate * costDeriv
 
-    if (math.Abs(costDeriv) > threshold) && (!endTraining) {
-      endTraining = false
-      fmt.Println("Training failed at node", weightLayer, weightSelect + 1, "at weight", weightNode)
-    }
+    if (math.Abs(costDeriv) > changeThreshold) && stableWeight {
+      stableWeight = false
+    } 
 
   }
 }

@@ -21,6 +21,11 @@ var output float64 = 0
 var firstCost float64
 var lastCost float64
 
+var repetitionValue int = 50
+var previousCost float64 = 0
+var minimumCheck int
+var endTraining bool = false
+
 func main() {
   runtime.GOMAXPROCS(1024)
   dict.Initi("/home/wurst/go/src/dict/syllables")
@@ -69,10 +74,19 @@ func execNetwork() {
   calcCost()
   firstCost = cost
 
-  for train := true; train; train = !(endTraining && (generations > 100)) {
+  for train := true; train; train = !endTraining {
     evaluateNetwork()
     backPropagation()
     calcCost()
+    if (cost == lastCost) || stableWeight {
+      minimumCheck++
+      if minimumCheck >= repetitionValue {
+        endTraining = true
+      }
+    } else {
+      minimumCheck = 0
+    }
+    lastCost = cost
     generations++
   }
 
