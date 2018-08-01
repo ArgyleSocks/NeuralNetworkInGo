@@ -24,13 +24,16 @@ func initExpected() {
 	expected[1] = 1
 }
 
-func calcCost() {
+func calcCost(verbose bool) {
   cost = 0
   for i := 0; i < len(expected); i++ {
+  	if verbose {
+  	  fmt.Println(nodeGraph[compLastRow][i].RefInputSum)
+  	}
     cost += math.Pow((nodeGraph[compLastRow][i].RefInputSum - expected[i]), 2)
     checkNaN(cost)
   }
-
-  fmt.Println("Cost is ", cost)
-
+  if verbose {
+    fmt.Println("Cost is ", cost)
+  }
 }

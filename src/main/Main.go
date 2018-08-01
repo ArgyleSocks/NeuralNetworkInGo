@@ -2,11 +2,13 @@ package main
 
 import (
   "fmt"
+  "time"
   "dict"
   "runtime"
+  "math/rand"
 )
 
-var composition[6]int=[...]int{6, 6, 6, 6, 6, 6}
+var composition[6]int=[...]int{20, 20, 20, 20, 20, 20}
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
 
 var maxAmplitude []float64 //assuming 0 amplitude and the max overall amplitude corres to 0 and 1, adjust the values to be between 0 and 1 proportionally
@@ -21,21 +23,64 @@ var output float64 = 0
 var firstCost float64
 var lastCost float64
 
-var repetitionValue int = 50
+var repetitionValue int = 10
 var previousCost float64 = 0
 var minimumCheck int
 var endTraining bool = false
+
+var numSamplesToTrain int=150
 
 func main() {
   runtime.GOMAXPROCS(1024)
   dict.Initi("/home/wurst/go/src/dict/syllables")
   dict.ToMap()
-  word=[]byte(dict.SetOfKeys()[0])
   initExpected()
   initi()
   go drawCostLoop()
   go drawGraphLoop(&nodeGraph)
-  execNetwork()
+  set:=dict.SetOfKeys()
+  loset:=float64(len(set))
+  //random (fast):
+  for i:=0;i<numSamplesToTrain;i++ {
+    ran:=rand.New(rand.NewSource(int64(time.Now().Nanosecond())))
+    word=[]byte(set[int(ran.Float64()*loset)])
+    indexExpect:=dict.MapGet(string(word))
+    for i2:=0;i2<len(expected);i2++ {
+      if i2==indexExpect {
+        expected[i2]=1
+      } else {
+        expected[i2]=0
+      }
+    }
+    execNetwork()
+    fmt.Println("Done With Sample",i)
+  }
+  //iterative (longer, more thorough):
+  // for i:=0;i<len(set);i++ {
+  //   fTime:=time.Now()
+  //   word=[]byte(set[i])
+  //   fmt.Println(string(word),"IS THE WORD")
+  //   indexExpect:=dict.MapGet(string(word))
+  //   for i2:=0;i2<len(expected);i2++ {
+  //     if i2==indexExpect {
+  //       expected[i2]=1
+  //     } else {
+  //       expected[i2]=0
+  //     }
+  //   }
+  //   execNetwork()
+  //   fmt.Println("Time taken for sample",i,"\b:",time.Now().Sub(fTime))
+  // }
+  word=[]byte("eelookoo")
+  evaluateNetwork()
+  for i2:=0;i2<len(expected);i2++ {
+    if i2==3 {
+      expected[i2]=1
+    } else {
+      expected[i2]=0
+    }
+  }
+  calcCost(true)
   /*
   fmt.Println("preparing training")
   prepareTraining()
@@ -71,13 +116,13 @@ func execNetwork() {
   END*/
 
   evaluateNetwork()
-  calcCost()
+  calcCost(false)
   firstCost = cost
 
   for train := true; train; train = !endTraining {
     evaluateNetwork()
     backPropagation()
-    calcCost()
+    calcCost(false)
     if (cost == lastCost) || stableWeight {
       minimumCheck++
       if minimumCheck >= repetitionValue {
@@ -109,11 +154,15 @@ func execNetwork() {
     }
   }*/
 
-  calcCost()
+  calcCost(false)
   lastCost = cost
 
   fmt.Println("First cost:", firstCost, "\b, Last cost:", lastCost)
   fmt.Println("Change in cost:", (lastCost - firstCost) )
+  //cleanup
+  endTraining=false
+  generations=0
+  minimumCheck=0
 
 }
 

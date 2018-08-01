@@ -35,8 +35,6 @@ func drawCostLoop(){
 			}
 		}
 		j,err:=json.Marshal(arr)
-		// fmt.Println("Little tim needs his revolver", arr)
-		// checkError(err)
 		j=[]byte(string(j)+"end")
 		err=costFile.Truncate(0)
 		checkError(err)

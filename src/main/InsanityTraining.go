@@ -78,7 +78,7 @@ func handleWeight(l,n,w int) {
 				if first{
 					oldweight=nodeGraph[l][n].Weights[w]
 					evaluateNetwork()
-					calcCost()//we now have x-y coordinates in the form of oldweight, oldcost
+					calcCost(true)//we now have x-y coordinates in the form of oldweight, oldcost
 					oldcost=cost
 					first=false
 				} else {
@@ -88,7 +88,7 @@ func handleWeight(l,n,w int) {
 				nodeGraph[l][n].Weights[w]-=derivTestRange
 				newweight=nodeGraph[l][n].Weights[w]
 				evaluateNetwork()
-				calcCost()
+				calcCost(true)
 				newcost=cost
 				deriv:=(newcost-oldcost)/(newweight-oldweight)
 				nodeGraph[l][n].Weights[w]-=deriv

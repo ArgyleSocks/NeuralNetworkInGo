@@ -2,7 +2,7 @@ package main
 
 import
 (
-  "fmt"
+  // "fmt"
   "math"
   "time"
   "math/rand"
@@ -46,7 +46,7 @@ func (neur *neuron) calcInputSum() {
 
   for i := 0; i < composition[neur.Layer-1]; i++ {
     neur.InputSum += nodeGraph[neur.Layer-1][i].calcOutputSum(neur.Node)
-    fmt.Println("checking nodeGraph[", neur.Layer, "][", neur.Node, "].InputSum" )
+    // fmt.Println("checking nodeGraph[", neur.Layer, "][", neur.Node, "].InputSum" )
     checkNaN(neur.InputSum)
   }
   neur.RefInputSum = sigmoid(neur.InputSum)
@@ -54,14 +54,15 @@ func (neur *neuron) calcInputSum() {
 
 func (neur *neuron) calcOutputSum(node int) float64{
   neur.OutputSum=neur.RefInputSum*neur.Weights[node]
-  fmt.Println("checking nodeGraph[", neur.Layer, "][", neur.Node, "].OutputSum")
+  // fmt.Println("checking nodeGraph[", neur.Layer, "][", neur.Node, "].OutputSum")
   checkNaN(neur.OutputSum)
   return neur.OutputSum
 }
 
-func calcInputNeuron() {//commented out because: A: dict first, B: the sound stuff isn't initialized and I needed to test.
-  for i := 0; i<composition[0]; i++ {
-    nodeGraph[0][i].RefInputSum = 0.5
+func calcInputNeuron() {
+  for i := 0; i<len(word); i++ {
+    // fmt.Println("At I",i,"Length of word is",len(word),"(",string(word),")")
+    nodeGraph[0][i].RefInputSum = 1.0/float64(int(word[i]))
   }
 }
 
