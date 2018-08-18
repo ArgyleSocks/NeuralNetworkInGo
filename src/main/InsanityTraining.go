@@ -1,4 +1,5 @@
 package main
+/*
 import (
 	// "fmt"
 )
@@ -98,3 +99,4 @@ func handleWeight(l,n,w int) {
 		}
 	}
 }
+*/

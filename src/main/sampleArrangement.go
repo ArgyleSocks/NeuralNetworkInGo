@@ -42,22 +42,26 @@ func cleanSamples() {
       corresSet[corresItem][1] = sampleSet[i][1]
 
       for j := i + 1; j < len(sampleSet); j++ {
-        if sampleSet[j] == sampleSet[i] {
-          sampleSet[j] = corresItem
+        if sampleSet[j][0] == sampleSet[i][0] {
+          sampleSet[j][0] = corresItem
         }
       }
 
-      sampleSet[i] = corresItem
+      sampleSet[i][0] = corresItem
 
       corresItem++
     }
   }
 
   for i := 0; i < len(corresSet); i++ {
-    totalSets += corresItem[i][1]
+    totalSets += corresSet[i][1]
   }
 
-  initSums(totalSets)
+  for i := 0; i < len(nodeGraph); i++ {
+    for j := 0; j < len(nodeGraph[i]); j++ {
+      nodeGraph[i][j].initSums(totalSets)
+    }
+  }
 
   /*
   for i := 0; i < len(corresSet); i++ {

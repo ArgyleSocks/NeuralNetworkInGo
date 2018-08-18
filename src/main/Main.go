@@ -9,12 +9,7 @@ import (
 )
 
 var composition[6]int = [...]int{2, 2, 2, 2, 2, 2}
-var sampleSet[4][2]int = [...][...]int{
-                                   {1, 1},
-                                   {2, 1},
-                                   {3, 1},
-                                   {4, 1},
-                                 }
+var sampleSet [4][2]int = [4][2]int{{1, 1}, {2, 1}, {3, 1}, {4, 1}}
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
 
 var maxAmplitude []float64 //assuming 0 amplitude and the max overall amplitude corres to 0 and 1, adjust the values to be between 0 and 1 proportionally
@@ -102,6 +97,7 @@ func main() {
 }
 
 func initi() {
+
   for i := 0; i < len(composition); i++ {
     nodeGraph[i] = make([]neuron, composition[i])
   }
@@ -131,8 +127,8 @@ func execNetwork() {
   for train := true; train; train = !endTraining {
 
     for i := 0; i < len(corresSet); i++ {
-      for j := 0; j < len(corresSet[i]); j++ {
-        setSample(corresSet[i][0], setSampleVariableThingWeNeedToGetRidOfThis)
+      for j := 0; j < corresSet[i][1]; j++ {
+        setSample(corresSet[i][0], sampleVariableThingWeNeedToGetRidOfThis)
         evaluateNetwork(sampleVariableThingWeNeedToGetRidOfThis)
         sampleVariableThingWeNeedToGetRidOfThis++
       }

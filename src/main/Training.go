@@ -49,9 +49,9 @@ func backPropagation(sets int) {
   for i := 0; i < len(composition) - 1; i++ {
     for j := 0; j < composition[i]; j++ {
       for k := 0; k < composition[i + 1]; k++ {
-        fmt.Println("Changing Weight by", trainingRate * (nodeGraph[i][j].WeightsChange[k]/sets)) //don't forget this exists
+        fmt.Println("Changing Weight by", trainingRate * (nodeGraph[i][j].WeightsChange[k]/float64(sets))) //don't forget this exists
         //fmt.Println(nodeGraph[i][j].WeightsChange[k])
-        nodeGraph[i][j].Weights[k] -= trainingRate * (nodeGraph[i][j].WeightsChange[k]/sets)
+        nodeGraph[i][j].Weights[k] -= trainingRate * (nodeGraph[i][j].WeightsChange[k]/float64(sets))
       }
     }
   }
@@ -81,7 +81,7 @@ func calcDerivative(cycleCount int) {
   } else {
 
     for i := 0; i < composition[compLastRow]; i++ {
-      costDeriv += 2 * (nodeGraph[compLastRow][i].RefInputSumSelect[set] - expected[i][set]) * nodeGraph[compLastRow][i].LocalDeriv
+      costDeriv += 2 * (nodeGraph[compLastRow][i].RefInputSum[setSelect] - expected[i][setSelect]) * nodeGraph[compLastRow][i].LocalDeriv
     }
 
     fmt.Println("costDeriv:",costDeriv)
@@ -136,12 +136,12 @@ func resetBackPropagation() {
   }
 }
 
-func nodeInputSum(layer int, node int) float64{
-  return nodeGraph[layer][node].InputSum
+func nodeInputSum(layer int, node int, set int) float64{
+  return nodeGraph[layer][node].InputSum[set]
 }
 
-func nodeRefInputSum(layer int, node int) float64{
-  return nodeGraph[layer][node].RefInputSum
+func nodeRefInputSum(layer int, node int, set int) float64{
+  return nodeGraph[layer][node].RefInputSum[set]
 }
 
 func nodeWeight(layer int, node int, corresNode int) float64{
