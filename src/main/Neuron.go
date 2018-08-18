@@ -11,12 +11,13 @@ import
 type neuron struct {
   Layer int
   Node int
-  InputSum float64
-  RefInputSum float64
-  OutputSum float64
+  InputSum []float64
+  RefInputSum []float64
+  OutputSum []float64
   Weights []float64
   TrainRel bool
   LocalDeriv float64
+  WeightsChange []float64
 }
 
 func (neur *neuron) initNeuron(layer,node int) {
@@ -27,7 +28,8 @@ func (neur *neuron) initNeuron(layer,node int) {
   neur.LocalDeriv = 0.0
 
   if(layer != compLastRow) {
-    neur.Weights = make([]float64, composition[layer+1])
+    neur.Weights = make([]float64, composition[layer + 1])
+    neur.WeightsChange = make([]float64, composition[layer + 1])
 
     for i := 0; i < len(neur.Weights); i++ {
       s1 := rand.NewSource(int64(time.Now().Nanosecond()))
@@ -40,30 +42,34 @@ func (neur *neuron) initNeuron(layer,node int) {
   }
 }
 
-func (neur *neuron) calcInputSum() {
+func initSums() {
+  RefInputSum = make([]float64, totalSets)
+  InputSum = make([]float64, totalSets)
+  OutputSum = make([]float64, totalSets)
+
+  for i := 0; i < compLastRow; i++ { //need to move this, like this really isn't supposed to be here
+    expected[i] = make([]float64, totalSets)
+  }
+}
+
+func (neur *neuron) calcInputSum(graph int) {
   //fmt.Println("calcInputSum",neur.layer-1)
-  neur.InputSum = 0
+  neur.InputSum[graph] = 0
 
   for i := 0; i < composition[neur.Layer-1]; i++ {
-    neur.InputSum += nodeGraph[neur.Layer-1][i].calcOutputSum(neur.Node)
-    // fmt.Println("checking nodeGraph[", neur.Layer, "][", neur.Node, "].InputSum" )
-    checkNaN(neur.InputSum)
+    neur.InputSum[graph] += nodeGraph[neur.Layer-1][i].calcOutputSum(neur.Node, graph)
   }
-  neur.RefInputSum = sigmoid(neur.InputSum)
+  neur.RefInputSum[graph] = sigmoid(neur.InputSum[graph])
 }
 
-func (neur *neuron) calcOutputSum(node int) float64{
-  neur.OutputSum=neur.RefInputSum*neur.Weights[node]
-  // fmt.Println("checking nodeGraph[", neur.Layer, "][", neur.Node, "].OutputSum")
-  checkNaN(neur.OutputSum)
-  return neur.OutputSum
+func (neur *neuron) calcOutputSum(node int, graph int) float64{
+  neur.OutputSum[graph] = neur.RefInputSum[graph] * neur.Weights[node]
+  return neur.OutputSum[graph]
 }
 
-func calcInputNeuron() {
-  for i := 0; i<len(word); i++ {
-    // fmt.Println("At I",i,"Length of word is",len(word),"(",string(word),")")
-    nodeGraph[0][i].RefInputSum = 1.0/float64(int(word[i]))
-  }
+func calcInputNeuron(input1 float64, input2 float64, set int) {
+  nodeGraph[0][0].RefInputSum[set] = input1
+  nodeGraph[0][1].RefInputSum[set] = input2
 }
 
 func sigmoid(input float64) float64{
