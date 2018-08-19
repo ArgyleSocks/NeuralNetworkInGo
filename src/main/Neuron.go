@@ -2,7 +2,7 @@ package main
 
 import
 (
-  "fmt"
+  //"fmt"
   "math"
   "time"
   "math/rand"
@@ -68,7 +68,6 @@ func (neur *neuron) calcOutputSum(node int, graph int) float64{
 }
 
 func calcInputNeuron(input1 float64, input2 float64, set int) {
-  fmt.Println(len(nodeGraph[0][0].RefInputSum), set)
   nodeGraph[0][0].RefInputSum[set] = input1
   nodeGraph[0][1].RefInputSum[set] = input2
 }

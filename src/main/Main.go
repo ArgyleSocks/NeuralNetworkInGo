@@ -128,6 +128,7 @@ func execNetwork() {
 
     for i := 0; i < len(corresSet); i++ {
       for j := 0; j < corresSet[i][1]; j++ {
+        fmt.Println("j", j)
         setSample(corresSet[i][0], sampleVariableThingWeNeedToGetRidOfThis)
         evaluateNetwork(sampleVariableThingWeNeedToGetRidOfThis)
         sampleVariableThingWeNeedToGetRidOfThis++
@@ -146,6 +147,8 @@ func execNetwork() {
     }
     lastCost = cost
     generations++
+    
+    sampleVariableThingWeNeedToGetRidOfThis = 0
   }
 
   fmt.Println("gen", generations)

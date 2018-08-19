@@ -12,7 +12,8 @@ var cost float64
 var costDeriv float64
 
  func setSample(setValue int, set int) {
-  fmt.Println(setValue)
+  fmt.Println("setValue", setValue)
+  fmt.Println("refSum", len(nodeGraph[0][0].RefInputSum), "set", set)
   switch setValue {
   case 1:
     calcInputNeuron(0, 0, set)
