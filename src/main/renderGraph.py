@@ -60,7 +60,7 @@ while(True):
 						sigTransform2=1/math.pow(math.e,-color2)*50
 						# pygame.draw.line(screen,sigTransform1,(layer*50,node*50),((layer+1)*50,nextnode*50),4)
 						pygame.draw.line(screen,(sigTransform2,0,0),(layer*(xmargin+squareSize)+squareSize+xOff,(node)*(ymargin+squareSize)+squareSize/2+yOff),((layer+1)*(xmargin+squareSize)+xOff,nextnode*(ymargin+squareSize)+squareSize/2+yOff),2)
-				sigTransform=1/math.pow(math.e,-(j[layer][node]["RefInputSum"]))*50
+				sigTransform=1/math.pow(math.e,-(j[layer][node]["RefInputSum"][2]))*50
 				print(sigTransform)
 				pygame.draw.rect(screen,(int(sigTransform),0,0),(layer*(xmargin+squareSize)+xOff,node*(ymargin+squareSize)+yOff,squareSize,squareSize),0)
 		pygame.display.flip()
