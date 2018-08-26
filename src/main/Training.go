@@ -2,8 +2,8 @@ package main
 
 import (
   "math"
-  "fmt"
-  "strconv"
+  //"fmt"
+  //"strconv"
 )
 //nodeGraph: A 2 dimensional array comprised of neurons, presumably the first [] means layer and the second [] is node
 //composition: A 1 dimensional array where [] is layer and the values are the number of nodes in [] layer
@@ -49,7 +49,7 @@ func backPropagation(sets int) {
   for i := 0; i < len(composition) - 1; i++ {
     for j := 0; j < composition[i]; j++ {
       for k := 0; k < composition[i + 1]; k++ {
-        fmt.Println("Changing Weight by", trainingRate * (nodeGraph[i][j].WeightsChange[k]/float64(sets))) //don't forget this exists
+        //fmt.Println("Changing Weight by", trainingRate * (nodeGraph[i][j].WeightsChange[k]/float64(sets))) //don't forget this exists
         //fmt.Println(nodeGraph[i][j].WeightsChange[k])
         nodeGraph[i][j].Weights[k] -= trainingRate * (nodeGraph[i][j].WeightsChange[k]/float64(sets))
       }
@@ -84,10 +84,9 @@ func calcDerivative(cycleCount int) {
       costDeriv += 2 * (nodeGraph[compLastRow][i].RefInputSum[setSelect] - expected[i][setSelect]) * nodeGraph[compLastRow][i].LocalDeriv
     }
 
-    fmt.Println("costDeriv:",costDeriv)
-    fmt.Println("WeightsChange before", nodeGraph[weightLayer - 1][weightSelect].WeightsChange[weightNode])
+    //fmt.Println("WeightsChange before", nodeGraph[weightLayer - 1][weightSelect].WeightsChange[weightNode])
     nodeGraph[weightLayer - 1][weightSelect].WeightsChange[weightNode] += costDeriv
-    fmt.Println("WeightsChange after", nodeGraph[weightLayer - 1][weightSelect].WeightsChange[weightNode])
+    //fmt.Println("WeightsChange after", nodeGraph[weightLayer - 1][weightSelect].WeightsChange[weightNode])
 
     if (math.Abs(costDeriv) > changeThreshold) && stableWeight {
       stableWeight = false
@@ -97,28 +96,30 @@ func calcDerivative(cycleCount int) {
 }
 
 func tempResetBackPropagation() {
-  fmt.Println("Temporarily resetting Backpropagation")
-  weightLayer, weightNode, weightSelect = 0, 0, 0
+  //fmt.Println("Temporarily resetting Backpropagation")
+  weightLayer, weightNode, weightSelect, setSelect = 0, 0, 0, 0
   layerDif = 0
   costDeriv = 0.0
 
+  //fmt.Println("SAMPLE", setSelect)
+
   for i := 0; i < len(composition); i++ {
-    fmt.Println()
+    //fmt.Println()
     for j := 0; j < composition[i]; j++ {
-      if nodeGraph[i][j].TrainRel {
+      /*if nodeGraph[i][j].TrainRel {
         fmt.Print(strconv.Itoa(i + 1) + "," + strconv.Itoa(j + 1))
       } else {
          fmt.Print("   ")
-      }
+      }*/
 
       nodeGraph[i][j].TrainRel = false
       nodeGraph[i][j].LocalDeriv = 0
 
-      if !((composition[i] - 1) == j) {
+      /*if !((composition[i] - 1) == j) {
         fmt.Print(" ")
       } else {
         fmt.Println()
-      }
+      }*/
     }
   }
 }

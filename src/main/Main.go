@@ -121,22 +121,24 @@ func execNetwork() {
   }
   END*/
 
-  calcCost(true)
-  firstCost = cost
-
   for train := true; train; train = !endTraining {
 
     for i := 0; i < len(corresSet); i++ {
       for j := 0; j < corresSet[i][1]; j++ {
-        fmt.Println("j", j)
+        //fmt.Println("j", j)
         setSample(corresSet[i][0], sampleVariableThingWeNeedToGetRidOfThis)
         evaluateNetwork(sampleVariableThingWeNeedToGetRidOfThis)
         sampleVariableThingWeNeedToGetRidOfThis++
       }
     }
 
+    if generations == 0 {
+      calcCost()
+      firstCost = cost
+    }
+
     backPropagation(totalSets) //make this sampleSet once you have added the cycle thing
-    calcCost(true)
+    calcCost()
     if (cost == lastCost) || stableWeight {
       minimumCheck++
       if minimumCheck >= repetitionValue {
@@ -145,9 +147,12 @@ func execNetwork() {
     } else {
       minimumCheck = 0
     }
+
+    fmt.Println("COST:", cost, "CHANGE:", (cost - lastCost), "GENERATION:", generations)
+
     lastCost = cost
     generations++
-    
+
     sampleVariableThingWeNeedToGetRidOfThis = 0
   }
 
@@ -168,8 +173,7 @@ func execNetwork() {
     }
   }*/
 
-  calcCost(true)
-  lastCost = cost
+  calcCost()
 
   fmt.Println("First cost:", firstCost, "\b, Last cost:", lastCost)
   fmt.Println("Change in cost:", (lastCost - firstCost) )

@@ -1,7 +1,7 @@
 package main
 
 import (
-  "fmt"
+  //"fmt"
   "math"
   // "dict"
 )
@@ -12,8 +12,8 @@ var cost float64
 var costDeriv float64
 
  func setSample(setValue int, set int) {
-  fmt.Println("setValue", setValue)
-  fmt.Println("refSum", len(nodeGraph[0][0].RefInputSum), "set", set)
+  //fmt.Println("setValue", setValue)
+  //fmt.Println("refSum", len(nodeGraph[0][0].RefInputSum), "set", set)
   switch setValue {
   case 1:
     calcInputNeuron(0, 0, set)
@@ -44,15 +44,12 @@ func initExpected(exp1 float64, exp2 float64, set int) {
 	expected[1][set] = exp2
 }
 
-func calcCost(verbose bool) {
+func calcCost() {
   cost = 0
   for i := 0; i < len(expected); i++ {
     for j := 0; j < len(expected[0]); j++ {
       cost += math.Pow((nodeGraph[compLastRow][i].RefInputSum[j] - expected[i][j]), 2)
       checkNaN(cost)
     }
-  }
-  if verbose {
-    fmt.Println("Cost is ", cost)
   }
 }
