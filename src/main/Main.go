@@ -6,6 +6,10 @@ import (
   //"dict"
   "runtime"
   //"math/rand"
+  "bufio"
+  "os"
+  "strconv"
+  "strings"
 )
 
 var composition[6]int = [...]int{2, 2, 2, 2, 2, 2}
@@ -93,7 +97,9 @@ func main() {
   wait()
   fmt.Println("done")*/
   cleanSamples()
-  execNetwork()
+  trainNetwork()
+  cleanNetwork()
+  manualTest()
 }
 
 func initi() {
@@ -109,7 +115,7 @@ func initi() {
   }
 }
 
-func execNetwork() {
+func trainNetwork() {
 
   //calcInputNeuron() Need to make this cycle through options in correspondence with the other thing
 
@@ -121,22 +127,24 @@ func execNetwork() {
   }
   END*/
 
-  calcCost(true)
-  firstCost = cost
-
   for train := true; train; train = !endTraining {
 
     for i := 0; i < len(corresSet); i++ {
       for j := 0; j < corresSet[i][1]; j++ {
-        fmt.Println("j", j)
+        //fmt.Println("j", j)
         setSample(corresSet[i][0], sampleVariableThingWeNeedToGetRidOfThis)
         evaluateNetwork(sampleVariableThingWeNeedToGetRidOfThis)
         sampleVariableThingWeNeedToGetRidOfThis++
       }
     }
 
+    if generations == 0 {
+      calcCost()
+      firstCost = cost
+    }
+
     backPropagation(totalSets) //make this sampleSet once you have added the cycle thing
-    calcCost(true)
+    calcCost()
     if (cost == lastCost) || stableWeight {
       minimumCheck++
       if minimumCheck >= repetitionValue {
@@ -145,9 +153,12 @@ func execNetwork() {
     } else {
       minimumCheck = 0
     }
+
+    fmt.Println("COST:", cost, "CHANGE:", (cost - lastCost), "GENERATION:", generations)
+
     lastCost = cost
     generations++
-    
+
     sampleVariableThingWeNeedToGetRidOfThis = 0
   }
 
@@ -168,8 +179,7 @@ func execNetwork() {
     }
   }*/
 
-  calcCost(true)
-  lastCost = cost
+  calcCost()
 
   fmt.Println("First cost:", firstCost, "\b, Last cost:", lastCost)
   fmt.Println("Change in cost:", (lastCost - firstCost) )
@@ -177,13 +187,45 @@ func execNetwork() {
   endTraining = false
   generations = 0
   minimumCheck = 0
-
 }
 
 func evaluateNetwork(graph int) {
   for i := 1; i < len(composition); i++ {
     for j := 0; j < composition[i]; j++ {
       nodeGraph[i][j].calcInputSum(graph)
+    }
+  }
+}
+
+func manualTest() {
+  input := bufio.NewReader(os.Stdin)
+  inValue1 := 0.0
+  inValue2 := 0.0
+
+  fmt.Println("Insert input 1")
+  in,_ := input.ReadString('\n')
+  inValue1,_ = strconv.ParseFloat(strings.TrimSpace(in), 64)
+  fmt.Println("Insert input 2")
+  in,_ = input.ReadString('\n')
+  inValue2,_ = strconv.ParseFloat(strings.TrimSpace(in), 64)
+  calcInputNeuron(inValue1, inValue2, 0)
+  evaluateNetwork(0)
+
+  for i := 0; i < composition[compLastRow]; i++ {
+    fmt.Println("Output", (i + 1), ":", nodeGraph[compLastRow][i].RefInputSum[0])
+  }
+
+  manualTest()
+}
+
+func cleanNetwork() {
+  for i := 0; i < len(composition); i++ {
+    for j := 0; j < composition[i]; j++ {
+      for m := 0; m < totalSets; m++ {
+        nodeGraph[i][j].RefInputSum[m] = 0
+        nodeGraph[i][j].InputSum[m] = 0
+        nodeGraph[i][j].OutputSum[m] = 0
+      }
     }
   }
 }

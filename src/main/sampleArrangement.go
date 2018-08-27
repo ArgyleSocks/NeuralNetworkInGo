@@ -1,7 +1,7 @@
 package main
 
 import (
-  "fmt"
+  //"fmt"
 )
 
 var repetitionSet []bool = make([]bool, len(sampleSet))
@@ -28,7 +28,7 @@ func cleanSamples() {
     }
   }
 
-  fmt.Println(differentSets)
+  //fmt.Println(differentSets)
 
   corresSet = make([][]int, differentSets)
 
