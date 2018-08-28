@@ -13,7 +13,7 @@ import (
 All derivative values must be within 0.05 of 0
 */
 
-const trainingRate float64 = 0.02
+//trainingRate was 0.02
 
 var weightLayer, weightNode, weightSelect, setSelect int = 0, 0, 0, 0
 var changeThreshold float64 = 5 * math.Pow(10, -3)
@@ -24,24 +24,26 @@ func backPropagation(sets int) {
 
   stableWeight = true
 
-  for j := len(composition) - 1; j >= 1; j-- {
-    for k := 0; k < composition[j]; k++ {
-      for i := 0; i < composition[j - 1]; i++ {
+  for i := len(composition) - 1; i >= 1; i-- { //to this
+    for j := 0; j < composition[i]; j++ {
+      for k := 0; k < composition[i - 1]; k++ { //this
         for m := 0; m < sets; m++ {
 
-          weightLayer = j
-          weightNode = k
-          weightSelect = i
+          weightLayer = i
+          weightNode = j
+          weightSelect = k
           setSelect = m
 
           layerDif = len(composition) - (weightLayer + 1)
 
-          nodeGraph[j][k].LocalDeriv = sigmoidDerivative(nodeGraph[j][k].InputSum[setSelect]) * nodeGraph[j-1][i].RefInputSum[setSelect]
-          checkNaN(nodeGraph[j][k].LocalDeriv)
-          nodeGraph[j][k].TrainRel = true
+          nodeGraph[i][j].LocalDeriv = sigmoidDerivative(nodeGraph[i][j].InputSum[setSelect]) * nodeGraph[i-1][k].RefInputSum[m]
+          checkNaN(nodeGraph[i][j].LocalDeriv)
+          nodeGraph[i][j].TrainRel = true
           calcDerivative(0)
           tempResetBackPropagation()
         }
+        //nodeGraph[i - 1][k].Weights[j] -= trainingRate(nodeGraph[i][k].WeightsChange[j]/float64(sets)) * (nodeGraph[i][k].WeightsChange[j]/float64(sets))
+
       }
     }
   }
@@ -51,10 +53,10 @@ func backPropagation(sets int) {
       for k := 0; k < composition[i + 1]; k++ {
         //fmt.Println("Changing Weight by", trainingRate * (nodeGraph[i][j].WeightsChange[k]/float64(sets))) //don't forget this exists
         //fmt.Println(nodeGraph[i][j].WeightsChange[k])
-        nodeGraph[i][j].Weights[k] -= trainingRate * (nodeGraph[i][j].WeightsChange[k]/float64(sets))
+        nodeGraph[i][j].Weights[k] -= trainingRate(nodeGraph[i][j].WeightsChange[k]/float64(sets)) * (nodeGraph[i][j].WeightsChange[k]/float64(sets))
       }
     }
-  }
+  } //this
 
   resetBackPropagation()
 
@@ -68,9 +70,9 @@ func calcDerivative(cycleCount int) {
 
           nodeGraph[weightLayer + cycleCount][i].LocalDeriv += nodeGraph[weightLayer + cycleCount - 1][j].Weights[i] * nodeGraph[weightLayer + cycleCount - 1][j].LocalDeriv * sigmoidDerivative(nodeGraph[weightLayer + cycleCount][i].InputSum[setSelect])
 
-          checkNaN(nodeGraph[weightLayer+cycleCount][i].LocalDeriv)
+          //checkNaN(nodeGraph[weightLayer+cycleCount][i].LocalDeriv)
 
-          checkNaN(nodeGraph[weightLayer+cycleCount-1][i].LocalDeriv)
+          //checkNaN(nodeGraph[weightLayer+cycleCount-1][i].LocalDeriv)
           nodeGraph[weightLayer + cycleCount][i].TrainRel = true
         }
       }
@@ -91,7 +93,6 @@ func calcDerivative(cycleCount int) {
     if (math.Abs(costDeriv) > changeThreshold) && stableWeight {
       stableWeight = false
     }
-
   }
 }
 
@@ -150,5 +151,9 @@ func nodeWeight(layer int, node int, corresNode int) float64{
 }
 
 func sigmoidDerivative(input float64) float64{
-  return 1/(math.Pow((1 + math.Pow(math.E, -input)), 2) * math.Pow(math.E, input))
+  return (1/(math.Pow((1 + math.Pow(math.E, -input)), 2) * math.Pow(math.E, input)))
+}
+
+func trainingRate(slope float64) float64{
+  return (2 * sigmoidDerivative(slope) + 0.02)
 }
