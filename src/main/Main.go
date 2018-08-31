@@ -154,7 +154,7 @@ func trainNetwork() {
       minimumCheck = 0
     }
 
-    fmt.Println("COST:", cost, "CHANGE:", (cost - lastCost), "GENERATION:", generations)
+    // fmt.Println("COST:", cost, "CHANGE:", (cost - lastCost), "GENERATION:", generations)
 
     lastCost = cost
     generations++
