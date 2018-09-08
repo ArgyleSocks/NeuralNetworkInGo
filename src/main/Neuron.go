@@ -67,9 +67,8 @@ func (neur *neuron) calcOutputSum(node int, graph int) float64{
   return neur.OutputSum[graph]
 }
 
-func calcInputNeuron(input1 float64, input2 float64, set int) {
-  nodeGraph[0][0].RefInputSum[set] = input1
-  nodeGraph[0][1].RefInputSum[set] = input2
+func calcInputNeuron(index int, input float64, set int) {
+  nodeGraph[0][index].RefInputSum[set] = input
 }
 
 func sigmoid(input float64) float64{

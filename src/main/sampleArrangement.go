@@ -16,19 +16,20 @@ func cleanSamples() {
     repetitionSet[i] = false
   }
 
-  for i := 0; i < len(sampleSet); i++ {
-    if !repetitionSet[i] {
-      for j := i + 1; j < len(sampleSet); j++ {
-        if (sampleSet[j][0] == sampleSet[i][0]) {
-          repetitionSet[j] = true
-          sampleSet[i][1] += sampleSet[j][1]
-          differentSets--
-        }
-      }
-    }
-  }
+  // for i := 0; i < len(sampleSet); i++ {
+  //   if !repetitionSet[i] {
+  //     for j := i + 1; j < len(sampleSet); j++ {
+  //       if (sampleSet[j][0] == sampleSet[i][0]) {
+  //         repetitionSet[j] = true
+  //         sampleSet[i][1] += sampleSet[j][1]
+  //         differentSets--
+  //       }
+  //     }
+  //   }
+  // }
+  //----------Might need to help me out here-----------
 
-  //fmt.Println(differentSets)
+  fmt.Println(differentSets)
 
   corresSet = make([][]int, differentSets)
 

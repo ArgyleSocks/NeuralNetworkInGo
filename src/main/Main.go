@@ -1,19 +1,22 @@
 package main
 
 import (
-  "fmt"
-  //"time"
-  //"dict"
-  "runtime"
-  //"math/rand"
-  "bufio"
   "os"
-  "strconv"
-  "strings"
+  "fmt"
+  // "time"
+  "dict"
+  "bufio"
+  "runtime"
+  // "strconv"
+  // "strings"
+  // "math/rand"
 )
 
 var composition[6]int = [...]int{2, 2, 2, 2, 2, 2}
-var sampleSet [4][2]int = [4][2]int{{1, 1}, {2, 1}, {3, 1}, {4, 1}}
+// var sampleSet [4][2]int = [4][2]int{{1, 1}, {2, 1}, {3, 1}, {4, 1}}
+
+var sampleSet map[string]int
+
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
 
 var maxAmplitude []float64 //assuming 0 amplitude and the max overall amplitude corres to 0 and 1, adjust the values to be between 0 and 1 proportionally
@@ -39,9 +42,9 @@ var sampleVariableThingWeNeedToGetRidOfThis int = 0 //We need to seriously organ
 
 func main() {
   runtime.GOMAXPROCS(1024)
-  //dict.Initi("/home/wurst/go/src/dict/syllables")
-  //dict.ToMap()
-  //initExpected() //Need to move this to ExecNetwork, make it cycle and create additional nodeGraphs
+  dict.Initi("/home/wurst/go/src/dict/syllables")
+  dict.ToMap()
+  initExpected(16) //Need to move this to ExecNetwork, make it cycle and create additional nodeGraphs
   initi()
   go drawCostLoop()
   go drawGraphLoop(&nodeGraph)
@@ -202,13 +205,11 @@ func manualTest() {
   inValue1 := 0.0
   inValue2 := 0.0
 
-  fmt.Println("Insert input 1")
+  fmt.Println("Insert input")
   in,_ := input.ReadString('\n')
-  inValue1,_ = strconv.ParseFloat(strings.TrimSpace(in), 64)
-  fmt.Println("Insert input 2")
-  in,_ = input.ReadString('\n')
-  inValue2,_ = strconv.ParseFloat(strings.TrimSpace(in), 64)
-  calcInputNeuron(inValue1, inValue2, 0)
+  for i:=0;i<len([]byte(in));i++{
+    calcInputNeuron(i, float64([]byte(in)[i])/255, 0)
+  }
   evaluateNetwork(0)
 
   for i := 0; i < composition[compLastRow]; i++ {

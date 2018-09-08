@@ -3,7 +3,10 @@ package main
 import (
   //"fmt"
   "math"
-  // "dict"
+  "dict"
+  "time"
+  "reflect"
+  "math/rand"
 )
 
 var compLastRow int = len(composition) - 1
@@ -11,37 +14,39 @@ var expected [][]float64 = make([][]float64, composition[compLastRow])
 var cost float64
 var costDeriv float64
 
- func setSample(setValue int, set int) {
+ func setSample(setIndex int, set int) {
+  v := reflect.ValueOf(reflect.ValueOf(sampleSet).MapKeys()).Interface().([]string)
+  k:=v[setIndex]
   //fmt.Println("setValue", setValue)
   //fmt.Println("refSum", len(nodeGraph[0][0].RefInputSum), "set", set)
-  switch setValue {
-  case 1:
-    calcInputNeuron(0, 0, set)
-    initExpected(0, 0, set)
-  case 2:
-    calcInputNeuron(1, 0, set)
-    initExpected(1, 0, set)
-  case 3:
-    calcInputNeuron(0, 1, set)
-    initExpected(0, 1, set)
-  case 4:
-    calcInputNeuron(1, 1, set)
-    initExpected(0, 0, set)
+  // switch setValue {
+  // case 1:
+  //   calcInputNeuron(0, 0, set)
+  //   initExpected(0, 0, set)
+  // case 2:
+  //   calcInputNeuron(1, 0, set)
+  //   initExpected(1, 0, set)
+  // case 3:
+  //   calcInputNeuron(0, 1, set)
+  //   initExpected(0, 1, set)
+  // case 4:
+  //   calcInputNeuron(1, 1, set)
+  //   initExpected(0, 0, set)
+  // }
+  for i:=0;i<len(k);i++{
+    calcInputNeuron(i,float64([]byte(k)[i])/255,set)
   }
 }
 
-func initExpected(exp1 float64, exp2 float64, set int) {
-	// index:=dict.MapGet(string(word))
-	// for i:=0;i<len(expected);i++{
-	// 	if i==index{
-	// 		expected[i]=1
-	// 	} else {
-	// 		expected[i]=0
-	// 	}
-	// }
-
-	expected[0][set] = exp1
-	expected[1][set] = exp2
+func initExpected(num int) {
+  
+	for i:=0;i<num;i++{
+		s1 := rand.NewSource(int64(time.Now().Nanosecond()))
+    random := rand.New(s1)
+    word:=dict.SetOfKeys()[int(random.Float64()*float64(len(dict.SetOfKeys())))]
+    index:=dict.MapGet(string(word))
+    sampleSet[word]=index
+	}
 }
 
 func calcCost() {
