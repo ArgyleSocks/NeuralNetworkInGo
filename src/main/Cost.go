@@ -39,7 +39,7 @@ var costDeriv float64
 }
 
 func initExpected(num int) {
-  
+  sampleSet=make(map[string]int)
 	for i:=0;i<num;i++{
 		s1 := rand.NewSource(int64(time.Now().Nanosecond()))
     random := rand.New(s1)

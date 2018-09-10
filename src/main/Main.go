@@ -44,7 +44,7 @@ func main() {
   runtime.GOMAXPROCS(1024)
   dict.Initi("/home/wurst/go/src/dict/syllables")
   dict.ToMap()
-  initExpected(16) //Need to move this to ExecNetwork, make it cycle and create additional nodeGraphs
+  initExpected(1024) //Need to move this to ExecNetwork, make it cycle and create additional nodeGraphs
   initi()
   go drawCostLoop()
   go drawGraphLoop(&nodeGraph)
@@ -99,7 +99,7 @@ func main() {
   fmt.Println("tick")
   wait()
   fmt.Println("done")*/
-  cleanSamples()
+  // cleanSamples()
   trainNetwork()
   cleanNetwork()
   manualTest()
@@ -202,8 +202,8 @@ func evaluateNetwork(graph int) {
 
 func manualTest() {
   input := bufio.NewReader(os.Stdin)
-  inValue1 := 0.0
-  inValue2 := 0.0
+  // inValue1 := 0.0
+  // inValue2 := 0.0
 
   fmt.Println("Insert input")
   in,_ := input.ReadString('\n')
