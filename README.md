@@ -6,4 +6,6 @@ We need to create code that formats sampleSet conveniently with dict (sampleArra
   Two options:
    - We omit sampleArrangement for the time being (easiest option)
    - We create additional code that formats the samples we want to be trained into the prescribed two-dimensional array
+   
+   
 This piece of crap needs organization NOW
