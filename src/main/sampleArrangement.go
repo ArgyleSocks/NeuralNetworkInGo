@@ -1,83 +1,88 @@
 package main
-
+/*
 import (
-  //"fmt"
+  "fmt"
 )
 
-var repetitionSet []bool = make([]bool, len(sampleSet))
-var differentSets int = len(sampleSet)
-var corresSet [][]int
-var corresItem int = 0
+//var repetitionSet []bool = make([]bool, len(sampleSet))
+var differentSets int
+//var corresSet [][]int
+//var corresItem int = 0
 var totalSets int = 0
 
-// func cleanSamples() {
+func cleanSamples() {
+  /*
+  for i := 0; i < len(repetitionSet); i++ {
+    repetitionSet[i] = false
+  }
 
-//   for i := 0; i < len(repetitionSet); i++ {
-//     repetitionSet[i] = false
-//   }
+  for i := 0; i < len(sampleSet); i++ {
+    if !repetitionSet[i] {
+      for j := i + 1; j < len(sampleSet); j++ {
+        if (sampleSet[j][0] == sampleSet[i][0]) {
+          repetitionSet[j] = true
+          sampleSet[i][1] += sampleSet[j][1]
+          differentSets--
+        }
+      }
+    }
+  }*/
+  //----------Might need to help me out here-----------
+/*
+  differentSets = len(words/*this can also be the length of the map or some gen. value for number of words*//*)*/
+/*
+  fmt.Println(differentSets)
+*/
+  /*corresSet = make([][]int, differentSets)
 
-//   // for i := 0; i < len(sampleSet); i++ {
-//   //   if !repetitionSet[i] {
-//   //     for j := i + 1; j < len(sampleSet); j++ {
-//   //       if (sampleSet[j][0] == sampleSet[i][0]) {
-//   //         repetitionSet[j] = true
-//   //         sampleSet[i][1] += sampleSet[j][1]
-//   //         differentSets--
-//   //       }
-//   //     }
-//   //   }
-//   // }
-//   //----------Might need to help me out here-----------
+  for i := 0; i < len(corresSet); i++ {
+    corresSet[i] = make([]int, 2)
+  }
 
-//   fmt.Println(differentSets)
+  for i := 0; i < len(sampleSet); i++ {
+    if !repetitionSet[i] {
+      corresSet[corresItem][0] = sampleSet[i][0]
+      corresSet[corresItem][1] = sampleSet[i][1]
 
-//   corresSet = make([][]int, differentSets)
+      for j := i + 1; j < len(sampleSet); j++ {
+        if sampleSet[j][0] == sampleSet[i][0] {
+          sampleSet[j][0] = corresItem
+        }
+      }
 
-//   for i := 0; i < len(corresSet); i++ {
-//     corresSet[i] = make([]int, 2)
-//   }
+      sampleSet[i][0] = corresItem
 
-//   for i := 0; i < len(sampleSet); i++ {
-//     if !repetitionSet[i] {
-//       corresSet[corresItem][0] = sampleSet[i][0]
-//       corresSet[corresItem][1] = sampleSet[i][1]
+      corresItem++
+    }
+  }*/
 
-//       for j := i + 1; j < len(sampleSet); j++ {
-//         if sampleSet[j][0] == sampleSet[i][0] {
-//           sampleSet[j][0] = corresItem
-//         }
-//       }
+  /*for i := 0; i < len(corresSet); i++ {
+    totalSets += corresSet[i][1]
+  }*/
+/*
+  totalSets = differentSets * repValue
 
-//       sampleSet[i][0] = corresItem
+  for i := 0; i < len(nodeGraph); i++ {
+    for j := 0; j < len(nodeGraph[i]); j++ {
+      nodeGraph[i][j].initSums(totalSets)
+    }
+  }
+*/
+  /*
+  for i := 0; i < len(corresSet); i++ {
+    fmt.Print(corresSet[i])
+  }
+  fmt.Println()
 
-//       corresItem++
-//     }
-//   }
+  for i := 0; i < len(sampleSet); i++ {
+    fmt.Print(sampleSet[i])
+  }
+  fmt.Println()
 
-//   for i := 0; i < len(corresSet); i++ {
-//     totalSets += corresSet[i][1]
-//   }
+  for i := 0; i < len(sampleSet); i++ {
+    fmt.Print(repetitionSet[i])
+  }
+  fmt.Println()
+}*/
 
-//   for i := 0; i < len(nodeGraph); i++ {
-//     for j := 0; j < len(nodeGraph[i]); j++ {
-//       nodeGraph[i][j].initSums(totalSets)
-//     }
-//   }
 
-//   /*
-//   for i := 0; i < len(corresSet); i++ {
-//     fmt.Print(corresSet[i])
-//   }
-//   fmt.Println()
-
-//   for i := 0; i < len(sampleSet); i++ {
-//     fmt.Print(sampleSet[i])
-//   }
-//   fmt.Println()
-
-//   for i := 0; i < len(sampleSet); i++ {
-//     fmt.Print(repetitionSet[i])
-//   }
-//   fmt.Println()
-//   */
-// }

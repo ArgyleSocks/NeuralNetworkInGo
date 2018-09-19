@@ -12,10 +12,17 @@ import (
   // "math/rand"
 )
 
-var composition[6]int = [...]int{2, 2, 2, 2, 2, 2}
+//TODO: Make sampleSet into 2 arrays with same length where one has string, other has syll
+const words []string = dict.SetOfKeys()
+const sampleVariety int  = len(setOKeys)
+
+var composition[6]int = [...]int{16, 16, 16, 16, 16, 16}
+var words []string
+var syllables []int
+var repValue = 1
 // var sampleSet [4][2]int = [4][2]int{{1, 1}, {2, 1}, {3, 1}, {4, 1}}
 
-var sampleSet map[string]int
+//var sampleSet map[string]int
 
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
 
@@ -36,7 +43,7 @@ var previousCost float64 = 0
 var minimumCheck int
 var endTraining bool = false
 
-var numSamplesToTrain int = 150
+var numSamplesToTrain int = 10
 
 var sampleVariableThingWeNeedToGetRidOfThis int = 0 //We need to seriously organize and also get rid of some of these global variables
 
@@ -44,7 +51,7 @@ func main() {
   runtime.GOMAXPROCS(1024)
   dict.Initi("/home/wurst/go/src/dict/syllables")
   dict.ToMap()
-  initExpected(1024) //Need to move this to ExecNetwork, make it cycle and create additional nodeGraphs
+  initExpected(len(words)) //Need to move this to ExecNetwork, make it cycle and create additional nodeGraphs
   initi()
   go drawCostLoop()
   go drawGraphLoop(&nodeGraph)
@@ -99,7 +106,7 @@ func main() {
   fmt.Println("tick")
   wait()
   fmt.Println("done")*/
-  // cleanSamples()
+  //cleanSamples()
   trainNetwork()
   cleanNetwork()
   manualTest()
@@ -116,6 +123,12 @@ func initi() {
       nodeGraph[i][j].initNeuron(i,j)
     }
   }
+  
+  syllables = make([]int, sampleVariety)
+  for i := 0; i < sampleVariety; i++ {
+    syllables[i] = dict.MapGet(words[i])
+    
+  }
 }
 
 func trainNetwork() {
@@ -131,7 +144,7 @@ func trainNetwork() {
   END*/
 
   for train := true; train; train = !endTraining {
-
+    /*
     for i := 0; i < len(corresSet); i++ {
       for j := 0; j < corresSet[i][1]; j++ {
         //fmt.Println("j", j)
@@ -140,9 +153,15 @@ func trainNetwork() {
         sampleVariableThingWeNeedToGetRidOfThis++
       }
     }
-
+    */
+    for i:=0;i<len(words)-1;i++ {
+      setSample(i,i)
+      evaluateNetwork(sampleVariableThingWeNeedToGetRidOfThis)
+      sampleVariableThingWeNeedToGetRidOfThis++
+    }
     if generations == 0 {
       calcCost()
+      fmt.Println("cost:",cost)
       firstCost = cost
     }
 
@@ -208,7 +227,7 @@ func manualTest() {
   fmt.Println("Insert input")
   in,_ := input.ReadString('\n')
   for i:=0;i<len([]byte(in));i++{
-    calcInputNeuron(i, float64([]byte(in)[i])/255, 0)
+    calcInputNeuron(i, float64([]byte(in)[i]), 0)
   }
   evaluateNetwork(0)
 

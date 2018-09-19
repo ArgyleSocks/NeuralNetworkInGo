@@ -1,11 +1,11 @@
 package main
 
 import (
-  //"fmt"
+  "fmt"
   "math"
   "dict"
   "time"
-  "reflect"
+  // "reflect"
   "math/rand"
 )
 
@@ -15,8 +15,9 @@ var cost float64
 var costDeriv float64
 
  func setSample(setIndex int, set int) {
-  v := reflect.ValueOf(reflect.ValueOf(sampleSet).MapKeys()).Interface().([]string)
-  k:=v[setIndex]
+  // v := reflect.ValueOf(reflect.ValueOf(sampleSet).MapKeys()).Interface().([]string)
+  // fmt.Println(len(v))
+  k:=words[setIndex]
   //fmt.Println("setValue", setValue)
   //fmt.Println("refSum", len(nodeGraph[0][0].RefInputSum), "set", set)
   // switch setValue {
@@ -33,20 +34,24 @@ var costDeriv float64
   //   calcInputNeuron(1, 1, set)
   //   initExpected(0, 0, set)
   // }
+  fmt.Println(k)
   for i:=0;i<len(k);i++{
-    calcInputNeuron(i,float64([]byte(k)[i])/255,set)
+    calcInputNeuron(i,float64([]byte(k)[i]),set)
   }
 }
 
 func initExpected(num int) {
-  sampleSet=make(map[string]int)
+  //sampleSet=make(map[string]int)
 	for i:=0;i<num;i++{
 		s1 := rand.NewSource(int64(time.Now().Nanosecond()))
     random := rand.New(s1)
     word:=dict.SetOfKeys()[int(random.Float64()*float64(len(dict.SetOfKeys())))]
     index:=dict.MapGet(string(word))
-    sampleSet[word]=index
+    words[i]=word
+    syllables[i]=index
+    //sampleSet[word]=index
 	}
+  fmt.Println("Expected initialized")
 }
 
 func calcCost() {
