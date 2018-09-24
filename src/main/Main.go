@@ -19,6 +19,8 @@ const sampleVariety int  = len(setOKeys)
 var composition[6]int = [...]int{16, 16, 16, 16, 16, 16}
 var words []string
 var syllables []int
+var organizedWords [][]string
+var organizedSyllables []int
 var repValue = 1
 // var sampleSet [4][2]int = [4][2]int{{1, 1}, {2, 1}, {3, 1}, {4, 1}}
 
@@ -123,12 +125,14 @@ func initi() {
       nodeGraph[i][j].initNeuron(i,j)
     }
   }
-  
+
   syllables = make([]int, sampleVariety)
   for i := 0; i < sampleVariety; i++ {
     syllables[i] = dict.MapGet(words[i])
-    
   }
+
+  cleanSamples(2)
+
 }
 
 func trainNetwork() {
