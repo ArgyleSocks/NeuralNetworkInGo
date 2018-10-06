@@ -71,8 +71,6 @@ func twoDiCleanup() {
     totalSets += corresSet[i][1]
   }
 
-  totalSets = differentSets * repValue
-
   for i := 0; i < len(nodeGraph); i++ {
     for j := 0; j < len(nodeGraph[i]); j++ {
       nodeGraph[i][j].initSums(totalSets)
@@ -141,7 +139,7 @@ func uniformCasesCleanup() {
 
       organizedWords[columnTick] = make([]string, typeSyllables)
 
-      for k := 0; k < len(syllables); k++ {
+      for k := i; k < len(syllables); k++ {
         if syllables[k] == syllables[i] {
           organizedWords[columnTick][rowTick] = words[k]
           rowTick++
@@ -151,6 +149,14 @@ func uniformCasesCleanup() {
       columnTick++
       rowTick = 0
       typeSyllables = 0
+    }
+  }
+
+  totalSets = len(organizedSyllables) * repValue
+
+  for i := 0; i < len(nodeGraph); i++ {
+    for j := 0; j < len(nodeGraph[i]); j++ {
+      nodeGraph[i][j].initSums(totalSets)
     }
   }
 

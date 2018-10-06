@@ -15,28 +15,38 @@ var cost float64
 var costDeriv float64
 
  func setSample(setIndex int, set int) {
-  // v := reflect.ValueOf(reflect.ValueOf(sampleSet).MapKeys()).Interface().([]string)
-  // fmt.Println(len(v))
-  k:=words[setIndex]
-  //fmt.Println("setValue", setValue)
-  //fmt.Println("refSum", len(nodeGraph[0][0].RefInputSum), "set", set)
-  // switch setValue {
-  // case 1:
-  //   calcInputNeuron(0, 0, set)
-  //   initExpected(0, 0, set)
-  // case 2:
-  //   calcInputNeuron(1, 0, set)
-  //   initExpected(1, 0, set)
-  // case 3:
-  //   calcInputNeuron(0, 1, set)
-  //   initExpected(0, 1, set)
-  // case 4:
-  //   calcInputNeuron(1, 1, set)
-  //   initExpected(0, 0, set)
-  // }
+  /*v := reflect.ValueOf(reflect.ValueOf(sampleSet).MapKeys()).Interface().([]string)
+  fmt.Println(len(v))
+  fmt.Println("setValue", setValue)
+  fmt.Println("refSum", len(nodeGraph[0][0].RefInputSum), "set", set)
+  switch setValue {
+  case 1:
+    calcInputNeuron(0, 0, set)
+    initExpected(0, 0, set)
+  case 2:
+    calcInputNeuron(1, 0, set)
+    initExpected(1, 0, set)
+  case 3:
+    calcInputNeuron(0, 1, set)
+    initExpected(0, 1, set)
+  case 4:
+    calcInputNeuron(1, 1, set)
+    initExpected(0, 0, set)
+  }*/
+
+  // Let's find a word!
+
+  //random seed
+  s1 := rand.NewSource(int64(time.Now().Nanosecond()))
+  random := rand.New(s1)
+
+  //index finding
+  k := organizedWords[setIndex][int(random.Float64()*float64(len(organizedWords[setIndex])))]
+
+  //iterate through, set input layer accordingly
   fmt.Println(k)
-  for i:=0;i<len(k);i++{
-    calcInputNeuron(i,float64([]byte(k)[i]),set)
+  for i := 0 ; i < len(k) ; i++ {
+    calcInputNeuron(i, float64([]byte(k)[i]), set)
   }
 }
 

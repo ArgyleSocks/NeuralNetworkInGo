@@ -21,9 +21,9 @@ var words []string
 var syllables []int
 var organizedWords [][]string
 var organizedSyllables []int
-var repValue = 1
-// var sampleSet [4][2]int = [4][2]int{{1, 1}, {2, 1}, {3, 1}, {4, 1}}
+var repValue = 5
 
+// var sampleSet [4][2]int = [4][2]int{{1, 1}, {2, 1}, {3, 1}, {4, 1}}
 //var sampleSet map[string]int
 
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
@@ -158,10 +158,13 @@ func trainNetwork() {
       }
     }
     */
-    for i:=0;i<len(words)-1;i++ {
-      setSample(i,i)
-      evaluateNetwork(sampleVariableThingWeNeedToGetRidOfThis)
-      sampleVariableThingWeNeedToGetRidOfThis++
+    for i := 0; i < len(organizedWords); i++ {
+      for k := 0; k < repValue; k++ {
+        //alright, so I'm doing this with the assumption sampleVariableThingWeNeedToGetRidOfThis corresponds to the set number, and i*k = the total number of elements per set, where i is every column in organized words, and k is in correspondence with the number of random words to pick.
+        setSample(i,sampleVariableThingWeNeedToGetRidOfThis)
+        evaluateNetwork(sampleVariableThingWeNeedToGetRidOfThis)
+        sampleVariableThingWeNeedToGetRidOfThis++
+      }
     }
     if generations == 0 {
       calcCost()

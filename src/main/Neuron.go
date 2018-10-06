@@ -20,7 +20,7 @@ type neuron struct {
   WeightsChange []float64
 }
 
-func (neur *neuron) initNeuron(layer,node int) {
+func (neur *neuron) initNeuron(layer, node int) {
 
   neur.Layer = layer
   neur.Node = node
@@ -43,13 +43,13 @@ func (neur *neuron) initNeuron(layer,node int) {
 }
 
 func (neur *neuron) initSums(sets int) {
-  fmt.Println("initedSums")
+  fmt.Println("initSums")
   neur.RefInputSum = make([]float64, sets)
   neur.InputSum = make([]float64, sets)
   neur.OutputSum = make([]float64, sets)
 
   for i := 0; i < composition[compLastRow]; i++ { //need to move this, like this really isn't supposed to be here
-    expected[i] = make([]float64, totalSets)
+    expected[i] = make([]float64, sets)
   }
 }
 
