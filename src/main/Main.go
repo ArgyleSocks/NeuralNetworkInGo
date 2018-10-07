@@ -13,17 +13,16 @@ import (
 )
 
 //TODO: Make sampleSet into 2 arrays with same length where one has string, other has syll
-const words []string = dict.SetOfKeys()
-const sampleVariety int  = len(setOKeys)
 
 var composition[6]int = [...]int{16, 16, 16, 16, 16, 16}
 var sampleSet [0][0]int
-var words []string
+var words []string = dict.SetOfKeys()
 var syllables []int
 var organizedWords [][]string
 var organizedSyllables []int
 var repValue = 5
 
+//const sampleVariety int  = len(setOKeys)
 // var sampleSet [4][2]int = [4][2]int{{1, 1}, {2, 1}, {3, 1}, {4, 1}}
 //var sampleSet map[string]int
 

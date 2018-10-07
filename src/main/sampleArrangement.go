@@ -19,9 +19,10 @@ func cleanSamples(sampleType int) {
 
 func twoDiCleanup() {
 
-  repetitionSet []bool = make([]bool, len(sampleSet))
-  differentSets int
-  corresSet [][]int
+  repetitionset []bool
+  repetitionSet = make([]bool, len(sampleSet))
+  differentSets int = 0
+  corresSet [][]int = 0
   corresItem int = 0
 
   for i := 0; i < len(repetitionSet); i++ {
@@ -99,7 +100,8 @@ func uniformCasesCleanup() {
 
   maxSyllable := 0
   varietySyllable := 0
-  repeatCheck []bool = make([]bool, len(syllables))
+  repeatCheck []bool
+  repeatCheck = make([]bool, len(syllables))
 
   //This figures out how many different syllable counts there are among the words
   for i := 0; i < len(syllables); i++ {
