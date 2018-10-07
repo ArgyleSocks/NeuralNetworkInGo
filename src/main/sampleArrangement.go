@@ -21,7 +21,7 @@ func twoDiCleanup() {
 
   var repetitionSet []bool = make([]bool, len(sampleSet))
   var differentSets int = 0
-  var corresSet [][]int = 0
+  var corresSet [][]int
   var corresItem int = 0
 
   for i := 0; i < len(repetitionSet); i++ {

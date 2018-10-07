@@ -15,14 +15,13 @@ import (
 //TODO: Make sampleSet into 2 arrays with same length where one has string, other has syll
 
 var composition[6]int = [...]int{16, 16, 16, 16, 16, 16}
-var sampleSet [1][1]int = [...][...]int{{0}}
-var words []string = dict.SetOfKeys()
+var sampleSet [5][2]int = [...]int{{1, 2}, {2, 2}, {3, 2}, {4, 2}, {5, 2}}
+var words []string //= dict.SetOfKeys
 var syllables []int
 var organizedWords [][]string
 var organizedSyllables []int
 var repValue = 5
-
-const sampleVariety int  = len(setOKeys)
+var sampleVariety int //becomes len(words)
 // var sampleSet [4][2]int = [4][2]int{{1, 1}, {2, 1}, {3, 1}, {4, 1}}
 //var sampleSet map[string]int
 
@@ -115,6 +114,9 @@ func main() {
 }
 
 func initi() {
+
+  words = dict.SetOfKeys()
+  sampleVariety = len(words)
 
   for i := 0; i < len(composition); i++ {
     nodeGraph[i] = make([]neuron, composition[i])
