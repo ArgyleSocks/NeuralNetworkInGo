@@ -17,6 +17,7 @@ const words []string = dict.SetOfKeys()
 const sampleVariety int  = len(setOKeys)
 
 var composition[6]int = [...]int{16, 16, 16, 16, 16, 16}
+var sampleSet [0][0]int
 var words []string
 var syllables []int
 var organizedWords [][]string

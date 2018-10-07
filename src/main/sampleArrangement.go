@@ -1,13 +1,9 @@
 package main
 
 import (
-  "fmt"
+  //"fmt"
 )
 
-//var repetitionSet []bool = make([]bool, len(sampleSet))
-var differentSets int
-//var corresSet [][]int
-//var corresItem int = 0
 var totalSets int = 0
 
 func cleanSamples(sampleType int) {
@@ -22,6 +18,11 @@ func cleanSamples(sampleType int) {
 }
 
 func twoDiCleanup() {
+
+  repetitionSet []bool = make([]bool, len(sampleSet))
+  differentSets int
+  corresSet [][]int
+  corresItem int = 0
 
   for i := 0; i < len(repetitionSet); i++ {
     repetitionSet[i] = false
