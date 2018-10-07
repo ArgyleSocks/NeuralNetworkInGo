@@ -99,7 +99,7 @@ func uniformCasesCleanup() {
 
   maxSyllable := 0
   varietySyllable := 0
-  var repeatCheck []bool = make([bool], len(syllables))
+  var repeatCheck []bool = make([]bools, len(syllables))
 
   //This figures out how many different syllable counts there are among the words
   for i := 0; i < len(syllables); i++ {
