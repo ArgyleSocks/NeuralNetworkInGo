@@ -44,7 +44,7 @@ var costDeriv float64
   k := organizedWords[setIndex][int(random.Float64()*float64(len(organizedWords[setIndex])))]
 
   //iterate through, set input layer accordingly
-  fmt.Println(k)
+  //fmt.Println(k)
   for i := 0 ; i < len(k) ; i++ {
     calcInputNeuron(i, float64([]byte(k)[i]), set)
   }

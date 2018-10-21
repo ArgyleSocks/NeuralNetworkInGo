@@ -2,7 +2,7 @@ package main
 
 import
 (
-  "fmt"
+  //"fmt"
   "math"
   "time"
   "math/rand"
@@ -43,7 +43,7 @@ func (neur *neuron) initNeuron(layer, node int) {
 }
 
 func (neur *neuron) initSums(sets int) {
-  fmt.Println("initSums")
+  //fmt.Println("initSums")
   neur.RefInputSum = make([]float64, sets)
   neur.InputSum = make([]float64, sets)
   neur.OutputSum = make([]float64, sets)

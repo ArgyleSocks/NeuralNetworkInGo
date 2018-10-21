@@ -12,10 +12,13 @@ import (
   // "math/rand"
 )
 
-//TODO: Make sampleSet into 2 arrays with same length where one has string, other has syll
+//TODO: Make the layer size auto adjust to the length of the longest word
+//TODO: Threading
+//TODO: Cleanup and commenting
+//TODO: Investigate the error where differences in layer size between layers cause an index out of range
 
-var composition[6]int = [...]int{16, 16, 16, 16, 16, 16}
-var sampleSet [5][2]int = [...]int{{1, 2}, {2, 2}, {3, 2}, {4, 2}, {5, 2}}
+var composition[6]int = [...]int{25, 25, 25, 25, 25, 25}
+var sampleSet [5][2]int = [...][2]int{{1, 2}, {2, 2}, {3, 2}, {4, 2}, {5, 2}} //if you use this make sure to use clean samples 1
 var words []string //= dict.SetOfKeys
 var syllables []int
 var organizedWords [][]string
@@ -50,9 +53,9 @@ var sampleVariableThingWeNeedToGetRidOfThis int = 0 //We need to seriously organ
 
 func main() {
   runtime.GOMAXPROCS(1024)
-  dict.Initi("/home/wurst/go/src/dict/syllables")
+  dict.Initi("/mnt/c/Users/Maxim/go/src/dict/syllables")
   dict.ToMap()
-  initExpected(len(words)) //Need to move this to ExecNetwork, make it cycle and create additional nodeGraphs
+  //initExpected(len(words)) //Need to move this to ExecNetwork, make it cycle and create additional nodeGraphs
   initi()
   go drawCostLoop()
   go drawGraphLoop(&nodeGraph)
