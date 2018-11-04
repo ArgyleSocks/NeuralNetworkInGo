@@ -15,19 +15,24 @@ All derivative values must be within 0.05 of 0
 
 //trainingRate was 0.02
 
-var weightLayer, weightNode, weightSelect, setSelect int = 0, 0, 0, 0
+var weightLayer, weightNode, weightSelect, setSelect int = 0, 0, 0, 0 //TODO: REVAMP THIS IN CORRESPONDENCE WITH THE BELOW
 var changeThreshold float64 = 5 * math.Pow(10, -3)
-var layerDif int = 0
-var stableWeight bool = false
+var layerDif int = 0 //must make local
+var costDeriv float64 //must make local
+
+var stableWeight bool = false //has to be global, more or less
 
 func backPropagation(sets int) {
+  // this does this to this.... please comment.
 
+  //what is stableWeight?
   stableWeight = true
 
-  for i := len(composition) - 1; i >= 1; i-- { //to this
-    for j := 0; j < composition[i]; j++ {
-      for k := 0; k < composition[i - 1]; k++ { //this
-        for m := 0; m < sets; m++ {
+  //part 1. What is part 1?
+  for i := len(composition) - 1; i >= 1; i-- { //TODO
+    for j := 0; j < composition[i]; j++ { //TODO
+      for k := 0; k < composition[i - 1]; k++ { //TODO
+        for m := 0; m < sets; m++ { //TODO
 
           weightLayer = i
           weightNode = j
@@ -36,6 +41,7 @@ func backPropagation(sets int) {
 
           layerDif = len(composition) - (weightLayer + 1)
 
+          //what is LocalDeriv? What is RefInputSum? Explain it ALLLLLLLLLLLLLL
           nodeGraph[i][j].LocalDeriv = sigmoidDerivative(nodeGraph[i][j].InputSum[setSelect]) * nodeGraph[i-1][k].RefInputSum[m]
           checkNaN(nodeGraph[i][j].LocalDeriv)
           nodeGraph[i][j].TrainRel = true
@@ -47,10 +53,10 @@ func backPropagation(sets int) {
       }
     }
   }
-
-  for i := 0; i < len(composition) - 1; i++ {
-    for j := 0; j < composition[i]; j++ {
-      for k := 0; k < composition[i + 1]; k++ {
+  //part 2 what does part 2 do?
+  for i := 0; i < len(composition) - 1; i++ {//per layer
+    for j := 0; j < composition[i]; j++ {//per node
+      for k := 0; k < composition[i + 1]; k++ {//per node next layer, making permutation with previous for loop
         //fmt.Println("Changing Weight by", trainingRate * (nodeGraph[i][j].WeightsChange[k]/float64(sets))) //don't forget this exists
         //fmt.Println(nodeGraph[i][j].WeightsChange[k])
         nodeGraph[i][j].Weights[k] -= trainingRate(nodeGraph[i][j].WeightsChange[k]/float64(sets)) * (nodeGraph[i][j].WeightsChange[k]/float64(sets))
@@ -58,6 +64,7 @@ func backPropagation(sets int) {
     }
   } //this
 
+  //what does this do?
   resetBackPropagation()
 
 }

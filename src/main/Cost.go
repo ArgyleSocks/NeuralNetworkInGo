@@ -9,12 +9,11 @@ import (
   "math/rand"
 )
 
-var compLastRow int = len(composition) - 1
+var compLastRow int = len(composition) - 1 //do we really need this A: replace all instances of compLastRow with len(composition) - 1 B: vice versa
 var expected [][]float64 = make([][]float64, composition[compLastRow])
-var cost float64
-var costDeriv float64
+var cost float64 //doesn't need to global
 
- func setSample(setIndex int, set int) {
+func setSample(setIndex int, set int) {
   /*v := reflect.ValueOf(reflect.ValueOf(sampleSet).MapKeys()).Interface().([]string)
   fmt.Println(len(v))
   fmt.Println("setValue", setValue)
