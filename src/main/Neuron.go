@@ -11,8 +11,8 @@ import
 type neuron struct {
   Layer int
   Node int
-  InputSum []float64
-  RefInputSum []float64
+  InputSum []float64//don't worry about this unless changing sigmoid/ReLu/whatever the individual node function is.
+  RefInputSum []float64//what to output to other nodes
   OutputSum []float64
   Weights []float64
   TrainRel bool
@@ -24,12 +24,20 @@ func (neur *neuron) initNeuron(layer, node int) {
 
   neur.Layer = layer
   neur.Node = node
+  //knows where it is in the graph
+
   neur.TrainRel = false
+  //am I relevant?
+
   neur.LocalDeriv = 0.0
+  //Amount to adjust the weight along the dimension that this node represents
 
   if(layer != compLastRow) {
     neur.Weights = make([]float64, composition[layer + 1])
+    //what do you think?
+
     neur.WeightsChange = make([]float64, composition[layer + 1])
+    //amount that weights are scheduled to be changed by
 
     for i := 0; i < len(neur.Weights); i++ {
       s1 := rand.NewSource(int64(time.Now().Nanosecond()))
@@ -39,6 +47,7 @@ func (neur *neuron) initNeuron(layer, node int) {
       //fmt.Println(random.Float64(), random2.Float64())
       neur.Weights[i] = random.Float64() - random2.Float64()
     }
+    //we just set all of the weights to a random value, nuff' said
   }
 }
 
@@ -54,7 +63,8 @@ func (neur *neuron) initSums(sets int) {
 }
 
 func (neur *neuron) calcInputSum(graph int) {
-  //fmt.Println("calcInputSum",neur.layer-1)
+  //find what to output based on inputs.
+
   neur.InputSum[graph] = 0
 
   for i := 0; i < composition[neur.Layer-1]; i++ {
@@ -71,8 +81,4 @@ func (neur *neuron) calcOutputSum(node int, graph int) float64{
 func calcInputNeuron(index int, input float64, set int) {
   //fmt.Println(len(nodeGraph[0][index].RefInputSum),set,index)
   nodeGraph[0][index].RefInputSum[set] = input
-}
-
-func sigmoid(input float64) float64{
-  return 1 / (1 + (1/(math.Pow(math.E, input))))
 }

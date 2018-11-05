@@ -51,11 +51,15 @@ func setSample(setIndex int, set int) {
 
 func initExpected(num int) {
   //sampleSet=make(map[string]int)
+
+  //var word []byte
+
 	for i:=0;i<num;i++{
 		s1 := rand.NewSource(int64(time.Now().Nanosecond()))
     random := rand.New(s1)
     word:=dict.SetOfKeys()[int(random.Float64()*float64(len(dict.SetOfKeys())))]
-    index:=dict.MapGet(string(word))
+    //index:=dict.MapGet(string(word))
+    index:=len(word)
     words[i]=word
     syllables[i]=index
     //sampleSet[word]=index

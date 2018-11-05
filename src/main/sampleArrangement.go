@@ -18,7 +18,7 @@ func cleanSamples(sampleType int) {
 }
 
 func twoDiCleanup() {
-
+  // I don't know how to comment this yet, I need to consult ArgyleSocks
   var repetitionSet []bool = make([]bool, len(sampleSet))
   var differentSets int = 0
   var corresSet [][]int

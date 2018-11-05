@@ -15,12 +15,19 @@ All derivative values must be within 0.05 of 0
 
 //trainingRate was 0.02
 
-var weightLayer, weightNode, weightSelect, setSelect int = 0, 0, 0, 0 //TODO: REVAMP THIS IN CORRESPONDENCE WITH THE BELOW
+var weightLayer  int = 0//TODO: REVAMP THIS IN CORRESPONDENCE WITH THE BELOW
+var weightNode   int = 0//And this
+var weightSelect int = 0//And this
+var setSelect    int = 0//And this
+
 var changeThreshold float64 = 5 * math.Pow(10, -3)
 var layerDif int = 0 //must make local
-var costDeriv float64 //must make local
 
-var stableWeight bool = false //has to be global, more or less
+//HMMMMMM
+var costDeriv float64 //must make local
+//we have a local costDeriv, it's LocalDeriv. So do we need this? if it's referenced anywhere it'll be a pain with paralellization
+
+var stableWeight bool = false //has to be global, more or less //why?
 
 func backPropagation(sets int) {
   // this does this to this.... please comment.
@@ -131,7 +138,7 @@ func tempResetBackPropagation() {
     }
   }
 }
-
+//mention the difference between tempReset and reset
 func resetBackPropagation() {
   for i := 0; i < len(composition) - 1; i++ {
     for j := 0; j < composition[i]; j++ {
@@ -142,24 +149,4 @@ func resetBackPropagation() {
       }
     }
   }
-}
-
-func nodeInputSum(layer int, node int, set int) float64{
-  return nodeGraph[layer][node].InputSum[set]
-}
-
-func nodeRefInputSum(layer int, node int, set int) float64{
-  return nodeGraph[layer][node].RefInputSum[set]
-}
-
-func nodeWeight(layer int, node int, corresNode int) float64{
-  return nodeGraph[layer][node].Weights[corresNode]
-}
-
-func sigmoidDerivative(input float64) float64{
-  return (1/(math.Pow((1 + math.Pow(math.E, -input)), 2) * math.Pow(math.E, input)))
-}
-
-func trainingRate(slope float64) float64{
-  return (2 * sigmoidDerivative(slope) + 0.02)
 }
