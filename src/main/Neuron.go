@@ -20,7 +20,7 @@ type neuron struct {
   WeightsChange []float64
 }
 
-func (neur *neuron) initNeuron(layer,node int) {
+func (neur *neuron) initNeuron(layer, node int) {
 
   neur.Layer = layer
   neur.Node = node
@@ -43,12 +43,13 @@ func (neur *neuron) initNeuron(layer,node int) {
 }
 
 func (neur *neuron) initSums(sets int) {
+  //fmt.Println("initSums")
   neur.RefInputSum = make([]float64, sets)
   neur.InputSum = make([]float64, sets)
   neur.OutputSum = make([]float64, sets)
 
   for i := 0; i < composition[compLastRow]; i++ { //need to move this, like this really isn't supposed to be here
-    expected[i] = make([]float64, totalSets)
+    expected[i] = make([]float64, sets)
   }
 }
 
@@ -67,9 +68,9 @@ func (neur *neuron) calcOutputSum(node int, graph int) float64{
   return neur.OutputSum[graph]
 }
 
-func calcInputNeuron(input1 float64, input2 float64, set int) {
-  nodeGraph[0][0].RefInputSum[set] = input1
-  nodeGraph[0][1].RefInputSum[set] = input2
+func calcInputNeuron(index int, input float64, set int) {
+  //fmt.Println(len(nodeGraph[0][index].RefInputSum),set,index)
+  nodeGraph[0][index].RefInputSum[set] = input
 }
 
 func sigmoid(input float64) float64{

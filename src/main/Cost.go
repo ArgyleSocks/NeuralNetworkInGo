@@ -1,19 +1,23 @@
 package main
 
 import (
-  //"fmt"
+  "fmt"
   "math"
-  // "dict"
+  "dict"
+  "time"
+  // "reflect"
+  "math/rand"
 )
 
-var compLastRow int = len(composition) - 1
+var compLastRow int = len(composition) - 1 //do we really need this A: replace all instances of compLastRow with len(composition) - 1 B: vice versa
 var expected [][]float64 = make([][]float64, composition[compLastRow])
-var cost float64
-var costDeriv float64
+var cost float64 //doesn't need to global
 
- func setSample(setValue int, set int) {
-  //fmt.Println("setValue", setValue)
-  //fmt.Println("refSum", len(nodeGraph[0][0].RefInputSum), "set", set)
+func setSample(setIndex int, set int) {
+  /*v := reflect.ValueOf(reflect.ValueOf(sampleSet).MapKeys()).Interface().([]string)
+  fmt.Println(len(v))
+  fmt.Println("setValue", setValue)
+  fmt.Println("refSum", len(nodeGraph[0][0].RefInputSum), "set", set)
   switch setValue {
   case 1:
     calcInputNeuron(0, 0, set)
@@ -27,21 +31,36 @@ var costDeriv float64
   case 4:
     calcInputNeuron(1, 1, set)
     initExpected(0, 0, set)
+  }*/
+
+  // Let's find a word!
+
+  //random seed
+  s1 := rand.NewSource(int64(time.Now().Nanosecond()))
+  random := rand.New(s1)
+
+  //index finding
+  k := organizedWords[setIndex][int(random.Float64()*float64(len(organizedWords[setIndex])))]
+
+  //iterate through, set input layer accordingly
+  //fmt.Println(k)
+  for i := 0 ; i < len(k) ; i++ {
+    calcInputNeuron(i, float64([]byte(k)[i]), set)
   }
 }
 
-func initExpected(exp1 float64, exp2 float64, set int) {
-	// index:=dict.MapGet(string(word))
-	// for i:=0;i<len(expected);i++{
-	// 	if i==index{
-	// 		expected[i]=1
-	// 	} else {
-	// 		expected[i]=0
-	// 	}
-	// }
-
-	expected[0][set] = exp1
-	expected[1][set] = exp2
+func initExpected(num int) {
+  //sampleSet=make(map[string]int)
+	for i:=0;i<num;i++{
+		s1 := rand.NewSource(int64(time.Now().Nanosecond()))
+    random := rand.New(s1)
+    word:=dict.SetOfKeys()[int(random.Float64()*float64(len(dict.SetOfKeys())))]
+    index:=dict.MapGet(string(word))
+    words[i]=word
+    syllables[i]=index
+    //sampleSet[word]=index
+	}
+  fmt.Println("Expected initialized")
 }
 
 func calcCost() {

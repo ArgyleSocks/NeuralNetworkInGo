@@ -1,47 +1,60 @@
 package main
 
 import (
-  "fmt"
-  //"time"
-  //"dict"
-  "runtime"
-  //"math/rand"
-  "bufio"
   "os"
-  "strconv"
-  "strings"
+  "fmt"
+  // "time"
+  "dict"
+  "bufio"
+  "runtime"
+  // "strconv"
+  // "strings"
+  // "math/rand"
 )
 
-var composition[6]int = [...]int{2, 2, 2, 2, 2, 2}
-var sampleSet [4][2]int = [4][2]int{{1, 1}, {2, 1}, {3, 1}, {4, 1}}
+//TODO: Make the layer size auto adjust to the length of the longest word
+//TODO: Threading
+//TODO: Cleanup and commenting
+//TODO: Investigate the error where differences in layer size between layers cause an index out of range
+
+var composition[6]int = [...]int{25, 25, 25, 25, 25, 25}
+var sampleSet [5][2]int = [...][2]int{{1, 2}, {2, 2}, {3, 2}, {4, 2}, {5, 2}} //if you use this make sure to use clean samples 1
+var words []string //= dict.SetOfKeys //doesn't need to be global
+var syllables []int //doesn't need to gloabl
+var organizedWords [][]string
+var organizedSyllables []int
+var repValue = 5 //probably doesn't need to be global (1 main, 1 sampleArrangement)
+// var sampleSet [4][2]int = [4][2]int{{1, 1}, {2, 1}, {3, 1}, {4, 1}}
+//var sampleSet map[string]int
+
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
 
+/*
 var maxAmplitude []float64 //assuming 0 amplitude and the max overall amplitude corres to 0 and 1, adjust the values to be between 0 and 1 proportionally
 var minAmplitude []float64
 var standardDeviationAmplitude []float64 //see above
 var averageFrequency []float64 //assuming 1 hz is 0.5 and the highest overall frequency is 1, adjust proportionally
+*/
 
-var word []byte
+var word []byte //can be relegated to initExpected
 var generations int = 0
 var output float64 = 0
 
-var firstCost float64
-var lastCost float64
+var firstCost float64 //unnecessary global, move to trainNetwork
+var lastCost float64 // ...
 
-var repetitionValue int = 50
-var previousCost float64 = 0
-var minimumCheck int
-var endTraining bool = false
+var repetitionValue int = 50 //can be relegated to trainNetwork
+var previousCost float64 = 0 //should be able to stuck in trainNetwork/cost
+var minimumCheck int //doesn't need to be global
+var endTraining bool = false //doesn't need to be global
 
-var numSamplesToTrain int = 150
-
-var sampleVariableThingWeNeedToGetRidOfThis int = 0 //We need to seriously organize and also get rid of some of these global variables
+var sampleVariableThingWeNeedToGetRidOfThis int = 0 //doesn't need to be named like this OR global
 
 func main() {
   runtime.GOMAXPROCS(1024)
-  //dict.Initi("/home/wurst/go/src/dict/syllables")
-  //dict.ToMap()
-  //initExpected() //Need to move this to ExecNetwork, make it cycle and create additional nodeGraphs
+  dict.Initi("/mnt/c/Users/Maxim/go/src/dict/syllables")
+  dict.ToMap()
+  //initExpected(len(words)) //Need to move this to ExecNetwork, make it cycle and create additional nodeGraphs
   initi()
   go drawCostLoop()
   go drawGraphLoop(&nodeGraph)
@@ -96,13 +109,16 @@ func main() {
   fmt.Println("tick")
   wait()
   fmt.Println("done")*/
-  cleanSamples()
+  //cleanSamples()
   trainNetwork()
   cleanNetwork()
   manualTest()
 }
 
 func initi() {
+
+  words = dict.SetOfKeys()
+  sampleVariety := len(words)
 
   for i := 0; i < len(composition); i++ {
     nodeGraph[i] = make([]neuron, composition[i])
@@ -113,6 +129,14 @@ func initi() {
       nodeGraph[i][j].initNeuron(i,j)
     }
   }
+
+  syllables = make([]int, sampleVariety)
+  for i := 0; i < sampleVariety; i++ {
+    syllables[i] = dict.MapGet(words[i])
+  }
+
+  cleanSamples(2)
+
 }
 
 func trainNetwork() {
@@ -128,7 +152,7 @@ func trainNetwork() {
   END*/
 
   for train := true; train; train = !endTraining {
-
+    /*
     for i := 0; i < len(corresSet); i++ {
       for j := 0; j < corresSet[i][1]; j++ {
         //fmt.Println("j", j)
@@ -137,9 +161,18 @@ func trainNetwork() {
         sampleVariableThingWeNeedToGetRidOfThis++
       }
     }
-
+    */
+    for i := 0; i < len(organizedWords); i++ {
+      for k := 0; k < repValue; k++ {
+        //alright, so I'm doing this with the assumption sampleVariableThingWeNeedToGetRidOfThis corresponds to the set number, and i*k = the total number of elements per set, where i is every column in organized words, and k is in correspondence with the number of random words to pick.
+        setSample(i,sampleVariableThingWeNeedToGetRidOfThis)
+        evaluateNetwork(sampleVariableThingWeNeedToGetRidOfThis)
+        sampleVariableThingWeNeedToGetRidOfThis++
+      }
+    }
     if generations == 0 {
       calcCost()
+      fmt.Println("cost:",cost)
       firstCost = cost
     }
 
@@ -199,16 +232,14 @@ func evaluateNetwork(graph int) {
 
 func manualTest() {
   input := bufio.NewReader(os.Stdin)
-  inValue1 := 0.0
-  inValue2 := 0.0
+  // inValue1 := 0.0
+  // inValue2 := 0.0
 
-  fmt.Println("Insert input 1")
+  fmt.Println("Insert input")
   in,_ := input.ReadString('\n')
-  inValue1,_ = strconv.ParseFloat(strings.TrimSpace(in), 64)
-  fmt.Println("Insert input 2")
-  in,_ = input.ReadString('\n')
-  inValue2,_ = strconv.ParseFloat(strings.TrimSpace(in), 64)
-  calcInputNeuron(inValue1, inValue2, 0)
+  for i:=0;i<len([]byte(in));i++{
+    calcInputNeuron(i, float64([]byte(in)[i]), 0)
+  }
   evaluateNetwork(0)
 
   for i := 0; i < composition[compLastRow]; i++ {

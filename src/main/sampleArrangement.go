@@ -4,13 +4,25 @@ import (
   //"fmt"
 )
 
-var repetitionSet []bool = make([]bool, len(sampleSet))
-var differentSets int = len(sampleSet)
-var corresSet [][]int
-var corresItem int = 0
 var totalSets int = 0
 
-func cleanSamples() {
+func cleanSamples(sampleType int) {
+  switch sampleType {
+  case 1:
+    twoDiCleanup()
+  case 2:
+    uniformCasesCleanup()
+  case 3:
+    //Nothing yet!
+  }
+}
+
+func twoDiCleanup() {
+
+  var repetitionSet []bool = make([]bool, len(sampleSet))
+  var differentSets int = 0
+  var corresSet [][]int
+  var corresItem int = 0
 
   for i := 0; i < len(repetitionSet); i++ {
     repetitionSet[i] = false
@@ -27,9 +39,12 @@ func cleanSamples() {
       }
     }
   }
-
-  //fmt.Println(differentSets)
-
+  //----------Might need to help me out here-----------
+/*
+  differentSets = len(words/*this can also be the length of the map or some gen. value for number of words*//*)*/
+/*
+  fmt.Println(differentSets)
+*/
   corresSet = make([][]int, differentSets)
 
   for i := 0; i < len(corresSet); i++ {
@@ -77,6 +92,73 @@ func cleanSamples() {
   for i := 0; i < len(sampleSet); i++ {
     fmt.Print(repetitionSet[i])
   }
-  fmt.Println()
-  */
+  fmt.Println() */
+}
+
+func uniformCasesCleanup() {
+
+  maxSyllable := 0
+  varietySyllable := 0
+  var repeatCheck []bool = make([]bool, len(syllables))
+
+  //This figures out how many different syllable counts there are among the words
+  for i := 0; i < len(syllables); i++ {
+    if !repeatCheck[i] {
+
+      varietySyllable++
+
+      for k := i + 1; k < len(syllables); k++ {
+        if syllables[k] == syllables[i] {
+          repeatCheck[k] = true
+        }
+      }
+
+      if syllables[i] > maxSyllable {
+        maxSyllable = syllables[i]
+      }
+    }
+  }
+
+  organizedSyllables = make([]int, varietySyllable)
+  organizedWords = make([][]string, varietySyllable)
+
+  typeSyllables := 0
+  columnTick := 0
+  rowTick := 0
+
+
+  for i := 0; i < len(repeatCheck); i++ {
+    if !repeatCheck[i] {
+      organizedSyllables[columnTick] = syllables[i]
+
+      typeSyllables = 1
+      for k := i + 1; k < len(syllables); k++ {
+        if syllables[k] == syllables[i] {
+          typeSyllables++
+        }
+      }
+
+      organizedWords[columnTick] = make([]string, typeSyllables)
+
+      for k := i; k < len(syllables); k++ {
+        if syllables[k] == syllables[i] {
+          organizedWords[columnTick][rowTick] = words[k]
+          rowTick++
+        }
+      }
+
+      columnTick++
+      rowTick = 0
+      typeSyllables = 0
+    }
+  }
+
+  totalSets = len(organizedSyllables) * repValue
+
+  for i := 0; i < len(nodeGraph); i++ {
+    for j := 0; j < len(nodeGraph[i]); j++ {
+      nodeGraph[i][j].initSums(totalSets)
+    }
+  }
+
 }
