@@ -6,7 +6,7 @@ import (
   // "time"
   "dict"
   "bufio"
-  "runtime"
+  // "runtime"
   // "strconv"
   // "strings"
   // "math/rand"
@@ -17,8 +17,8 @@ import (
 //TODO: Cleanup and commenting
 //TODO: Investigate the error where differences in layer size between layers cause an index out of range
 
-var composition[6]int = [...]int{25, 25, 25, 25, 25, 25}
-var sampleSet [5][2]int = [...][2]int{{1, 2}, {2, 2}, {3, 2}, {4, 2}, {5, 2}} //if you use this make sure to use clean samples 1
+var composition[6]int = [...]int{30, 30, 30, 30, 30, 30}
+var sampleSet [5][2]int = [...][2]int{{1, 20}, {2, 20}, {3, 20}, {4, 20}, {5, 20}} //if you use this make sure to use clean samples 1
 var words []string  //TODO: Figure out what this is doing in initExpected, as it could probably be diced down to there
 var syllables []int //doesn't need to gloabl //TODO: Also figure out what this is as it also doesn't need to bel global but is too weird to touch
 
@@ -33,15 +33,15 @@ var repValue = 5
 //CRITERIA:
 // - The cost remains the same for minCostRepetition generations
 // -
-var minCostRepetition int = 50
+var minCostRepetition int = 3
 
 //The network graph
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
 
 func main() {
-  runtime.GOMAXPROCS(1024)
+  // runtime.GOMAXPROCS(1024)
   //Bring me the power of 1024 suns and an LG MEATS TEXAS STYLED BLT DRIPPING IN SOUTHERN STYLE STEAK SAUCE BROTHER
-
+  fmt.Println(ramp(7,0,10,0,1))
   dict.Initi("/home/wurst/go/src/dict/syllables")
   //shows where the syllables file is
   //TODO: variadic such that me and maxim don't have to swap it back and forth when either want to run it.
@@ -172,7 +172,7 @@ func manualTest() {
   fmt.Println("Insert input")
   in,_ := input.ReadString('\n')
   for i:=0;i<len([]byte(in));i++{
-    calcInputNeuron(i, float64([]byte(in)[i]), 0)
+    calcInputNeuron(i, ramp(float64([]byte(in)[i]),45,122,-1,1), 0)
   }
   evaluateNetwork(0)
 

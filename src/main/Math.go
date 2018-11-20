@@ -31,4 +31,9 @@ func trainingRate(slope float64) float64 {
   return (2 * sigmoidDerivative(slope) + 0.02)
 }
 
-func ramp(input float64) float64 {}
+func ramp(input, lower_lim, upper_lim, desired_lower_lim, desired_upper_lim float64) float64 {
+	crange:=upper_lim-lower_lim
+	wrange:=desired_upper_lim-desired_lower_lim
+	point :=input/crange
+	return point*wrange+desired_lower_lim
+}
