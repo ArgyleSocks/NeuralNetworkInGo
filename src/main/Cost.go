@@ -13,7 +13,7 @@ var compLastRow int = len(composition) - 1 //do we really need this A: replace a
 var expected [][]float64 = make([][]float64, composition[compLastRow])
 var cost float64 //doesn't need to global
 
-func setSample(setIndex int, set int) {
+func setSample(setIndex int, set int) {//finds a random value and puts it into the network
   /*v := reflect.ValueOf(reflect.ValueOf(sampleSet).MapKeys()).Interface().([]string)
   fmt.Println(len(v))
   fmt.Println("setValue", setValue)
@@ -49,7 +49,7 @@ func setSample(setIndex int, set int) {
   }
 }
 
-func initExpected(num int) {
+func initExpected(num int) {//supposed to set expected, but was converted to do the job setSample really does, but since setSample does it, it is obsolete. We still need to set expected.
   //sampleSet=make(map[string]int)
 
   //var word []byte

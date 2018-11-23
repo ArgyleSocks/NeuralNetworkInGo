@@ -70,7 +70,7 @@ func (neur *neuron) calcInputSum(graph int) {
   for i := 0; i < composition[neur.Layer-1]; i++ {
     neur.InputSum[graph] += nodeGraph[neur.Layer-1][i].calcOutputSum(neur.Node, graph)
   }
-  neur.RefInputSum[graph] = sigmoid(neur.InputSum[graph])
+  neur.RefInputSum[graph] = forkCompression(refInputSumType, neur.InputSum[graph])
 }
 
 func (neur *neuron) calcOutputSum(node int, graph int) float64{

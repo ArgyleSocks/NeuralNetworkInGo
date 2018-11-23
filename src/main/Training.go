@@ -49,7 +49,7 @@ func backPropagation(sets int) {
           layerDif = len(composition) - (weightLayer + 1)
 
           //what is LocalDeriv? What is RefInputSum? Explain it ALLLLLLLLLLLLLL
-          nodeGraph[i][j].LocalDeriv = sigmoidDerivative(nodeGraph[i][j].InputSum[setSelect]) * nodeGraph[i-1][k].RefInputSum[m]
+          nodeGraph[i][j].LocalDeriv = forkDerivative(refInputSumType, nodeGraph[i][j].InputSum[setSelect]) * nodeGraph[i-1][k].RefInputSum[m]
           checkNaN(nodeGraph[i][j].LocalDeriv)
           nodeGraph[i][j].TrainRel = true
           calcDerivative(0)
@@ -82,7 +82,7 @@ func calcDerivative(cycleCount int) {
       for j := 0; j < composition[weightLayer + cycleCount]; j++ {
         if nodeGraph[weightLayer + cycleCount - 1][j].TrainRel {
 
-          nodeGraph[weightLayer + cycleCount][i].LocalDeriv += nodeGraph[weightLayer + cycleCount - 1][j].Weights[i] * nodeGraph[weightLayer + cycleCount - 1][j].LocalDeriv * sigmoidDerivative(nodeGraph[weightLayer + cycleCount][i].InputSum[setSelect])
+          nodeGraph[weightLayer + cycleCount][i].LocalDeriv += nodeGraph[weightLayer + cycleCount - 1][j].Weights[i] * nodeGraph[weightLayer + cycleCount - 1][j].LocalDeriv * forkDerivative(refInputSumType, nodeGraph[weightLayer + cycleCount][i].InputSum[setSelect])
 
           //checkNaN(nodeGraph[weightLayer+cycleCount][i].LocalDeriv)
 
@@ -112,8 +112,8 @@ func calcDerivative(cycleCount int) {
 
 func tempResetBackPropagation() {
   //fmt.Println("Temporarily resetting Backpropagation")
-  weightLayer, weightNode, weightSelect, setSelect = 0, 0, 0, 0
-  layerDif = 0
+  weightLayer, weightNode, weightSelect, setSelect, layerDif = 0, 0, 0, 0
+  // layerDif = 0
   costDeriv = 0.0
 
   //fmt.Println("SAMPLE", setSelect)

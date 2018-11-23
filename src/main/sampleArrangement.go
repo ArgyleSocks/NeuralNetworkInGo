@@ -5,23 +5,12 @@ import (
 )
 
 var totalSets int = 0
-
-func cleanSamples(sampleType int) {
-  switch sampleType {
-  case 1:
-    twoDiCleanup()
-  case 2:
-    uniformCasesCleanup()
-  case 3:
-    //Nothing yet!
-  }
-}
+var corresSet [][]int
 
 func twoDiCleanup() {
   // I don't know how to comment this yet, I need to consult ArgyleSocks
   var repetitionSet []bool = make([]bool, len(sampleSet))
   var differentSets int = 0
-  var corresSet [][]int
   var corresItem int = 0
 
   for i := 0; i < len(repetitionSet); i++ {
@@ -160,5 +149,29 @@ func uniformCasesCleanup() {
       nodeGraph[i][j].initSums(totalSets)
     }
   }
+}
 
+func twoDiCycle() {
+  var setCounter := 0
+
+  for i := 0; i < len(corresSet); i++ {
+    for j := 0; j < corresSet[i][1]; j++ {
+      //fmt.Println("j", j)
+      setSample(corresSet[i][0], setCounter)
+      evaluateNetwork(setCounter)
+      setCounter++
+    }
+  }
+}
+
+func uniformCasesCycle() {
+  var setCounter := 0
+
+  for i := 0; i < len(organizedWords); i++ {
+    for k := 0; k < repValue; k++ {
+      setSample(i, setCounter)
+      evaluateNetwork(setCounter)
+      setCounter++
+    }
+  }
 }

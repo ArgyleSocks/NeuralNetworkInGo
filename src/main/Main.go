@@ -22,26 +22,30 @@ var sampleSet [5][2]int = [...][2]int{{1, 20}, {2, 20}, {3, 20}, {4, 20}, {5, 20
 var words []string  //TODO: Figure out what this is doing in initExpected, as it could probably be diced down to there
 var syllables []int //doesn't need to gloabl //TODO: Also figure out what this is as it also doesn't need to bel global but is too weird to touch
 
-
 var organizedWords [][]string
 var organizedSyllables []int
 
 //The number of words of any one syllable count a set should contain
-var repValue = 5
 
 //The number of times the established criteria for a "minimum cost" need to be repeated in a row
-//CRITERIA:
-// - The cost remains the same for minCostRepetition generations
-// -
-var minCostRepetition int = 3
+var minCostRepetition int = 50
+var repValue = 5
+
+var inputType int = 2
+var refInputSumType int = 0
 
 //The network graph
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
 
+const UPPER_LIM = 122
+const LOWER_LIM = 45
+const DESIRED_UPPER_LIM = 1
+const DESIRED_LOWER_LIM = -1
+
 func main() {
   // runtime.GOMAXPROCS(1024)
   //Bring me the power of 1024 suns and an LG MEATS TEXAS STYLED BLT DRIPPING IN SOUTHERN STYLE STEAK SAUCE BROTHER
-  fmt.Println(ramp(7,0,10,0,1))
+  fmt.Println(joshRamp(7,0,10,0,1))
   dict.Initi("/home/wurst/go/src/dict/syllables")
   //shows where the syllables file is
   //TODO: variadic such that me and maxim don't have to swap it back and forth when either want to run it.
@@ -82,13 +86,12 @@ func initi() {
     syllables[i] = len(words[i])
   }
 
-  cleanSamples(2)
+  forkCleanup(inputType)
 
 }
 
 func trainNetwork() {
 
-  var setCounter int = 0
   var firstCost float64 = 0.0
   var lastCost float64 = 0.0
   var generations int = 0
@@ -97,27 +100,8 @@ func trainNetwork() {
 
   for train := true; train; train = !endTraining {
 
-    /*
-    This code is made to correspond with twoDiCleanup, it and the below code should be moved to a fork fucntion like cleanSamples
-    for i := 0; i < len(corresSet); i++ {
-      for j := 0; j < corresSet[i][1]; j++ {
-        //fmt.Println("j", j)
-        setSample(corresSet[i][0], setCounter)
-        evaluateNetwork(setCounter)
-        setCounter++
-      }
-    }
-    */
 
-    for i := 0; i < len(organizedWords); i++ {
-      for k := 0; k < repValue; k++ {
-        setSample(i, setCounter)
-        evaluateNetwork(setCounter)
-        setCounter++
-      }
-    }
-
-    //this code above
+    forkCycle(inputType)
 
     if generations == 0 {
       calcCost()
@@ -140,8 +124,6 @@ func trainNetwork() {
 
     lastCost = cost
     generations++
-
-    setCounter = 0
   }
 
   fmt.Println("gen", generations)
@@ -172,7 +154,7 @@ func manualTest() {
   fmt.Println("Insert input")
   in,_ := input.ReadString('\n')
   for i:=0;i<len([]byte(in));i++{
-    calcInputNeuron(i, ramp(float64([]byte(in)[i]),45,122,-1,1), 0)
+    calcInputNeuron(i, joshRamp(float64([]byte(in)[i]),45,122,-1,1), 0)
   }
   evaluateNetwork(0)
 
