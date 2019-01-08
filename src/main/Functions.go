@@ -2,6 +2,7 @@ package main
 
 import (
   "math"
+  "fmt"
 )
 //Utility? -->
 //Possibly Irrelevant/Needs to be implemented
@@ -30,6 +31,8 @@ func forkRefInputSum(refInputSumType int, input float64) float64 {
   case 4:
     //Nothing yet!
   }
+  fmt.Println("Not a valid input for forkRefInputSum")
+  return 0
 }
 
 func forkDerivative(refInputSumType int, input float64) float64 {
@@ -43,6 +46,9 @@ func forkDerivative(refInputSumType int, input float64) float64 {
   case 4:
     //Nothing yet!
   }
+  fmt.Println("Not a valid input for forkDerivative")
+  return 0
+}
 
 func sigmoid(input float64) float64 {
   return 1 / (1 + (1/(math.Pow(math.E, input))))
@@ -100,8 +106,10 @@ func forkCycle(sampleType int) {
 
   switch sampleType {
   case 1:
+    fmt.Println("You are using two di")
     twoDiCycle()
   case 2:
+    fmt.Println("You are using uniform")
     uniformCasesCycle()
   case 3:
     //Nothing yet!

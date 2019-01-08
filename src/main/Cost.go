@@ -45,7 +45,7 @@ func setSample(setIndex int, set int) {//finds a random value and puts it into t
   //iterate through, set input layer accordingly
   //fmt.Println(k)
   for i := 0 ; i < len(k) ; i++ {
-    calcInputNeuron(i, ramp(float64([]byte(k)[i]),45,122,-1,1), set)
+    calcInputNeuron(i, joshRamp(float64([]byte(k)[i])), set)
   }
 }
 

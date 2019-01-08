@@ -152,7 +152,7 @@ func uniformCasesCleanup() {
 }
 
 func twoDiCycle() {
-  var setCounter := 0
+  var setCounter = 0
 
   for i := 0; i < len(corresSet); i++ {
     for j := 0; j < corresSet[i][1]; j++ {
@@ -165,7 +165,7 @@ func twoDiCycle() {
 }
 
 func uniformCasesCycle() {
-  var setCounter := 0
+  var setCounter = 0
 
   for i := 0; i < len(organizedWords); i++ {
     for k := 0; k < repValue; k++ {

@@ -27,15 +27,12 @@ var layerDif int = 0 //must make local
 var costDeriv float64 //must make local
 //we have a local costDeriv, it's LocalDeriv. So do we need this? if it's referenced anywhere it'll be a pain with paralellization
 
-var stableWeight bool = false //has to be global, more or less //why?
+var stableWeight bool = false
 
 func backPropagation(sets int) {
-  // this does this to this.... please comment.
 
-  //what is stableWeight?
   stableWeight = true
 
-  //part 1. What is part 1?
   for i := len(composition) - 1; i >= 1; i-- { //TODO
     for j := 0; j < composition[i]; j++ { //TODO
       for k := 0; k < composition[i - 1]; k++ { //TODO
@@ -112,7 +109,7 @@ func calcDerivative(cycleCount int) {
 
 func tempResetBackPropagation() {
   //fmt.Println("Temporarily resetting Backpropagation")
-  weightLayer, weightNode, weightSelect, setSelect, layerDif = 0, 0, 0, 0
+  weightLayer, weightNode, weightSelect, setSelect, layerDif = 0, 0, 0, 0, 0
   // layerDif = 0
   costDeriv = 0.0
 

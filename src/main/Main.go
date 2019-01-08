@@ -20,7 +20,7 @@ import (
 var composition[6]int = [...]int{30, 30, 30, 30, 30, 30}
 var sampleSet [5][2]int = [...][2]int{{1, 20}, {2, 20}, {3, 20}, {4, 20}, {5, 20}} //if you use this make sure to use clean samples 1
 var words []string  //TODO: Figure out what this is doing in initExpected, as it could probably be diced down to there
-var syllables []int //doesn't need to gloabl //TODO: Also figure out what this is as it also doesn't need to bel global but is too weird to touch
+var syllables []int //doesn't need to gloabl TODO: Also figure out what this is as it also doesn't need to bel global but is too weird to touch
 
 var organizedWords [][]string
 var organizedSyllables []int
@@ -32,21 +32,20 @@ var minCostRepetition int = 50
 var repValue = 5
 
 var inputType int = 2
-var refInputSumType int = 0
+var refInputSumType int = 1
 
 //The network graph
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
 
-const UPPER_LIM = 122
-const LOWER_LIM = 45
-const DESIRED_UPPER_LIM = 1
-const DESIRED_LOWER_LIM = -1
+const UPPER_LIM = 122.0
+const LOWER_LIM = 45.0
+const DESIRED_UPPER_LIM = 1.0
+const DESIRED_LOWER_LIM = -1.0
 
 func main() {
   // runtime.GOMAXPROCS(1024)
   //Bring me the power of 1024 suns and an LG MEATS TEXAS STYLED BLT DRIPPING IN SOUTHERN STYLE STEAK SAUCE BROTHER
-  fmt.Println(joshRamp(7,0,10,0,1))
-  dict.Initi("/home/wurst/go/src/dict/syllables")
+  dict.Initi("/mnt/c/Users/Maxim/go/src/dict/syllables")
   //shows where the syllables file is
   //TODO: variadic such that me and maxim don't have to swap it back and forth when either want to run it.
 
@@ -124,6 +123,12 @@ func trainNetwork() {
 
     lastCost = cost
     generations++
+
+    if (cost - lastCost) > 0 || cost < 0.5 {
+      fmt.Println(cost-lastCost, cost)
+      manualTest();
+    }
+
   }
 
   fmt.Println("gen", generations)
@@ -154,7 +159,7 @@ func manualTest() {
   fmt.Println("Insert input")
   in,_ := input.ReadString('\n')
   for i:=0;i<len([]byte(in));i++{
-    calcInputNeuron(i, joshRamp(float64([]byte(in)[i]),45,122,-1,1), 0)
+    calcInputNeuron(i, joshRamp(float64([]byte(in)[i])), 0)
   }
   evaluateNetwork(0)
 
