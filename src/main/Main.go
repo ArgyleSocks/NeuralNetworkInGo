@@ -1,11 +1,11 @@
 package main
 
 import (
-  "os"
+  //"os"
   "fmt"
   // "time"
   "dict"
-  "bufio"
+  //"bufio"
   // "runtime"
   // "strconv"
   // "strings"
@@ -17,8 +17,8 @@ import (
 //TODO: Cleanup and commenting
 //TODO: Investigate the error where differences in layer size between layers cause an index out of range
 
-var composition[6]int = [...]int{30, 30, 30, 30, 30, 30}
-var sampleSet [5][2]int = [...][2]int{{1, 20}, {2, 20}, {3, 20}, {4, 20}, {5, 20}} //if you use this make sure to use clean samples 1
+var composition[6]int = [...]int{2, 2, 2, 2, 2, 2}
+var sampleSet [4][2]int = [...][2]int{{1, 20}, {2, 20}, {3, 20}, {4, 20}} //if you use this make sure to use clean samples 1
 var words []string  //TODO: Figure out what this is doing in initExpected, as it could probably be diced down to there
 var syllables []int //doesn't need to gloabl TODO: Also figure out what this is as it also doesn't need to bel global but is too weird to touch
 
@@ -31,8 +31,9 @@ var organizedSyllables []int
 var minCostRepetition int = 50
 var repValue = 5
 
-var inputType int = 2
+var sampleType int = 1
 var refInputSumType int = 1
+var trainingTask int = 1
 
 //The network graph
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
@@ -65,7 +66,7 @@ func main() {
 }
 
 func initi() {
-
+  fmt.Println("Initialization started")
   words = dict.SetOfKeys()
   sampleVariety := len(words)
 
@@ -85,7 +86,7 @@ func initi() {
     syllables[i] = len(words[i])
   }
 
-  forkCleanup(inputType)
+  forkCleanup(sampleType)
 
 }
 
@@ -100,7 +101,7 @@ func trainNetwork() {
   for train := true; train; train = !endTraining {
 
 
-    forkCycle(inputType)
+    forkCycle(sampleType)
 
     if generations == 0 {
       calcCost()
@@ -153,14 +154,17 @@ func evaluateNetwork(graph int) {
 
 func manualTest() {
   input := bufio.NewReader(os.Stdin)
-  // inValue1 := 0.0
-  // inValue2 := 0.0
+
+  inValue1 := 0.0
+  inValue2 := 0.0
 
   fmt.Println("Insert input")
   in,_ := input.ReadString('\n')
-  for i:=0;i<len([]byte(in));i++{
+  for i := 0; i < len([]byte(in)); i++{
     calcInputNeuron(i, joshRamp(float64([]byte(in)[i])), 0)
   }
+
+  //uses the nodeGraph at graph 0
   evaluateNetwork(0)
 
   for i := 0; i < composition[compLastRow]; i++ {

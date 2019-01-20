@@ -9,22 +9,22 @@ import (
 //composition: A 1 dimensional array where [] is layer and the values are the number of nodes in [] layer
 //composition []int = {300, 900, 100, 50, 15} I think this was it
 
-/* implement stop critera:
+/* implement stop criteria:
 All derivative values must be within 0.05 of 0
 */
 
 //trainingRate was 0.02
 
-var weightLayer  int = 0//TODO: REVAMP THIS IN CORRESPONDENCE WITH THE BELOW
+var weightLayer  int = 0//BIG TODO: REVAMP THIS TO BE LOCAL
 var weightNode   int = 0//And this
 var weightSelect int = 0//And this
 var setSelect    int = 0//And this
 
 var changeThreshold float64 = 5 * math.Pow(10, -3)
-var layerDif int = 0 //must make local
+var layerDif int = 0 //BIG TODO: must make local
 
 //HMMMMMM
-var costDeriv float64 //must make local
+var costDeriv float64 //BIG TODO: must make local
 //we have a local costDeriv, it's LocalDeriv. So do we need this? if it's referenced anywhere it'll be a pain with paralellization
 
 var stableWeight bool = false
@@ -33,7 +33,7 @@ func backPropagation(sets int) {
 
   stableWeight = true
 
-  for i := len(composition) - 1; i >= 1; i-- { //TODO
+  for i := len(composition) - 1; i >= 1; i-- { //BIG TODO: Move to an external function and have it pass values to backPropagation itself
     for j := 0; j < composition[i]; j++ { //TODO
       for k := 0; k < composition[i - 1]; k++ { //TODO
         for m := 0; m < sets; m++ { //TODO
@@ -137,9 +137,19 @@ func tempResetBackPropagation() {
 }
 //mention the difference between tempReset and reset
 func resetBackPropagation() {
+  /*for i := 0; i < len(composition) - 1; i++ {
+    for j := 0; j < composition[i]; j++ {
+      if !(i == compLastRow) {
+        for k := 0; k < composition[i + 1]; k++ {
+          nodeGraph[i][j].WeightsChange[k] = 0
+        }
+      }
+    }
+  }*/
+
   for i := 0; i < len(composition) - 1; i++ {
     for j := 0; j < composition[i]; j++ {
-      if !(i == (len(composition) - 1)) {
+      if !(i == compLastRow) {
         for k := 0; k < composition[i + 1]; k++ {
           nodeGraph[i][j].WeightsChange[k] = 0
         }

@@ -1,7 +1,7 @@
 package main
 
 import (
-  //"fmt"
+  "fmt"
 )
 
 var totalSets int = 0
@@ -19,11 +19,11 @@ func twoDiCleanup() {
 
   for i := 0; i < len(sampleSet); i++ {
     if !repetitionSet[i] {
+      differentSets++
       for j := i + 1; j < len(sampleSet); j++ {
         if (sampleSet[j][0] == sampleSet[i][0]) {
           repetitionSet[j] = true
           sampleSet[i][1] += sampleSet[j][1]
-          differentSets--
         }
       }
     }
@@ -31,9 +31,9 @@ func twoDiCleanup() {
   //----------Might need to help me out here-----------
 /*
   differentSets = len(words/*this can also be the length of the map or some gen. value for number of words*//*)*/
-/*
+
   fmt.Println(differentSets)
-*/
+
   corresSet = make([][]int, differentSets)
 
   for i := 0; i < len(corresSet); i++ {
@@ -42,6 +42,7 @@ func twoDiCleanup() {
 
   for i := 0; i < len(sampleSet); i++ {
     if !repetitionSet[i] {
+      fmt.Println("len(corresSet):", len(corresSet), "corresItem:", corresItem, "i:", i, "len(sampleSet):", len(sampleSet), "len(sampleSet[i]):", len(sampleSet[i]), "sampleSet[i]:", sampleSet[i])
       corresSet[corresItem][0] = sampleSet[i][0]
       corresSet[corresItem][1] = sampleSet[i][1]
 
@@ -157,7 +158,7 @@ func twoDiCycle() {
   for i := 0; i < len(corresSet); i++ {
     for j := 0; j < corresSet[i][1]; j++ {
       //fmt.Println("j", j)
-      setSample(corresSet[i][0], setCounter)
+      forkTrainingTask(trainingTask, corresSet[i][0], setCounter)
       evaluateNetwork(setCounter)
       setCounter++
     }
@@ -169,7 +170,7 @@ func uniformCasesCycle() {
 
   for i := 0; i < len(organizedWords); i++ {
     for k := 0; k < repValue; k++ {
-      setSample(i, setCounter)
+      forkTrainingTask(trainingTask, i, setCounter)
       evaluateNetwork(setCounter)
       setCounter++
     }

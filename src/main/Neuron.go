@@ -78,7 +78,9 @@ func (neur *neuron) calcOutputSum(node int, graph int) float64{
   return neur.OutputSum[graph]
 }
 
-func calcInputNeuron(index int, input float64, set int) {
+func calcInputNeuron(input []float64, set int) {
   //fmt.Println(len(nodeGraph[0][index].RefInputSum),set,index)
-  nodeGraph[0][index].RefInputSum[set] = input
+  for i, e := range input {
+    nodeGraph[0][i].RefInputSum[set] = e
+  }
 }

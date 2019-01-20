@@ -6,6 +6,17 @@ import (
 )
 //Utility? -->
 //Possibly Irrelevant/Needs to be implemented
+
+func calcCost() {
+  cost = 0
+  for i := 0; i < len(expected); i++ {
+    for j := 0; j < len(expected[0]); j++ {
+      cost += math.Pow((nodeGraph[compLastRow][i].RefInputSum[j] - expected[i][j]), 2)
+      checkNaN(cost)
+    }
+  }
+}
+
 func nodeInputSum(layer int, node int, set int) float64 {
   return nodeGraph[layer][node].InputSum[set]
 }
@@ -103,7 +114,6 @@ func forkCleanup(sampleType int) {
 }
 
 func forkCycle(sampleType int) {
-
   switch sampleType {
   case 1:
     fmt.Println("You are using two di")
@@ -114,4 +124,69 @@ func forkCycle(sampleType int) {
   case 3:
     //Nothing yet!
   }
+}
+
+func forkTrainingTask(trainingTask int, set int, setIndex int) {
+  switch trainingTask {
+  case 1:
+    if sampleType == 1 {
+      logicPuzzleTraining(set, setIndex)
+    } else {
+      fmt.Println("Invalid sampleType for this trainingTask")
+    }
+  case 2:
+    if sampleType == 2 {
+
+    } else {
+      fmt.Println("Invalid sampleType for this trainingTask")
+    }
+  case 3:
+    if sampleType == 2 {
+
+    } else {
+      fmt.Println("Invalid sampleType for this trainingTask")
+    }
+  case 4:
+    //Nothing yet!
+  }
+}
+
+func logicPuzzleTraining(set int, setIndex int) {
+  switch setIndex {
+  case 1:
+    var wanted []float64 = []float64{0,0}//instead of setting these here, reference variables from a TODO training object which stores data/expected, trainingRate, etc. Allows for modularity.
+    var input []float64 = []float64{0,0}
+    calcInputNeuron(input, set)//change to match initExpected's arguments
+    initExpected(wanted, set)
+  case 2:
+    var wanted []float64 = []float64{1,0}
+    var input []float64 = []float64{1,0}
+    calcInputNeuron(input, set)
+    initExpected(wanted, set)
+  case 3:
+    var wanted []float64 = []float64{0,1}
+    var input []float64 = []float64{0,1}
+    calcInputNeuron(input, set)
+    initExpected(wanted, set)
+  case 4:
+    var wanted []float64 = []float64{0,0}
+    var input []float64 = []float64{1,1}
+    calcInputNeuron(input, set)
+    initExpected(wanted, set)
+  }
+}
+
+func letterCountTraining(set int, setIndex int) {
+  /*s1 := rand.NewSource(int64(time.Now().Nanosecond()))
+  random := rand.New(s1)
+  //index finding
+  k := organizedWords[setIndex][int(random.Float64()*float64(len(organizedWords[setIndex])))]
+  //iterate through, set input layer accordingly
+  for i := 0 ; i < len(k) ; i++ {
+    calcInputNeuron(i, joshRamp(float64([]byte(k)[i])), set)
+  }// TODO: implement calcInputNeuron/initExpected*/
+}
+
+func arithmeticTraining(set int, setIndex int) {
+
 }
