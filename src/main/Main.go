@@ -46,7 +46,7 @@ const DESIRED_LOWER_LIM = -1.0
 func main() {
   // runtime.GOMAXPROCS(1024)
   //Bring me the power of 1024 suns and an LG MEATS TEXAS STYLED BLT DRIPPING IN SOUTHERN STYLE STEAK SAUCE BROTHER
-  dict.Initi("/home/wurst/go/src/dict/syllables")
+  dict.Initi("../../dat/syllables")
   //shows where the syllables file is
   //TODO: variadic such that me and maxim don't have to swap it back and forth when either want to run it.
 

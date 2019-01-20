@@ -2,6 +2,7 @@ package main
 
 import (
   "strconv"
+  "strings"
   "bufio"
   "math"
   "fmt"
@@ -231,13 +232,17 @@ func manualTestAsciiInput() {
 func manualTestFloatInput() {
   input := bufio.NewReader(os.Stdin)
   fmt.Println("Input float/int values on separated solely by commas:")
-  inputArr := make([]float64,0)
+  inputArr := make([]float64, 0)
   for i, _ := range nodeGraph[0] {
-    fmt.Println(i,"th input")
-    string,_ := input.ReadString('\n')
-    value,_ := strconv.ParseFloat(string, 64)
+    fmt.Println((i + 1),"th input")
+    string, err := input.ReadString('\n')
+    fmt.Println(err)
+    value, err := strconv.ParseFloat(strings.Split(string,"\n")[0], 64)
+    fmt.Println(err)
     inputArr = append(inputArr,value)
   }
+
+  fmt.Println(inputArr)
   calcInputNeuron(inputArr, 0)
 
   evaluateNetwork(0)
