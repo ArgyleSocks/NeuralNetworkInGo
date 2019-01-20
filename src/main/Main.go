@@ -46,7 +46,7 @@ const DESIRED_LOWER_LIM = -1.0
 func main() {
   // runtime.GOMAXPROCS(1024)
   //Bring me the power of 1024 suns and an LG MEATS TEXAS STYLED BLT DRIPPING IN SOUTHERN STYLE STEAK SAUCE BROTHER
-  dict.Initi("/mnt/c/Users/Maxim/go/src/dict/syllables")
+  dict.Initi("/home/wurst/go/src/dict/syllables")
   //shows where the syllables file is
   //TODO: variadic such that me and maxim don't have to swap it back and forth when either want to run it.
 
@@ -62,7 +62,7 @@ func main() {
 
   trainNetwork()
   cleanNetwork()
-  manualTest()
+  forkManualTest(trainingTask)
 }
 
 func initi() {
@@ -127,7 +127,6 @@ func trainNetwork() {
 
     if (cost - lastCost) > 0 || cost < 0.5 {
       fmt.Println(cost-lastCost, cost)
-      manualTest();
     }
 
   }
@@ -150,28 +149,6 @@ func evaluateNetwork(graph int) {
       nodeGraph[i][j].calcInputSum(graph)
     }
   }
-}
-
-func manualTest() {
-  input := bufio.NewReader(os.Stdin)
-
-  inValue1 := 0.0
-  inValue2 := 0.0
-
-  fmt.Println("Insert input")
-  in,_ := input.ReadString('\n')
-  for i := 0; i < len([]byte(in)); i++{
-    calcInputNeuron(i, joshRamp(float64([]byte(in)[i])), 0)
-  }
-
-  //uses the nodeGraph at graph 0
-  evaluateNetwork(0)
-
-  for i := 0; i < composition[compLastRow]; i++ {
-    fmt.Println("Output", (i + 1), ":", nodeGraph[compLastRow][i].RefInputSum[0])
-  }
-
-  manualTest()
 }
 
 func cleanNetwork() {

@@ -1,8 +1,11 @@
 package main
 
 import (
+  "strconv"
+  "bufio"
   "math"
   "fmt"
+  "os"
 )
 //Utility? -->
 //Possibly Irrelevant/Needs to be implemented
@@ -136,13 +139,13 @@ func forkTrainingTask(trainingTask int, set int, setIndex int) {
     }
   case 2:
     if sampleType == 2 {
-
+      //WIP
     } else {
       fmt.Println("Invalid sampleType for this trainingTask")
     }
   case 3:
     if sampleType == 2 {
-
+      //WIP
     } else {
       fmt.Println("Invalid sampleType for this trainingTask")
     }
@@ -188,5 +191,60 @@ func letterCountTraining(set int, setIndex int) {
 }
 
 func arithmeticTraining(set int, setIndex int) {
+  //Nothing Yet!
+}
 
+func forkManualTest(trainingTask int) {
+  switch trainingTask {
+  case 1:
+    manualTestFloatInput();
+  case 2:
+    manualTestAsciiInput();
+  case 3:
+    //WIP
+  case 4:
+    //Nothing Yet!
+  }
+
+}
+
+func manualTestAsciiInput() {
+  input := bufio.NewReader(os.Stdin)
+
+  fmt.Println("Insert input string:")
+  in,_ := input.ReadString('\n')
+  inputArr:=make([]float64,0)
+  for i := 0; i < len([]byte(in)); i++{
+    inputArr=append(inputArr,joshRamp(float64([]byte(in)[i])))
+  }
+  calcInputNeuron(inputArr, 0)
+  //uses the nodeGraph at graph 0
+  evaluateNetwork(0)
+
+  for i := 0; i < composition[compLastRow]; i++ {
+    fmt.Println("Output", (i + 1), ":", nodeGraph[compLastRow][i].RefInputSum[0])
+  }
+
+  manualTestAsciiInput()
+}
+
+func manualTestFloatInput() {
+  input := bufio.NewReader(os.Stdin)
+  fmt.Println("Input float/int values on separated solely by commas:")
+  inputArr := make([]float64,0)
+  for i, _ := range nodeGraph[0] {
+    fmt.Println(i,"th input")
+    string,_ := input.ReadString('\n')
+    value,_ := strconv.ParseFloat(string, 64)
+    inputArr = append(inputArr,value)
+  }
+  calcInputNeuron(inputArr, 0)
+
+  evaluateNetwork(0)
+
+  for i := 0; i < composition[compLastRow]; i++ {
+    fmt.Println("Output", (i + 1), ":", nodeGraph[compLastRow][i].RefInputSum[0])
+  }
+
+  manualTestFloatInput()
 }
