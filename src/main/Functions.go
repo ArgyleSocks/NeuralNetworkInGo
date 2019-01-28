@@ -187,14 +187,24 @@ func logicPuzzleTraining(setType int, setIndex int) {
   }
 }
 
-func letterCountTraining(set int, setIndex int) {
+func letterCountTraining(setType int, setIndex int) {
   s1 := rand.NewSource(int64(time.Now().Nanosecond()))
   random := rand.New(s1)
   //index finding
-  k := organizedWords[setIndex][int(random.Float64()*float64(len(organizedWords[setIndex])))]
+  k := organizedWords[setType][int(random.Float64()*(float64(len(organizedWords[setIndex])))]
+  kByteArray := []byte(k)
+  kFloatArray := make([]float64, composition[0])
+
+  for i := 0; i < composition[0]; i++ {
+    if i < len(kByteArray) {
+      kFloatArray[i] = joshRamp(kByteArray[i])
+    } else {
+      kFloatArray[i] = 0
+    }
+  }
   //iterate through, set input layer accordingly
   for i := 0 ; i < len(k) ; i++ {
-    calcInputNeuron()
+    calcInputNeuron(, setIndex)
   }// TODO: implement calcInputNeuron/initExpected*/
 }
 

@@ -17,7 +17,7 @@ import (
 //TODO: Cleanup and commenting
 //TODO: Investigate the error where differences in layer size between layers cause an index out of range
 
-var composition[5]int = [...]int{30, 20, 20, 20, 30}
+var composition[5]int = [...]int{2, 3, 3, 3, 2}
 var sampleSet [4][2]int = [...][2]int{{1, 1}, {2, 1}, {3, 1}, {4, 1}}//, {2, 20}, {3, 20}, {4, 20}} //if you use this make sure to use clean samples 1
 var words []string  //TODO: Figure out what this is doing in initExpected, as it could probably be diced down to there
 var syllables []int //doesn't need to gloabl TODO: Also figure out what this is as it also doesn't need to bel global but is too weird to touch
@@ -31,9 +31,9 @@ var organizedSyllables []int
 var minCostRepetition int = 50
 var repValue = 5
 
-var sampleType int = 2
+var sampleType int = 1
 var refInputSumType int = 1
-var trainingTask int = 2
+var trainingTask int = 1
 
 //The network graph
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
@@ -41,7 +41,7 @@ var nodeGraph [][]neuron = make([][]neuron, len(composition))
 const UPPER_LIM = 122.0
 const LOWER_LIM = 45.0
 const DESIRED_UPPER_LIM = 1.0
-const DESIRED_LOWER_LIM = -1.0
+const DESIRED_LOWER_LIM = 0.0
 
 func main() {
   // runtime.GOMAXPROCS(1024)
@@ -80,10 +80,10 @@ func initi() {
     }
   }
 
-  wordLengths = make([]int, letterCountSampleVariety)
+  wordLengths := make([]int, letterCountSampleVariety)
   for i := 0; i < letterCountSampleVariety; i++ {
     //syllables[i] = dict.MapGet(words[i])
-    worldLengths[i] = len(words[i])
+    wordLengths[i] = len(words[i])
   }
 
   forkCleanup(sampleType)
