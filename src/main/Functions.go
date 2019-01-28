@@ -1,10 +1,12 @@
 package main
 
 import (
+  "math/rand"
   "strconv"
   "strings"
   "bufio"
   "math"
+  "time"
   "fmt"
   "os"
 )
@@ -145,7 +147,7 @@ func forkTrainingTask(trainingTask int, setType int, setIndex int) {
     }
   case 2:
     if sampleType == 2 {
-      //WIP
+      letterCountTraining(setType, setIndex)
     } else {
       fmt.Println("Invalid sampleType for this trainingTask")
     }
@@ -186,13 +188,13 @@ func logicPuzzleTraining(setType int, setIndex int) {
 }
 
 func letterCountTraining(set int, setIndex int) {
-  /*s1 := rand.NewSource(int64(time.Now().Nanosecond()))
+  s1 := rand.NewSource(int64(time.Now().Nanosecond()))
   random := rand.New(s1)
   //index finding
   k := organizedWords[setIndex][int(random.Float64()*float64(len(organizedWords[setIndex])))]
   //iterate through, set input layer accordingly
   for i := 0 ; i < len(k) ; i++ {
-    calcInputNeuron(i, joshRamp(float64([]byte(k)[i])), set)
+    calcInputNeuron()
   }// TODO: implement calcInputNeuron/initExpected*/
 }
 
