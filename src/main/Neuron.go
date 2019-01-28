@@ -67,8 +67,8 @@ func (neur *neuron) calcInputSum(graph int) {
 
   neur.InputSum[graph] = 0
 
-  for i := 0; i < composition[neur.Layer-1]; i++ {
-    neur.InputSum[graph] += nodeGraph[neur.Layer-1][i].calcOutputSum(neur.Node, graph)
+  for i := 0; i < composition[neur.Layer - 1]; i++ {
+    neur.InputSum[graph] += nodeGraph[neur.Layer - 1][i].calcOutputSum(neur.Node, graph)
   }
   neur.RefInputSum[graph] = forkRefInputSum(refInputSumType, neur.InputSum[graph])
 }

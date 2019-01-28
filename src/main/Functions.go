@@ -11,11 +11,16 @@ import (
 //Utility? -->
 //Possibly Irrelevant/Needs to be implemented
 
-func calcCost() {
+func calcCost(manual bool) {
   cost = 0
   for i := 0; i < len(expected); i++ {
-    for j := 0; j < len(expected[0]); j++ {
-      cost += math.Pow((nodeGraph[compLastRow][i].RefInputSum[j] - expected[i][j]), 2)
+    if !manual {
+      for j := 0; j < len(expected[0]); j++ {
+        cost += math.Pow((nodeGraph[compLastRow][i].RefInputSum[j] - expected[i][j]), 2)
+        checkNaN(cost)
+      }
+    } else {
+      cost += math.Pow((nodeGraph[compLastRow][i].RefInputSum[0] - expected[i][0]), 2)
       checkNaN(cost)
     }
   }
@@ -231,8 +236,10 @@ func manualTestAsciiInput() {
 
 func manualTestFloatInput() {
   input := bufio.NewReader(os.Stdin)
+  expectedInput := bufio.NewReader(os.Stdin)
   fmt.Println("Input float/int values on separated solely by commas:")
   inputArr := make([]float64, 0)
+  expectedArr := make([]float64, 0)
   for i, _ := range nodeGraph[0] {
     fmt.Println((i + 1),"th input")
     string, err := input.ReadString('\n')
@@ -242,13 +249,26 @@ func manualTestFloatInput() {
     inputArr = append(inputArr,value)
   }
 
+  fmt.Println("Input the expected")
+  for i, _ := range expected {
+    fmt.Println((i + 1),"th expected")
+    string, err := expectedInput.ReadString('\n')
+    fmt.Println(err)
+    value, err := strconv.ParseFloat(strings.Split(string,"\n")[0], 64)
+    fmt.Println(err)
+    expectedArr = append(expectedArr, value)
+  }
+
+  initExpected(expectedArr, 0)
   fmt.Println(inputArr)
   calcInputNeuron(inputArr, 0)
 
   evaluateNetwork(0)
+  calcCost(true)
+  fmt.Println("Cost:", cost)
 
   for i := 0; i < composition[compLastRow]; i++ {
-    fmt.Println("Output", (i + 1), ":", nodeGraph[compLastRow][i].RefInputSum[0])
+    fmt.Println("Output", (i + 1), ":", nodeGraph[compLastRow][i].RefInputSum[0], ", Expected:", expected[i][0])
   }
 
   manualTestFloatInput()

@@ -15,6 +15,7 @@ var cost float64 //doesn't need to global
 
 func initExpected(expectedResult []float64, set int) {//supposed to set expected, but was converted to do the job setSample really does, but since setSample does it, it is obsolete. We still need to set expected.
   for i, e := range expectedResult {
+    expected[i][set] = 0
     expected[i][set] = e
   }
   //expected=append(expected,expectedSampleResult)  OBSOLETE

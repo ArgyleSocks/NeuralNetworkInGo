@@ -38,17 +38,20 @@ func backPropagation(sets int) {
       for k := 0; k < composition[i - 1]; k++ { //TODO
         for m := 0; m < sets; m++ { //TODO
 
-          weightLayer = i
-          weightNode = j
-          weightSelect = k
-          setSelect = m
+          weightLayer = i //layer in which affected node is found
+          weightNode = j //node in weightLayer
+          weightSelect = k //node from prior layer which possess relevant weight
+          setSelect = m //relevant set
+
+          //fmt.Println("weightLayer:", weightLayer, "weightNode:", weightNode, "weightSelect:", weightSelect)
 
           layerDif = len(composition) - (weightLayer + 1)
 
           //what is LocalDeriv? What is RefInputSum? Explain it ALLLLLLLLLLLLLL
           nodeGraph[i][j].LocalDeriv = forkDerivative(refInputSumType, nodeGraph[i][j].InputSum[setSelect]) * nodeGraph[i-1][k].RefInputSum[m]
           checkNaN(nodeGraph[i][j].LocalDeriv)
-          nodeGraph[i][j].TrainRel = true
+          nodeGraph[i - 1][weightSelect].TrainRel = true
+          //fmt.Println(i, j, "init TrainRel")
           calcDerivative(0)
           tempResetBackPropagation()
         }
@@ -77,14 +80,16 @@ func calcDerivative(cycleCount int) {
   if cycleCount <= layerDif {
     for i := 0; i < composition[weightLayer + cycleCount - 1]; i++ {
       for j := 0; j < composition[weightLayer + cycleCount]; j++ {
-        if nodeGraph[weightLayer + cycleCount - 1][j].TrainRel {
+        //fmt.Println("checking", (weightLayer + cycleCount - 1), j, "for TrainRel:", nodeGraph[weightLayer + cycleCount - 1][j].TrainRel)
+        if nodeGraph[weightLayer + cycleCount - 1][i /*j*/].TrainRel { //Issue here, assumes each layer has same length
 
-          nodeGraph[weightLayer + cycleCount][i].LocalDeriv += nodeGraph[weightLayer + cycleCount - 1][j].Weights[i] * nodeGraph[weightLayer + cycleCount - 1][j].LocalDeriv * forkDerivative(refInputSumType, nodeGraph[weightLayer + cycleCount][i].InputSum[setSelect])
+          nodeGraph[weightLayer + cycleCount][j /*i*/].LocalDeriv += nodeGraph[weightLayer + cycleCount - 1][i /*j*/].Weights[j] * nodeGraph[weightLayer + cycleCount - 1][i /*j*/].LocalDeriv * forkDerivative(refInputSumType, nodeGraph[weightLayer + cycleCount][j].InputSum[setSelect])
+          //
 
           //checkNaN(nodeGraph[weightLayer+cycleCount][i].LocalDeriv)
 
           //checkNaN(nodeGraph[weightLayer+cycleCount-1][i].LocalDeriv)
-          nodeGraph[weightLayer + cycleCount][i].TrainRel = true
+          nodeGraph[weightLayer + cycleCount][j].TrainRel = true
         }
       }
     }

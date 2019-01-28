@@ -17,8 +17,8 @@ import (
 //TODO: Cleanup and commenting
 //TODO: Investigate the error where differences in layer size between layers cause an index out of range
 
-var composition[6]int = [...]int{2, 2, 2, 2, 2, 2}
-var sampleSet [4][2]int = [...][2]int{{1, 20}, {2, 20}, {3, 20}, {4, 20}} //if you use this make sure to use clean samples 1
+var composition[6]int = [...]int{2, 3, 2, 2, 2, 2}
+var sampleSet [4][2]int = [...][2]int{{1, 1}, {2, 1}, {3, 1}, {4, 1}}//, {2, 20}, {3, 20}, {4, 20}} //if you use this make sure to use clean samples 1
 var words []string  //TODO: Figure out what this is doing in initExpected, as it could probably be diced down to there
 var syllables []int //doesn't need to gloabl TODO: Also figure out what this is as it also doesn't need to bel global but is too weird to touch
 
@@ -104,13 +104,13 @@ func trainNetwork() {
     forkCycle(sampleType)
 
     if generations == 0 {
-      calcCost()
+      calcCost(false)
       fmt.Println("cost:",cost)
       firstCost = cost
     }
 
     backPropagation(totalSets)
-    calcCost()
+    calcCost(false)
     if (cost == lastCost) || stableWeight {
       minCostCheck++
       if minCostCheck >= minCostRepetition {
@@ -133,7 +133,7 @@ func trainNetwork() {
 
   fmt.Println("gen", generations)
 
-  calcCost()
+  calcCost(false)
 
   fmt.Println("First cost:", firstCost, "\b, Last cost:", lastCost)
   fmt.Println("Change in cost:", (lastCost - firstCost) )
