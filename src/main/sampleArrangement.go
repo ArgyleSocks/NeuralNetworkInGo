@@ -32,7 +32,7 @@ func twoDiCleanup() {
 /*
   differentSets = len(words/*this can also be the length of the map or some gen. value for number of words*//*)*/
 
-  fmt.Println(differentSets)
+  fmt.Println("DifferentSets:", differentSets)
 
   corresSet = make([][]int, differentSets)
 
@@ -154,7 +154,7 @@ func uniformCasesCleanup() {
 
 func twoDiCycle() {
   var setCounter = 0
-
+  fmt.Println(corresSet)
   for i := 0; i < len(corresSet); i++ {
     for j := 0; j < corresSet[i][1]; j++ {
       //fmt.Println("j", j)

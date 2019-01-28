@@ -135,11 +135,11 @@ func forkCycle(sampleType int) {
   }
 }
 
-func forkTrainingTask(trainingTask int, set int, setIndex int) {
+func forkTrainingTask(trainingTask int, setType int, setIndex int) {
   switch trainingTask {
   case 1:
     if sampleType == 1 {
-      logicPuzzleTraining(set, setIndex)
+      logicPuzzleTraining(setType, setIndex)
     } else {
       fmt.Println("Invalid sampleType for this trainingTask")
     }
@@ -160,28 +160,28 @@ func forkTrainingTask(trainingTask int, set int, setIndex int) {
   }
 }
 
-func logicPuzzleTraining(set int, setIndex int) {
-  switch setIndex {
+func logicPuzzleTraining(setType int, setIndex int) {
+  switch setType {
   case 1:
     var wanted []float64 = []float64{0,0}//instead of setting these here, reference variables from a TODO training object which stores data/expected, trainingRate, etc. Allows for modularity.
     var input []float64 = []float64{0,0}
-    calcInputNeuron(input, set)//change to match initExpected's arguments
-    initExpected(wanted, set)
+    calcInputNeuron(input, setIndex)//change to match initExpected's arguments
+    initExpected(wanted, setIndex)
   case 2:
     var wanted []float64 = []float64{1,0}
     var input []float64 = []float64{1,0}
-    calcInputNeuron(input, set)
-    initExpected(wanted, set)
+    calcInputNeuron(input, setIndex)
+    initExpected(wanted, setIndex)
   case 3:
     var wanted []float64 = []float64{0,1}
     var input []float64 = []float64{0,1}
-    calcInputNeuron(input, set)
-    initExpected(wanted, set)
+    calcInputNeuron(input, setIndex)
+    initExpected(wanted, setIndex)
   case 4:
     var wanted []float64 = []float64{0,0}
     var input []float64 = []float64{1,1}
-    calcInputNeuron(input, set)
-    initExpected(wanted, set)
+    calcInputNeuron(input, setIndex)
+    initExpected(wanted, setIndex)
   }
 }
 
