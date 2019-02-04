@@ -51,15 +51,11 @@ func (neur *neuron) initNeuron(layer, node int) {
   }
 }
 
-func (neur *neuron) initSums(sets int) {
+func (neur *neuron) initSums(sets int) { //has been replaced in InitNetworkVar
   //fmt.Println("initSums")
   neur.RefInputSum = make([]float64, sets)
   neur.InputSum = make([]float64, sets)
   neur.OutputSum = make([]float64, sets)
-
-  for i := 0; i < composition[compLastRow]; i++ { //need to move this, like this really isn't supposed to be here
-    expected[i] = make([]float64, sets)
-  }
 }
 
 func (neur *neuron) calcInputSum(graph int) {

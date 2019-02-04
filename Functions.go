@@ -101,15 +101,15 @@ func rampDerivative(input float64) float64 {
 }
 
 func joshRamp(input float64) float64 {
-	currentRange := UPPER_LIM - LOWER_LIM
-	desiredRange := DESIRED_UPPER_LIM - DESIRED_LOWER_LIM
+	currentRange := UPPER_ASCII_LIM - LOWER_ASCII_LIM
+	desiredRange := DESIRED_UPPER_INPUT_LIM - DESIRED_LOWER_INPUT_LIM
 	point := input/currentRange
-	return point * desiredRange + DESIRED_LOWER_LIM
+	return point * desiredRange + DESIRED_LOWER_INPUT_LIM
 }
 
 func joshRampDerivative(input float64) float64 {
-  currentRange := UPPER_LIM - LOWER_LIM
-	desiredRange := DESIRED_UPPER_LIM - DESIRED_LOWER_LIM
+  currentRange := UPPER_ASCII_LIM - LOWER_ASCII_LIM
+	desiredRange := DESIRED_UPPER_INPUT_LIM - DESIRED_LOWER_INPUT_LIM
   return desiredRange / currentRange
 }
 

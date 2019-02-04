@@ -4,17 +4,18 @@ import (
   "fmt"
 )
 
-var LPComposition [6] = [...]{2, 3, 3, 3, 3, 2}
-var trainingSet1 [4][2]int = [...]{{1, 1}, {2, 1}, {3, 1}, {4, 1}}
+var LPComposition []int = []int{2, 3, 3, 3, 3, 2}
+var trainingSet1 [][2]int = [][2]int{{0, 1}, {1, 1}, {2, 1}, {3, 1}}
 //The 1st index of trainingSet will correspond to a set index in inputDataSet.
 //The 2nd index will correspond to the number of times it should be repeated.
-var inputDataSet1 [4][2]float64 = [...]{{0, 0}, {1, 0}, {0, 1}, {1, 1}}
-var expectedDataSet1 [4][2]float64 = [...]{{0, 0}, {0, 1}, {1, 0}, {0, 0}}
+//he even wrote it right here... how could I forget? 🎸🎸🎸🎸🎸🎸🎸♭
+var inputDataSet1 [][]float64 = [][]float64{{0, 0}, {1, 0}, {0, 1}, {1, 1}}
+var expectedDataSet1 [][]float64 = [][]float64{{0, 0}, {0, 1}, {1, 0}, {0, 0}}
 
 func main() {
-  fmt.println("Program Started")
+  fmt.Println("Program Started")
   InitNetworkVar(LPComposition, inputDataSet1, expectedDataSet1, trainingSet1)
-
+  NeuralNetworkExec()
 }
 //possibly useful in future? yeah no don't worry about it; anything
 //associated with dict/letterCount will be useful. Just rn it should be commented to narrow our focus
