@@ -15,7 +15,7 @@ var costFile,_=os.OpenFile("costBuffer.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC
 func checkNaN(val float64) {
 	if math.IsNaN(val) {
 		fmt.Fprintf(os.Stderr, "An NaN: %s\n", val)
-        os.Exit(1)
+        panic("reeee")
 	}
 }
 
