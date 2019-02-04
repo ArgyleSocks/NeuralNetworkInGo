@@ -152,6 +152,24 @@ func uniformCasesCleanup() {
   }
 }
 
+func bigBoiCycle(trainingSet []float64, inputDataSet, wanted [][]float64) {
+/*from the "developer" side, by which I mean people who do not see this library's internals,
+one may call this with two 2d arrays -- every index in such array corresponds to a sample,
+and the second dimension allows for multiple inputs/outputs.
+Make sure that all samples are formatted to the correct length.*/
+  if len(data)!=len(expected) {
+    panic(fmt.Sprintf("Different Data and Expected lengths"))
+  }
+  setCounter := 0
+  for i := 0; i < len(trainingSet); i++ {
+    for j := 0; j < trainingSet[i]; j++ {
+      calcInputNeuron(inputDataSet[i],setIndex)//it should contain a for loop cycling through trainigSet
+      initExpected(wanted[i],setIndex)
+      setCounter++
+    }//🎸
+  } // ^^^ why do I feel like this is weird spacing
+}
+
 func twoDiCycle() {
   var setCounter = 0
   fmt.Println(corresSet)

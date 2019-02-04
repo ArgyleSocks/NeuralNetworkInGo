@@ -4,7 +4,7 @@ import (
   //"os"
   "fmt"
   // "time"
-  "dict"
+  // "dict" 🎸
   //"bufio"
   // "runtime"
   // "strconv"
@@ -50,36 +50,38 @@ const DESIRED_LOWER_INPUT_LIM = 0.0
 
 func NeuralNetworkExec() {
   // runtime.GOMAXPROCS(1024)
-  dict.Initi("../../dat/syllables")
+  // dict.Initi("../../dat/syllables")
   //shows where the syllables file is
   //TODO: variadic such that me and maxim don't have to swap it back and forth when either want to run it.
+  // dict.ToMap()
 
-  dict.ToMap()
   //Maps are faster than array iteration, believe it or not.
 
-  initi()
+  //initi()
   //Initialization
   //prepares graph and samples
 
-  go drawCostLoop()
-  go drawGraphLoop(&nodeGraph)
+  //need to fit in bigBoiCycle...
+  //
+  //what are you talking about
 
   trainNetwork()
   cleanNetwork()
   forkManualTest(trainingTask)
 }
 
-func initNetworkVar(_composition int[], _inputDataSet [][len(composition[0])]float64, _expectedDataSet [][len(composition[compLastRow])]float64, _trainingSet [][2]int) {
+func InitNetworkVar(_composition int[], _inputDataSet [][len(composition[0])]float64, _expectedDataSet [][len(composition[compLastRow])]float64, _trainingSet [][2]int) {
+
+  fmt.Println("Initialization started")
+
   composition = _composition
   inputDataSet = _inputDataSet
   expectedDataSet = _expectedDataSet
   trainingSet = _trainingSet
-}
 
-func initi() {
-  fmt.Println("Initialization started")
-  words = dict.SetOfKeys()
-  letterCountSampleVariety := len(words)
+  for i := 0; i < len(trainingSet); i++ {
+
+  }
 
   for i := 0; i < len(composition); i++ {
     nodeGraph[i] = make([]neuron, composition[i])
@@ -91,15 +93,35 @@ func initi() {
     }
   }
 
-  wordLengths := make([]int, letterCountSampleVariety)
-  for i := 0; i < letterCountSampleVariety; i++ {
-    //syllables[i] = dict.MapGet(words[i])
-    wordLengths[i] = len(words[i])
+  go drawCostLoop()
+  go drawGraphLoop(&nodeGraph)
+
+}
+
+/*func initi() {
+
+  //TODO words = dict.SetOfKeys()
+  //TODO letterCountSampleVariety := len(words)
+
+  for i := 0; i < len(composition); i++ {
+    nodeGraph[i] = make([]neuron, composition[i])
+  }
+
+  for i := 0; i < len(composition); i++ {
+    for j := 0; j < composition[i]; j++ {
+      nodeGraph[i][j].initNeuron(i,j)
+    }
+  }
+
+  //TODO wordLengths := make([]int, letterCountSampleVariety)
+  //TODO for i := 0; i < letterCountSampleVariety; i++ {
+    //TODO syllables[i] = dict.MapGet(words[i])
+    //TODO this is probably the more relevant one wordLengths[i] = len(words[i])
   }
 
   forkCleanup(sampleType) //TODO: Actually annihilate all forks
 
-}
+}*/
 
 func trainNetwork() {
 

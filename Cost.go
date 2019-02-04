@@ -20,18 +20,3 @@ func initExpected(expectedResult []float64, setIndex int) {//supposed to set exp
   }
   //expected=append(expected,expectedSampleResult)  OBSOLETE
 }
-
-func setSyllableCountAndWordRandomFromDictLikeABossBoiii(num int) {//I feel crucified
-
-  for i:=0;i<num;i++{
-    s1 := rand.NewSource(int64(time.Now().Nanosecond()))
-    random := rand.New(s1)
-    word:=dict.SetOfKeys()[int(random.Float64()*float64(len(dict.SetOfKeys())))]
-    //index:=dict.MapGet(string(word))
-    index:=len(word)
-    words[i]=word
-    syllables[i]=index
-    //trainingSet[word]=index
-  }
-  fmt.Println("Expected initialized")
-}
