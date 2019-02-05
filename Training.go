@@ -1,8 +1,8 @@
 package main
 
 import (
+  "fmt"
   "math"
-  //"fmt"
   //"strconv"
 )
 //nodeGraph: A 2 dimensional array comprised of neurons, presumably the first [] means layer and the second [] is node
@@ -66,7 +66,11 @@ func backPropagation(sets int) {
       for k := 0; k < composition[i + 1]; k++ {//per node next layer, making permutation with previous for loop
         //fmt.Println("Changing Weight by", trainingRate * (nodeGraph[i][j].WeightsChange[k]/float64(sets))) //don't forget this exists
         //fmt.Println(nodeGraph[i][j].WeightsChange[k])
+        checkNaN(nodeGraph[i][j].WeightsChange[k])
+        fmt.Println("SETS",totalSets)
+        checkNaN(float64(sets))
         nodeGraph[i][j].Weights[k] -= trainingRate(nodeGraph[i][j].WeightsChange[k]/float64(sets)) * (nodeGraph[i][j].WeightsChange[k]/float64(sets))
+        checkNaN(nodeGraph[i][j].Weights[k])
       }
     }
   } //this

@@ -52,7 +52,7 @@ func (neur *neuron) initNeuron(layer, node int) {
 }
 
 func (neur *neuron) initSums(sets int) { //has been replaced in InitNetworkVar
-  //fmt.Println("initSums")
+  fmt.Println("initSums",sets)
   neur.RefInputSum = make([]float64, sets)
   neur.InputSum = make([]float64, sets)
   neur.OutputSum = make([]float64, sets)

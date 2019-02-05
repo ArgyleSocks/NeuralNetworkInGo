@@ -79,7 +79,7 @@ func InitNetworkVar(_composition []int, _inputDataSet [][]float64, _expectedData
   trainingSet = _trainingSet
 
   // var totalSets := 0 <-- maxim, may I immortalize this extremely em♭arrasing mistake you made
-  totalSets := 0
+  totalSets = 0
 
   for i := 0; i < len(trainingSet); i++ {
     totalSets += trainingSet[i][1]

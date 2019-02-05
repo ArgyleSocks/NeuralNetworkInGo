@@ -162,6 +162,7 @@ Make sure that all samples are formatted to the correct length.*/
     for j := 0; j < trainingSet[i][1]; j++ {
       fmt.Println(trainingSet)
       calcInputNeuron(inputDataSet[trainingSet[i][0]],setCounter)
+      fmt.Println("wanted:",wanted[trainingSet[i][0]])
       initExpected(wanted[trainingSet[i][0]],setCounter)
       evaluateNetwork(setCounter)//whoo, nearly forgot that one
       setCounter++

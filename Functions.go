@@ -18,6 +18,8 @@ func calcCost(manual bool) {
   for i := 0; i < len(expected); i++ {
     if !manual {
       for j := 0; j < len(expected[0]); j++ {
+        fmt.Println("ex",expected)
+        checkNaN(nodeGraph[compLastRow][i].RefInputSum[j])
         cost += math.Pow((nodeGraph[compLastRow][i].RefInputSum[j] - expected[i][j]), 2)
         checkNaN(cost)
       }
@@ -77,6 +79,7 @@ func sigmoid(input float64) float64 {
 }
 
 func sigmoidDerivative(input float64) float64 {
+  checkNaN(input)
   return (1/(math.Pow((1 + math.Pow(math.E, -input)), 2) * math.Pow(math.E, input)))
 }
 
