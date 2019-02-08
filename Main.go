@@ -23,13 +23,14 @@ func main() {
 
 var genericRepeat int = 1
 
-var LPComposition    []int = []int{30, 30, 30, 30}
+var LPComposition []int = []int{6, 6, 6, 6, 6, 6}
 
-var numTrainFor      int = -50//train for first 50. making positive will randomize
+var numTrainFor int = -50//train for first 50. making positive will randomize
+var maxWordLength int = 6
 
-var trainingSet1     [][2]int//auto-gen
+var trainingSet1 [][2]int//auto-gen
 
-var inputDataSet1    [][]float64//auto-gen
+var inputDataSet1 [][]float64//auto-gen
 var expectedDataSet1 [][]float64
 
 func main() {
@@ -37,21 +38,38 @@ func main() {
   //GENERATION
   dict.Initi("../../dat/syllables")
   dict.ToMap()
-  keys:=dict.SetOfKeys()
+  keys := dict.SetOfKeys()
   //set up trainingSet1
-  trainingSet1=make([][2]int,-numTrainFor)
-  if numTrainFor < 0 {
+  trainingSet1 = make([][2]int, -numTrainFor)
+  if numTrainFor < 0 && maxWordLength == 0 {
+    fmt.Println("Using no. 1")
     for i := 0; i > numTrainFor; i-- {
-      trainingSet1[-i][0]=-i
-      trainingSet1[-i][1]=genericRepeat//lazy approach
+      trainingSet1[-i][0] = -i
+      trainingSet1[-i][1] = genericRepeat//lazy approach
+    }
+  } else if numTrainFor < 0 {
+    trainCounter := 0
+    for i := 0; i < len(keys); i++ {
+      fmt.Println("Using no. 2")
+      if dict.MapGet(keys[i]) <= maxWordLength {
+        fmt.Println(trainCounter, len(keys))
+        trainingSet1[trainCounter][0] = i
+        trainingSet1[trainCounter][1] = genericRepeat//lazy approach
+        trainCounter++
+      }
+
+      if trainCounter > -numTrainFor {
+        break
+      }
     }
   } else {
     for i := 0; i < numTrainFor; i++ {
+      fmt.Println("Using no. 3")
       s := rand.NewSource(int64(time.Now().Nanosecond()))
       random := rand.New(s)
-      index:=int(random.Float64()*float64(len(keys)))
-      trainingSet[i][0]=index
-      trainingSet[i][1]=genericRepeat//lazy approach
+      index := int(random.Float64()*float64(len(keys)))
+      trainingSet1[i][0] = index
+      trainingSet1[i][1] = genericRepeat//lazy approach
     }
   }
   //set up input/output
