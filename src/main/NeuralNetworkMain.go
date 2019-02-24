@@ -46,7 +46,7 @@ var nodeGraph [][]neuron = make([][]neuron, len(composition))
 const UPPER_ASCII_LIM = 122.0
 const LOWER_ASCII_LIM = 45.0
 const DESIRED_UPPER_INPUT_LIM = 1.0
-const DESIRED_LOWER_INPUT_LIM = 0.0
+const DESIRED_LOWER_INPUT_LIM = .1
 
 func NeuralNetworkExec() {
   // runtime.GOMAXPROCS(1024)

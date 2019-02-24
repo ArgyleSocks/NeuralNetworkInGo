@@ -18,7 +18,7 @@ func calcCost(manual bool) {
   for i := 0; i < len(expected); i++ {
     if !manual {
       for j := 0; j < len(expected[0]); j++ {
-        fmt.Println("ex",expected)
+        //fmt.Println("ex",expected)
         checkNaN(nodeGraph[compLastRow][i].RefInputSum[j])
         cost += math.Pow((nodeGraph[compLastRow][i].RefInputSum[j] - expected[i][j]), 2)
         checkNaN(cost)
@@ -84,7 +84,7 @@ func sigmoidDerivative(input float64) float64 {
 }
 
 func trainingRate(input float64) float64 {
-  return (2 * sigmoidDerivative(0.25 * input) + 0.02)
+  return (2 * sigmoidDerivative(.5 * input) + 0.02)
 }
 
 func ramp(input float64) float64 {
@@ -130,10 +130,10 @@ func forkCleanup(sampleType int) {
 func forkCycle(sampleType int) {
   switch sampleType {
   case 1:
-    fmt.Println("You are using two di")
+    //fmt.Println("You are using two di")
     twoDiCycle()
   case 2:
-    fmt.Println("You are using uniform")
+    //fmt.Println("You are using uniform")
     uniformCasesCycle()
   case 3:
     //Nothing yet!

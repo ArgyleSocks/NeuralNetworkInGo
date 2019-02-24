@@ -24,10 +24,10 @@ func main() {
 
 var genericRepeat int = 1
 
-var LPComposition []int = []int{12, 12, 12, 12, 13}
+var LPComposition []int = []int{12, 20, 30, 20, 13, 13}
 
-var numTrainFor int = -50//train for first 50. making positive will randomize
-var maxWordLength int = 6
+var numTrainFor int = 75
+var maxWordLength int = 12
 
 var trainingSet1 [][2]int//auto-gen
 
@@ -41,7 +41,7 @@ func main() {
   dict.ToMap()
   keys := dict.SetOfKeys()
   //set up trainingSet1
-  trainingSet1 = make([][2]int, -numTrainFor)
+  trainingSet1 = make([][2]int, int(math.Abs(float64(numTrainFor))))
   if numTrainFor < 0 && maxWordLength == 0 {
     fmt.Println("Using no. 1")
     for i := 0; i > numTrainFor; i-- {
@@ -76,7 +76,7 @@ func main() {
   //set up input/output
   inputDataSet1=make([][]float64,len(keys))
   expectedDataSet1=make([][]float64,len(keys))
-  for i := 0; i < int(math.Abs(float64(numTrainFor))); i++ {
+  for i := 0; i < len(keys); i++ {
     inputDataSet1[i]=make([]float64,LPComposition[0])
     bArr:=[]byte(keys[i])
     for i2 := 0; i2 < LPComposition[0]; i2++ {
@@ -90,7 +90,7 @@ func main() {
     //find length of word
     rIndex:=0
     for ch:=0; ch<len(inputDataSet1[i]); ch++ {
-        fmt.Println(inputDataSet1[i][ch])
+        //fmt.Println(inputDataSet1[i][ch])
         if inputDataSet1[i][ch]!=-2 {
             rIndex++
         } else {
@@ -100,7 +100,9 @@ func main() {
     expectedDataSet1[i][rIndex]=1
   }
   //END GENERATION
-
+  //fmt.Println(inputDataSet1)
+  fmt.Println()
+  //fmt.Println(expectedDataSet1)
   //NETWORK
   InitNetworkVar(LPComposition, inputDataSet1, expectedDataSet1, trainingSet1)
   NeuralNetworkExec()

@@ -1,7 +1,7 @@
 package main
 
 import (
-  "fmt"
+  //"fmt"
   "math"
   //"strconv"
 )
@@ -67,7 +67,7 @@ func backPropagation(sets int) {
         //fmt.Println("Changing Weight by", trainingRate * (nodeGraph[i][j].WeightsChange[k]/float64(sets))) //don't forget this exists
         //fmt.Println(nodeGraph[i][j].WeightsChange[k])
         checkNaN(nodeGraph[i][j].WeightsChange[k])
-        fmt.Println("SETS",totalSets)
+        //fmt.Println("SETS",totalSets)
         checkNaN(float64(sets))
         nodeGraph[i][j].Weights[k] -= trainingRate(nodeGraph[i][j].WeightsChange[k]/float64(sets)) * (nodeGraph[i][j].WeightsChange[k]/float64(sets))
         checkNaN(nodeGraph[i][j].Weights[k])
