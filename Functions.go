@@ -18,7 +18,7 @@ func calcCost(manual bool) {
   for i := 0; i < len(expected); i++ {
     if !manual {
       for j := 0; j < len(expected[0]); j++ {
-        fmt.Println("ex",expected)
+        //fmt.Println("ex",expected)
         checkNaN(nodeGraph[compLastRow][i].RefInputSum[j])
         cost += math.Pow((nodeGraph[compLastRow][i].RefInputSum[j] - expected[i][j]), 2)
         checkNaN(cost)
@@ -51,7 +51,7 @@ func forkRefInputSum(refInputSumType int, input float64) float64 {
   case 2:
     return ramp(input)
   case 3:
-    return joshRamp(input)
+    //return joshRamp(input)
   case 4:
     //Nothing yet!
   }
@@ -62,11 +62,12 @@ func forkRefInputSum(refInputSumType int, input float64) float64 {
 func forkDerivative(refInputSumType int, input float64) float64 {
   switch refInputSumType {
   case 1:
+    checkNaN(sigmoidDerivative(input))
     return sigmoidDerivative(input)
   case 2:
     return rampDerivative(input)
   case 3:
-    return joshRampDerivative(input)
+    //return joshRampDerivative(input)
   case 4:
     //Nothing yet!
   }
@@ -80,11 +81,15 @@ func sigmoid(input float64) float64 {
 
 func sigmoidDerivative(input float64) float64 {
   checkNaN(input)
-  return (1/(math.Pow((1 + math.Pow(math.E, -input)), 2) * math.Pow(math.E, input)))
+  if math.Pow(math.E, input) <= 0 {
+    return 0
+  } else {
+    return (1/(math.Pow((1 + math.Pow(math.E, -input)), 2) * math.Pow(math.E, input)))
+  }
 }
 
 func trainingRate(input float64) float64 {
-  return (2 * sigmoidDerivative(0.25 * input) + 0.02)
+  return (2 * sigmoidDerivative(.5 * input) + 0.02)
 }
 
 func ramp(input float64) float64 {
@@ -103,18 +108,19 @@ func rampDerivative(input float64) float64 {
   }
 }
 
-func joshRamp(input float64) float64 {
-	currentRange := UPPER_ASCII_LIM - LOWER_ASCII_LIM
-	desiredRange := DESIRED_UPPER_INPUT_LIM - DESIRED_LOWER_INPUT_LIM
-	point := input/currentRange
-	return point * desiredRange + DESIRED_LOWER_INPUT_LIM
+func asciiCompression(input float64) float64 {
+	yRange := UPPER_ASCII_LIM - LOWER_ASCII_LIM
+	xRange := DESIRED_UPPER_ASCII_LIM - DESIRED_LOWER_ASCII_LIM
+	slope := yRange/xRange
+  yTranslation := slope * LOWER_ASCII_LIM - DESIRED_LOWER_ASCII_LIM
+	return input * slope - yTranslation
 }
 
-func joshRampDerivative(input float64) float64 {
+/*func joshRampDerivative(input float64) float64 {
   currentRange := UPPER_ASCII_LIM - LOWER_ASCII_LIM
 	desiredRange := DESIRED_UPPER_INPUT_LIM - DESIRED_LOWER_INPUT_LIM
   return desiredRange / currentRange
-}
+}*/
 
 func forkCleanup(sampleType int) {
   switch sampleType {
@@ -130,10 +136,10 @@ func forkCleanup(sampleType int) {
 func forkCycle(sampleType int) {
   switch sampleType {
   case 1:
-    fmt.Println("You are using two di")
+    //fmt.Println("You are using two di")
     twoDiCycle()
   case 2:
-    fmt.Println("You are using uniform")
+    //fmt.Println("You are using uniform")
     uniformCasesCycle()
   case 3:
     //Nothing yet!
@@ -285,9 +291,18 @@ func manualTestFloatInput() {
   calcCost(true)
   fmt.Println("Cost:", cost)
 
-  for i := 0; i < composition[compLastRow]; i++ {
-    fmt.Println("Output", (i + 1), ":", nodeGraph[compLastRow][i].RefInputSum[0], ", Expected:", expected[i][0])
-  }
+  // for i := 0; i < composition[compLastRow]; i++ {
+  //   fmt.Println("Output", (i + 1), ":", nodeGraph[compLastRow][i].RefInputSum[0], ", Expected:", expected[i][0])
+  // }
 
   manualTestFloatInput()
+}
+
+func manualTest(inputArray []float64, expectedArray []float64) {
+  calcInputNeuron(inputArray, 0)
+  initExpected(expectedArray, 0)
+
+  evaluateNetwork(0)
+  calcCost(true)
+  fmt.Println("Cost:", cost)
 }

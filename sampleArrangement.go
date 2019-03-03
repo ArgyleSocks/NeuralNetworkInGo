@@ -1,7 +1,7 @@
 package main
 
 import (
-  "fmt"
+  //"fmt"
 )
 
 var totalSets int = 0
@@ -32,7 +32,7 @@ func twoDiCleanup() {
 /*
   differentSets = len(words/*this can also be the length of the map or some gen. value for number of words*//*)*/
 
-  fmt.Println("DifferentSets:", differentSets)
+  //fmt.Println("DifferentSets:", differentSets)
 
   corresSet = make([][]int, differentSets)
 
@@ -42,7 +42,7 @@ func twoDiCleanup() {
 
   for i := 0; i < len(trainingSet); i++ {
     if !repetitionSet[i] {
-      fmt.Println("len(corresSet):", len(corresSet), "corresItem:", corresItem, "i:", i, "len(trainingSet):", len(trainingSet), "len(trainingSet[i]):", len(trainingSet[i]), "trainingSet[i]:", trainingSet[i])
+      //fmt.Println("len(corresSet):", len(corresSet), "corresItem:", corresItem, "i:", i, "len(trainingSet):", len(trainingSet), "len(trainingSet[i]):", len(trainingSet[i]), "trainingSet[i]:", trainingSet[i])
       corresSet[corresItem][0] = trainingSet[i][0]
       corresSet[corresItem][1] = trainingSet[i][1]
 
@@ -160,9 +160,9 @@ Make sure that all samples are formatted to the correct length.*/
   setCounter := 0
   for i := 0; i < len(trainingSet); i++ {
     for j := 0; j < trainingSet[i][1]; j++ {
-      fmt.Println(trainingSet)
+      //fmt.Println(trainingSet)
       calcInputNeuron(inputDataSet[trainingSet[i][0]],setCounter)
-      fmt.Println("wanted:",wanted[trainingSet[i][0]])
+      //fmt.Println("wanted:",wanted[trainingSet[i][0]])
       initExpected(wanted[trainingSet[i][0]],setCounter)
       evaluateNetwork(setCounter)//whoo, nearly forgot that one
       setCounter++
@@ -172,7 +172,7 @@ Make sure that all samples are formatted to the correct length.*/
 
 func twoDiCycle() {
   var setCounter = 0
-  fmt.Println(corresSet)
+  //fmt.Println(corresSet)
   for i := 0; i < len(corresSet); i++ {
     for j := 0; j < corresSet[i][1]; j++ {
       //fmt.Println("j", j)

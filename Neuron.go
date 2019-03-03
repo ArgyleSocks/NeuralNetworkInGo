@@ -2,7 +2,7 @@ package main
 
 import
 (
-  "fmt"
+  //"fmt"
   //"math"
   "time"
   "math/rand"
@@ -52,7 +52,7 @@ func (neur *neuron) initNeuron(layer, node int) {
 }
 
 func (neur *neuron) initSums(sets int) { //has been replaced in InitNetworkVar
-  fmt.Println("initSums",sets)
+  //fmt.Println("initSums",sets)
   neur.RefInputSum = make([]float64, sets)
   neur.InputSum = make([]float64, sets)
   neur.OutputSum = make([]float64, sets)
@@ -75,7 +75,7 @@ func (neur *neuron) calcOutputSum(node int, graph int) float64{
 }
 
 func calcInputNeuron(input []float64, setIndex int) {
-  fmt.Println("input array:", input, "setIndex:", setIndex)
+  //fmt.Println("input array:", input, "setIndex:", setIndex)
   for i, e := range input {
     nodeGraph[0][i].RefInputSum[setIndex] = e
   }

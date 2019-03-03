@@ -5,6 +5,9 @@ import (
   "dict"
   "time"
   "math/rand"
+  "math"
+  "bufio"
+  "os"
 )
 
 /*var LPComposition []int = []int{2, 3, 3, 3, 3, 2}
@@ -23,10 +26,10 @@ func main() {
 
 var genericRepeat int = 1
 
-var LPComposition []int = []int{6, 6, 6, 6, 6, 6}
+var LPComposition []int = []int{12, 12, 12, 12, 12, 13}
 
-var numTrainFor int = -50//train for first 50. making positive will randomize
-var maxWordLength int = 6
+var numTrainFor int = -20
+var maxWordLength int = 12
 
 var trainingSet1 [][2]int//auto-gen
 
@@ -40,7 +43,7 @@ func main() {
   dict.ToMap()
   keys := dict.SetOfKeys()
   //set up trainingSet1
-  trainingSet1 = make([][2]int, -numTrainFor)
+  trainingSet1 = make([][2]int, int(math.Abs(float64(numTrainFor))))
   if numTrainFor < 0 && maxWordLength == 0 {
     fmt.Println("Using no. 1")
     for i := 0; i > numTrainFor; i-- {
@@ -49,10 +52,11 @@ func main() {
     }
   } else if numTrainFor < 0 {
     trainCounter := 0
-    for i := 0; i < len(keys); i++ {
+    for i := 0; i < -numTrainFor; i++ {
       fmt.Println("Using no. 2")
+      //fmt.Println(keys[i], dict.MapGet(keys[i]))
       if dict.MapGet(keys[i]) <= maxWordLength {
-        fmt.Println(trainCounter, len(keys))
+        //fmt.Println(trainCounter, len(keys))
         trainingSet1[trainCounter][0] = i
         trainingSet1[trainCounter][1] = genericRepeat//lazy approach
         trainCounter++
@@ -73,27 +77,41 @@ func main() {
     }
   }
   //set up input/output
-  inputDataSet1=make([][]float64,len(keys))
-  expectedDataSet1=make([][]float64,len(keys))
+  inputDataSet1 = make([][]float64, len(keys))
+  expectedDataSet1 = make([][]float64, len(keys))
   for i := 0; i < len(keys); i++ {
-    inputDataSet1[i]=make([]float64,LPComposition[0])
-    bArr:=[]byte(keys[i])
+    inputDataSet1[i] = make([]float64, LPComposition[0])
+    bArr := []byte(keys[i])
     for i2 := 0; i2 < LPComposition[0]; i2++ {
       if i2 < len(bArr) {
-        inputDataSet1[i][i2]=joshRamp(float64(bArr[i2]))//TODO move joshRamp variables here or fix joshRamp to take arguments again... ahem.
+        inputDataSet1[i][i2] = asciiCompression(float64(bArr[i2]))//TODO move joshRamp variables here or fix joshRamp to take arguments again... ahem.
       } else {
-        inputDataSet1[i][i2]=-2
+        inputDataSet1[i][i2] = -999
       }
     }
-    expectedDataSet1[i]=make([]float64,LPComposition[len(LPComposition)-1])
-    rIndex:=/*dict.MapGet(keys[i])*/len(keys[i])
-    expectedDataSet1[i][rIndex]=1
+    expectedDataSet1[i] = make([]float64, LPComposition[len(LPComposition) - 1])
+
+    for ch := 0; ch < LPComposition[len(LPComposition) - 1]; ch++ {
+      //fmt.Println(inputDataSet1[i][ch])
+      if ch != len(keys[i]) - 1 {
+        expectedDataSet1[i][ch] = 0
+      } else {
+        expectedDataSet1[i][ch] = 1
+      }
+    }
   }
   //END GENERATION
-
+  //fmt.Println(inputDataSet1)
+  fmt.Println()
+  //fmt.Println(expectedDataSet1)
   //NETWORK
   InitNetworkVar(LPComposition, inputDataSet1, expectedDataSet1, trainingSet1)
+  //panic("Halt")
   NeuralNetworkExec()
+
+  testWord := bufio.NewReader(os.Stdin)
+
+  manualTest(manualInputArrayGen(testWord), manualExpectedArrayGen(testword))
   //END NETWORK
 }
 //possibly useful in future?
@@ -112,3 +130,36 @@ func main() {
   fmt.Println("Expected initialized")
 }
 */
+
+func manualInputArrayGen(testWord string) []float64 {
+
+  inputArray := make([]float64, composition[0])
+
+  bArr := []byte(testWord)
+
+  for i := 0; i < composition[0]; i++ {
+    if i < len(bArr) {
+      inputArray[i] = asciiCompression(bArr[i])
+    } else {
+      inputArray[i] = -999
+    }
+  }
+
+  return inputArray;
+}
+
+func manualExpectedArrayGen(testWord string) []float64 {
+
+  expectedArray := make([]float64, composition[len(composition) - 1])
+
+  for i := 0; i < LPComposition[len(LPComposition) - 1]; i++ {
+    //fmt.Println(inputDataSet1[i][ch])
+    if i != len(testWord) - 1 {
+      expectedArray[i] = 0
+    } else {
+      expectedArray[i] = 1
+    }
+  }
+
+  return expectedArray;
+}

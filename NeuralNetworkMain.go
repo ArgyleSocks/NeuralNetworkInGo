@@ -22,7 +22,7 @@ var words []string  //TODO: Figure out what this is doing in initExpected, as it
 var syllables []int //doesn't need to gloabl TODO: Also figure out what this is as it also doesn't need to bel global but is too weird to touch
 
 var inputDataSet [][]float64
-var expectedDataSet [][]float64
+var expectedDataSet [][]float64 //last entry of expectedDataSet represents 0
 //the indices of inputDataSet and expectedDataSet should correspond to what the input and desired outputs of the NN should be
 var trainingSet [][2]int
 //describes the samples that the network evaluates, 1st index of 2nd dimension is index of case in inputdataSet/expectedData, 2nd index of 2nd dimension is times that case is evaluated
@@ -44,9 +44,9 @@ var trainingTask int = 1
 var nodeGraph [][]neuron = make([][]neuron, len(composition))
 
 const UPPER_ASCII_LIM = 122.0
-const LOWER_ASCII_LIM = 45.0
-const DESIRED_UPPER_INPUT_LIM = 1.0
-const DESIRED_LOWER_INPUT_LIM = 0.0
+const LOWER_ASCII_LIM = 96.0
+const DESIRED_UPPER_ASCII_LIM = 1.0
+const DESIRED_LOWER_ASCII_LIM = 0.0
 
 func NeuralNetworkExec() {
   // runtime.GOMAXPROCS(1024)
@@ -66,12 +66,12 @@ func NeuralNetworkExec() {
 
   trainNetwork()
   // cleanNetwork()
-  forkManualTest(trainingTask)//TODO call from Main.go
+  //forkManualTest(trainingTask)//TODO remove fork and make to accept array
 }
 
 func InitNetworkVar(_composition []int, _inputDataSet [][]float64, _expectedDataSet [][]float64, _trainingSet [][2]int) {
 
-  fmt.Println("Initialization started")
+  //fmt.Println("Initialization started")
 
   composition = _composition
   inputDataSet = _inputDataSet
@@ -88,17 +88,24 @@ func InitNetworkVar(_composition []int, _inputDataSet [][]float64, _expectedData
   for i := 0; i < composition[compLastRow]; i++ { //need to move this, like this really isn't supposed to be here
     expected[i] = make([]float64, len(trainingSet))
   } //difference between expectedDataSet and this: expectedDataSet has the corresponding values to the inputs, this has the values corresponding to the nodegraphs
-  nodeGraph=make([][]neuron,len(composition))
+  nodeGraph = make([][]neuron, len(composition))
   for i := 0; i < len(composition); i++ {
     nodeGraph[i] = make([]neuron, composition[i])
-    fmt.Println(nodeGraph[i])
   }
 
   for i := 0; i < len(composition); i++ {
     for j := 0; j < composition[i]; j++ {
       nodeGraph[i][j].initNeuron(i,j)
       nodeGraph[i][j].initSums(len(trainingSet))//THIS IS ACTUALLY BLATANTLY WRONG! len(trainingSet) needs to be replaced with THE ACTUAL NUMBER OF SETS. But Josh is lazy right now.
+      fmt.Println("LAYER:", nodeGraph[i][j].Layer, "NODE:", nodeGraph[i][j].Node, "weights empty?:", nodeGraph[i][j].Weights == nil)
     }
+  }
+
+  fmt.Println(trainingSet)
+
+  for i := 0; i < len(inputDataSet); i++ {
+    fmt.Println("INPUT", i, ":", inputDataSet[i], "length:", len(inputDataSet[i]))
+    fmt.Println("EXPECTED", i, ":", expectedDataSet[i], "length:", len(expectedDataSet[i]))
   }
 
   go drawCostLoop()
@@ -144,7 +151,7 @@ func trainNetwork() {
 
     //forkCycle(sampleType)
 
-    bigBoiCycle(trainingSet,inputDataSet, expectedDataSet)
+    bigBoiCycle(trainingSet, inputDataSet, expectedDataSet)
 
     if generations == 0 {
       calcCost(false)
