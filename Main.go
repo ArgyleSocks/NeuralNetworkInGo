@@ -109,9 +109,15 @@ func main() {
   //panic("Halt")
   NeuralNetworkExec()
 
-  testWord := bufio.NewReader(os.Stdin)
+  testWordReader := bufio.NewReader(os.Stdin)
+  testWordString, _ := testWordReader.ReadString('\n')
+  testWordByte := []byte(testWordString[:len(testWordString)])
+  fmt.Println(testWordByte)
+  testWord := "neener"
 
-  manualTest(manualInputArrayGen(testWord), manualExpectedArrayGen(testword))
+  panic("halt")
+
+  manualTest(manualInputArrayGen(testWord), manualExpectedArrayGen(testWord))
   //END NETWORK
 }
 //possibly useful in future?
@@ -139,7 +145,7 @@ func manualInputArrayGen(testWord string) []float64 {
 
   for i := 0; i < composition[0]; i++ {
     if i < len(bArr) {
-      inputArray[i] = asciiCompression(bArr[i])
+      inputArray[i] = asciiCompression(float64(bArr[i]))
     } else {
       inputArray[i] = -999
     }

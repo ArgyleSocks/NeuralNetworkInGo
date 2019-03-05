@@ -109,11 +109,10 @@ func rampDerivative(input float64) float64 {
 }
 
 func asciiCompression(input float64) float64 {
-	yRange := UPPER_ASCII_LIM - LOWER_ASCII_LIM
-	xRange := DESIRED_UPPER_ASCII_LIM - DESIRED_LOWER_ASCII_LIM
+	yRange := DESIRED_UPPER_ASCII_LIM - DESIRED_LOWER_ASCII_LIM
+	xRange := UPPER_ASCII_LIM - LOWER_ASCII_LIM
 	slope := yRange/xRange
-  yTranslation := slope * LOWER_ASCII_LIM - DESIRED_LOWER_ASCII_LIM
-	return input * slope - yTranslation
+	return (input - LOWER_ASCII_LIM) * slope + DESIRED_LOWER_ASCII_LIM
 }
 
 /*func joshRampDerivative(input float64) float64 {
@@ -206,7 +205,7 @@ func letterCountTraining(setType int, setIndex int) {
 
   for i := 0; i < composition[0]; i++ {
     if i < len(kByteArray) {
-      kFloatArray[i] = joshRamp(float64(kByteArray[i]))
+      kFloatArray[i] = asciiCompression(float64(kByteArray[i]))
     } else {
       kFloatArray[i] = 0
     }
@@ -245,7 +244,7 @@ func manualTestAsciiInput() {
   in,_ := input.ReadString('\n')
   inputArr:=make([]float64,0)
   for i := 0; i < len([]byte(in)); i++{
-    inputArr=append(inputArr,joshRamp(float64([]byte(in)[i])))
+    inputArr=append(inputArr, asciiCompression(float64([]byte(in)[i])))
   }
   calcInputNeuron(inputArr, 0)
   //uses the nodeGraph at graph 0
